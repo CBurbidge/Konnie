@@ -1,14 +1,18 @@
 ﻿using System;
+using System.IO.Abstractions;
+using System.Linq;
 
 namespace Konnie
 {
 	public class KonnieProgram
 	{
+		private readonly IFileSystem _fs;
 		private readonly Action<string> _logLine;
 
-		public KonnieProgram(Action<string> logLine)
+		public KonnieProgram(Action<string> logLine = null, IFileSystem fs = null)
 		{
-			_logLine = logLine;
+			_fs = fs ?? new FileSystem();
+			_logLine = logLine ?? (Console.WriteLine);
 		}
 
 		public void Run(string[] args)
@@ -17,15 +21,32 @@ namespace Konnie
 			var argsAsLine = string.Join(",", args);
 			_logLine($"Called with args {argsAsLine}");
 
-			if (args.Length < 2)
+			var numberOrArguments = args.Length;
+
+			if (numberOrArguments < 2)
 			{
-				_logLine(Wording.NeedToPassArgumentsWarning);
-				_logLine(Wording.NeedToPassTwoArgumentsIn);
-				_logLine(Wording.ArgumentsDescription);
+				TellUserTherereNotEnoughArguments();
 				return;
 			}
 
+			var konnieFiles = args.Take(numberOrArguments - 1);
+			var konnieTask = args[numberOrArguments - 1];
 
+			foreach (var konnieFile in konnieFiles)
+			{
+				_logLine($"Checking existance of file '{konnieFile}'");
+				if (_fs.File.Exists(konnieFile) == false)
+				{
+					
+				}
+			}
+		}
+
+		private void TellUserTherereNotEnoughArguments()
+		{
+			_logLine(Wording.NeedToPassArgumentsWarning);
+			_logLine(Wording.NeedToPassTwoArgumentsIn);
+			_logLine(Wording.ArgumentsDescription);
 		}
 
 		public class Wording
