@@ -22,15 +22,13 @@ namespace Konnie.Tests
 		public void ListsArgumentsOnStartup()
 		{
 			var konnieProgram = new KonnieProgram(line => logLines.Add(line));
-			var arg1 = "arg1";
-			var arg2 = "arg2";
-			var arg3 = "arg3";
-			var args = new []{arg1, arg2, arg3};
-			var expectedPart = string.Join(",", args);
+			var arg2 = "fileOne";
+			var arg4 = "thing";
 
-			konnieProgram.Run(args);
+			konnieProgram.Run(new []{"--files", arg2, "--task", arg4});
 
-			Assert.That(logLines.Count(l => l.Contains(expectedPart)) == 1);
+			Assert.That(logLines.Count(l => l.Contains(arg2)) > 0);
+			Assert.That(logLines.Count(l => l.Contains(arg4)) > 0);
 		}
 
 		[Test]
@@ -38,11 +36,9 @@ namespace Konnie.Tests
 		{
 			var konnieProgram = new KonnieProgram(line => logLines.Add(line));
 			var args = new string[]{};
-			
-			konnieProgram.Run(args);
 
+			Assert.Throws<ArgsParsingFailed>(() => konnieProgram.Run(args));
 			Assert.That(logLines.Count(l => l.Contains(KonnieProgram.Wording.ArgumentsDescription)) == 1);
-			Assert.That(logLines.Count(l => l.Contains(KonnieProgram.Wording.NeedToPassTwoArgumentsIn)) == 1);
 			Assert.That(logLines.Count(l => l.Contains(KonnieProgram.Wording.NeedToPassArgumentsWarning)) == 1);
 		}
 
@@ -51,45 +47,41 @@ namespace Konnie.Tests
 		{
 			var konnieProgram = new KonnieProgram(line => logLines.Add(line));
 			var args = new[]{"arg1"};
-			
-			konnieProgram.Run(args);
 
+			Assert.Throws<ArgsParsingFailed>(() => konnieProgram.Run(args));
 			Assert.That(logLines.Count(l => l.Contains(KonnieProgram.Wording.ArgumentsDescription)) == 1);
-			Assert.That(logLines.Count(l => l.Contains(KonnieProgram.Wording.NeedToPassTwoArgumentsIn)) == 1);
 			Assert.That(logLines.Count(l => l.Contains(KonnieProgram.Wording.NeedToPassArgumentsWarning)) == 1);
 		}
 
 		[Test]
 		public void CheckFileArgumentExists()
 		{
-			var arg1 = "arg1";
-			var arg2 = "arg2";
-			var args = new[]{arg1, arg2};
+			var fileName = "Thing";
+			var args = new[]{"--files", fileName, "--task", "blah"};
 			var mockFileSystem = new Mock<IFileSystem>();
-			mockFileSystem.Setup(f => f.File.Exists(arg1)).Returns(true);
+			mockFileSystem.Setup(f => f.File.Exists(fileName)).Returns(true);
 			var konnieProgram = new KonnieProgram(line => logLines.Add(line), mockFileSystem.Object);
 
 			konnieProgram.Run(args);
 
-			mockFileSystem.Verify(f => f.File.Exists(arg1));
+			mockFileSystem.Verify(f => f.File.Exists(fileName));
 		}
 
 		[Test]
 		public void CheckMultipleFileArgumentsExist()
 		{
-			var arg1 = "arg1";
-			var arg2 = "arg2";
-			var arg3 = "arg3";
-			var args = new[]{arg1, arg2, arg3};
+			var file1 = "fileOne";
+			var file2 = "fileTwo";
+			var args = new[]{"--files", file1, file2, "--task", "something"};
 			var mockFileSystem = new Mock<IFileSystem>();
-			mockFileSystem.Setup(f => f.File.Exists(arg1)).Returns(true);
-			mockFileSystem.Setup(f => f.File.Exists(arg2)).Returns(true);
+			mockFileSystem.Setup(f => f.File.Exists(file1)).Returns(true);
+			mockFileSystem.Setup(f => f.File.Exists(file2)).Returns(true);
 			var konnieProgram = new KonnieProgram(line => logLines.Add(line), mockFileSystem.Object);
 
 			konnieProgram.Run(args);
 
-			mockFileSystem.Verify(f => f.File.Exists(arg1));
-			mockFileSystem.Verify(f => f.File.Exists(arg2));
+			mockFileSystem.Verify(f => f.File.Exists(file1));
+			mockFileSystem.Verify(f => f.File.Exists(file2));
 		}
 	}
 }

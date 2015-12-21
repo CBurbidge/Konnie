@@ -1,6 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
+using System.Dynamic;
 using System.IO.Abstractions;
 using System.Linq;
+using System.Threading.Tasks;
+using Fclp;
 
 namespace Konnie
 {
@@ -18,43 +22,60 @@ namespace Konnie
 		public void Run(string[] args)
 		{
 			_logLine("Started Konnie...");
-			var argsAsLine = string.Join(",", args);
-			_logLine($"Called with args {argsAsLine}");
 
-			var numberOrArguments = args.Length;
+			var argParser = new FluentCommandLineParser<CommandArgs>();
+			
+			argParser.Setup(arg => arg.Files)
+				.As("files")
+				.Required();
+			argParser.Setup(arg => arg.Task)
+				.As("task")
+				.Required();
 
-			if (numberOrArguments < 2)
+			var result = argParser.Parse(args);
+
+			if (result.HasErrors)
 			{
-				TellUserTherereNotEnoughArguments();
-				return;
+				TellUserThereAreNotEnoughArguments();
+				throw new ArgsParsingFailed();
 			}
 
-			var konnieFiles = args.Take(numberOrArguments - 1);
-			var konnieTask = args[numberOrArguments - 1];
+			var commandArgs = argParser.Object;
 
-			foreach (var konnieFile in konnieFiles)
+			_logLine($"Files: '{string.Join("','", commandArgs.Files)}'");
+			_logLine($"Task: '{commandArgs.Task}'");
+
+			foreach (var file in commandArgs.Files)
 			{
-				_logLine($"Checking existance of file '{konnieFile}'");
-				if (_fs.File.Exists(konnieFile) == false)
+				_logLine($"Checking existance of file '{file}'");
+				if (_fs.File.Exists(file) == false)
 				{
 					
 				}
 			}
 		}
 
-		private void TellUserTherereNotEnoughArguments()
+		private void TellUserThereAreNotEnoughArguments()
 		{
 			_logLine(Wording.NeedToPassArgumentsWarning);
-			_logLine(Wording.NeedToPassTwoArgumentsIn);
 			_logLine(Wording.ArgumentsDescription);
 		}
 
 		public class Wording
 		{
 			public const string NeedToPassArgumentsWarning = "Need to pass in arguments to Konnie";
-			public const string ArgumentsDescription = "Can pass in multiple .konnie files and then a single task to run";
-			public const string NeedToPassTwoArgumentsIn = "Need to pass in at least 2 arguments";
+			public const string ArgumentsDescription = "Can pass in multiple .konnie files with --files and then a single task to run with --task";
 			public const string FileDoesntExistFailure = "File {0} in argument doesn't exist.";
 		}
+
+		public class CommandArgs
+		{
+			public string Task { get; set; }
+			public List<string> Files { get; set; }
+		}
+	}
+
+	public class ArgsParsingFailed : Exception
+	{
 	}
 }
