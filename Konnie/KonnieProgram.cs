@@ -34,6 +34,15 @@ namespace Konnie
 
 			var result = argParser.Parse(args);
 
+			var commandArgs = CheckAndLogCommandArguments(result, argParser);
+
+			EnsureFilesExistOnDisk(commandArgs);
+
+
+		}
+
+		private CommandArgs CheckAndLogCommandArguments(ICommandLineParserResult result, FluentCommandLineParser<CommandArgs> argParser)
+		{
 			if (result.HasErrors)
 			{
 				TellUserThereAreNotEnoughArguments();
@@ -41,17 +50,21 @@ namespace Konnie
 			}
 
 			var commandArgs = argParser.Object;
-
 			_logLine($"Files: '{string.Join("','", commandArgs.Files)}'");
 			_logLine($"Task: '{commandArgs.Task}'");
+			return commandArgs;
+		}
 
+		private void EnsureFilesExistOnDisk(CommandArgs commandArgs)
+		{
 			foreach (var file in commandArgs.Files)
 			{
-				_logLine($"Checking existance of file '{file}'");
 				if (_fs.File.Exists(file) == false)
 				{
-					
+					_logLine(string.Format(Wording.FileDoesntExistFailure, file));
+					throw new KonnieFileDoesntExist(file);
 				}
+				_logLine($"File '{file}' exists.");
 			}
 		}
 
@@ -75,7 +88,4 @@ namespace Konnie
 		}
 	}
 
-	public class ArgsParsingFailed : Exception
-	{
-	}
 }

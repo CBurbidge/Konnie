@@ -21,14 +21,16 @@ namespace Konnie.Tests
 		[Test]
 		public void ListsArgumentsOnStartup()
 		{
-			var konnieProgram = new KonnieProgram(line => logLines.Add(line));
-			var arg2 = "fileOne";
-			var arg4 = "thing";
+			var fileone = "fileOne";
+			var taskArg = "thing";
+			var mockFileSystem = new Mock<IFileSystem>();
+			mockFileSystem.Setup(f => f.File.Exists(fileone)).Returns(true);
+			var konnieProgram = new KonnieProgram(line => logLines.Add(line), mockFileSystem.Object);
 
-			konnieProgram.Run(new []{"--files", arg2, "--task", arg4});
+			konnieProgram.Run(new []{"--files", fileone, "--task", taskArg});
 
-			Assert.That(logLines.Count(l => l.Contains(arg2)) > 0);
-			Assert.That(logLines.Count(l => l.Contains(arg4)) > 0);
+			Assert.That(logLines.Count(l => l.Contains(fileone)) > 0);
+			Assert.That(logLines.Count(l => l.Contains(taskArg)) > 0);
 		}
 
 		[Test]
@@ -83,5 +85,21 @@ namespace Konnie.Tests
 			mockFileSystem.Verify(f => f.File.Exists(file1));
 			mockFileSystem.Verify(f => f.File.Exists(file2));
 		}
+
+		[Test]
+		public void WarnsAndThrowsIfFileDoesntExist()
+		{
+			var fileName = "Thing";
+			var args = new[] { "--files", fileName, "--task", "blah" };
+			var mockFileSystem = new Mock<IFileSystem>();
+			mockFileSystem.Setup(f => f.File.Exists(fileName)).Returns(false);
+			var konnieProgram = new KonnieProgram(line => logLines.Add(line), mockFileSystem.Object);
+
+			Assert.Throws<KonnieFileDoesntExist>(() => konnieProgram.Run(args));
+			mockFileSystem.Verify(f => f.File.Exists(fileName));
+			string expectedString = string.Format(KonnieProgram.Wording.FileDoesntExistFailure, fileName);
+			Assert.That(logLines.Count(l => l.Contains(expectedString)) == 1);
+		}
+
 	}
 }

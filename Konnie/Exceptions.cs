@@ -1,10 +1,8 @@
 ﻿using System;
-using System.IO.Abstractions;
-using System.Linq;
 
 namespace Konnie
 {
-	internal class KonnieFileDoesntExist : Exception
+	public class KonnieFileDoesntExist : Exception
 	{
 		private readonly string _filepathKonnie;
 
@@ -13,6 +11,13 @@ namespace Konnie
 			_filepathKonnie = filepathKonnie;
 		}
 
-		public override string Message { get { return $"{_filepathKonnie}"; } }
+		public override string Message
+		{
+			get { return $"{_filepathKonnie}"; }
+		}
+	}
+
+	public class ArgsParsingFailed : Exception
+	{
 	}
 }
