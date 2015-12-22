@@ -37,6 +37,10 @@
       <HintPath>..\packages\FluentCommandLineParser.1.4.3\lib\net35\FluentCommandLineParser.dll</HintPath>
       <Private>True</Private>
     </Reference>
+    <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.8.0.1-beta3\lib\net45\Newtonsoft.Json.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.IO.Abstractions, Version=2.0.0.120, Culture=neutral, PublicKeyToken=d480b5b72fb413da, processorArchitecture=MSIL">
@@ -53,6 +57,12 @@
   <ItemGroup>
     <Compile Include="Exceptions.cs" />
     <Compile Include="KonnieProgram.cs" />
+    <Compile Include="Model\KonnieFileParser.cs" />
+    <Compile Include="Model\KonnieFile.cs" />
+    <Compile Include="Model\Tasks\ISubTask.cs" />
+    <Compile Include="Model\Tasks\SubstitutionTask.cs" />
+    <Compile Include="Model\Tasks\SubTaskCollection.cs" />
+    <Compile Include="Model\Tasks\TransformTask.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
