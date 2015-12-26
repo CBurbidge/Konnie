@@ -1,4 +1,5 @@
-﻿using Konnie.Model;
+﻿using System.Collections.Generic;
+using Konnie.Model;
 using Konnie.Model.File;
 using Konnie.Model.Tasks.SubTasks;
 using NUnit.Framework;
@@ -15,11 +16,13 @@ namespace Konnie.Tests
 			{
 				Tasks = new KTasks
 				{
+					new KTask
 					{
-						"taskOne", new SubTasksToRun
+						Name = "taskOne",
+						SubTasksToRun = new List<string>
 						{
 							"subTaskOne"
-						}
+						} 
 					}
 				},
 				SubTasks = new KSubTasks
@@ -45,17 +48,18 @@ namespace Konnie.Tests
 				},
 				VariableSets = new KVariableSets
 				{
+					new VariableSet
 					{
-						"variablesOne",
-						new VariableSet
+						Name = "variablesOne",
+						Variables = new Dictionary<string, string>
 						{
 							{"var1", "val1"}
 						}
 					}
 				}
 			};
-			var parser = new KFileConverter();
 
+			var parser = new KFileConverter();
 			var text = parser.Serialize(inMem);
 			var kFile = parser.DeserializeFromString(text);
 		}

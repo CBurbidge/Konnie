@@ -15,11 +15,7 @@ namespace Konnie.Model.File
 		}
 	}
 
-	public class KVariableSets : Dictionary<string, VariableSet>
-	{
-	}
-
-	public class KTasks : Dictionary<string, SubTasksToRun>
+	public class KTasks : List<KTask>
 	{
 	}
 
@@ -27,11 +23,19 @@ namespace Konnie.Model.File
 	{
 	}
 
-	public class VariableSet : Dictionary<string, string>
+	public class KVariableSets : List<VariableSet>
 	{
 	}
 
-	public class SubTasksToRun : List<string>
+	public class KTask
 	{
+		public string Name { get; set; }
+		public List<string> SubTasksToRun { get; set; }
+	}
+
+	public class VariableSet
+	{
+		public string Name { get; set; }
+		public Dictionary<string, string> Variables { get; set; }
 	}
 }
