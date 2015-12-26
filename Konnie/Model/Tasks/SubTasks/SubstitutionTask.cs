@@ -1,8 +1,7 @@
-namespace Konnie.Model.Tasks
+namespace Konnie.Model.Tasks.SubTasks
 {
 	public class SubstitutionTask : ISubTask
 	{
-		public bool SubstitutionTaskThing = false;
 		public string TaskName => nameof(SubstitutionTask);
 
 		public bool CanRun(IFilesHistory history)

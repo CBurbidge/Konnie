@@ -1,7 +1,6 @@
-namespace Konnie.Model.Tasks
+namespace Konnie.Model
 {
 	public interface IFilesHistory
-
 	{
 	}
 }

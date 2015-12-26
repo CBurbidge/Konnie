@@ -1,19 +1,20 @@
 ﻿using System.IO;
+using Konnie.Model.File;
 using Newtonsoft.Json;
 
 namespace Konnie.Model
 {
 	public class KonnieFileParser
 	{
-		public KonnieFile FromFile(string filePath)
+		public KFile FromFile(string filePath)
 		{
-			var text = File.ReadAllText(filePath);
+			var text = System.IO.File.ReadAllText(filePath);
 			return DeserializeObject(text);
 		}
 
-		private static KonnieFile DeserializeObject(string text)
+		private static KFile DeserializeObject(string text)
 		{
-			return JsonConvert.DeserializeObject<KonnieFile>(text);
+			return JsonConvert.DeserializeObject<KFile>(text);
 		}
 	}
 }

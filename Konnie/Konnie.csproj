@@ -49,14 +49,14 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions.cs" />
-    <Compile Include="ISubTaskJsonConverter.cs" />
-    <Compile Include="Model\KonnieFile.cs" />
+    <Compile Include="Model\File\KFile.cs" />
+    <Compile Include="Model\IFilesHistory.cs" />
+    <Compile Include="Model\Tasks\SubTasks\SubstitutionTask.cs" />
+    <Compile Include="Model\Tasks\SubTasks\TransformTask.cs" />
+    <Compile Include="SubTaskJsonConverter.cs" />
     <Compile Include="Model\KonnieFileParser.cs" />
-    <Compile Include="Model\Tasks\IFilesHistory.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
-    <Compile Include="Model\Tasks\SubstitutionTask.cs" />
     <Compile Include="Model\Tasks\SubTaskCollection.cs" />
-    <Compile Include="Model\Tasks\TransformTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>

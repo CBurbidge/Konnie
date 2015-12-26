@@ -2,8 +2,7 @@ using System.Collections.Generic;
 
 namespace Konnie.Model.Tasks
 {
-	public class SubTaskCollection
+	public class SubTaskCollection : List<string>
 	{
-		public List<string> SubTasks { get; set; }
 	}
 }

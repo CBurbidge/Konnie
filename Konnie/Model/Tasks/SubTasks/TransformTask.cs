@@ -1,8 +1,7 @@
-namespace Konnie.Model.Tasks
+namespace Konnie.Model.Tasks.SubTasks
 {
 	public class TransformTask : ISubTask
 	{
-		public bool TransformationTaskThing = false;
 		public string TaskName => nameof(TransformTask);
 		public bool CanRun(IFilesHistory history)
 		{

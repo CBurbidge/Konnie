@@ -1,5 +1,6 @@
 ﻿using System;
 using Konnie.Model.Tasks;
+using Konnie.Model.Tasks.SubTasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
@@ -15,8 +16,10 @@ namespace Konnie
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
 			var jObject = JObject.Load(reader);
-			var taskName = jObject[nameof(ISubTask.TaskName)];
+			var propertyName = nameof(ISubTask.TaskName);
+			var taskName = jObject[propertyName];
 			var value = taskName.Value<string>();
+
 			switch (value)
 			{
 				case (nameof(TransformTask)):
@@ -24,7 +27,7 @@ namespace Konnie
 				case (nameof(SubstitutionTask)):
 					return jObject.ToObject<SubstitutionTask>();
 				default:
-					throw new Exception("Don't know the task :" + value);
+					throw new InvalidOperationException("Don't know the task :" + value);
 			}
 		}
 
