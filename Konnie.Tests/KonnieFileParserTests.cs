@@ -46,7 +46,7 @@ namespace Konnie.Tests
 			};
 
 			var thing = JsonConvert.SerializeObject(inMem);
-			var thing2 = JsonConvert.DeserializeObject<KonnieFile>(thing);
+			var thing2 = JsonConvert.DeserializeObject<KonnieFile>(thing, new SubTaskJsonConverter());
 			var thing3 = 0;
 		}
 	}

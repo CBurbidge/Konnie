@@ -55,10 +55,12 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ISubTaskJsonConverter.cs" />
     <Compile Include="Exceptions.cs" />
     <Compile Include="KonnieProgram.cs" />
     <Compile Include="Model\KonnieFileParser.cs" />
     <Compile Include="Model\KonnieFile.cs" />
+    <Compile Include="Model\Tasks\IFilesHistory.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
     <Compile Include="Model\Tasks\SubstitutionTask.cs" />
     <Compile Include="Model\Tasks\SubTaskCollection.cs" />
