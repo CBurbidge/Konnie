@@ -4,8 +4,7 @@ namespace Konnie.Model.Tasks.SubTasks
 	{
 		public string Name { get; set; }
 		public string Type => nameof(AssertLackOfXPathTask);
-		public string ServiceName { get; set; }
-
+		
 		public bool CanRun(IFilesHistory history)
 		{
 			return true;
