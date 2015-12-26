@@ -2,7 +2,8 @@ namespace Konnie.Model.Tasks
 {
 	public interface ISubTask
 	{
-		string TaskName { get; }
+		string Type { get; }
+		string Name { get; set; }
 		bool CanRun(IFilesHistory history);
 		void Run();
 	}

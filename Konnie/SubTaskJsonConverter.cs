@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Linq;
+using System.Reflection;
 using Konnie.Model.Tasks;
 using Konnie.Model.Tasks.SubTasks;
 using Newtonsoft.Json;
@@ -16,19 +18,23 @@ namespace Konnie
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)
 		{
 			var jObject = JObject.Load(reader);
-			var propertyName = nameof(ISubTask.TaskName);
+			var propertyName = nameof(ISubTask.Type);
 			var taskName = jObject[propertyName];
 			var value = taskName.Value<string>();
+			
+			return SubTypeToObject(value, jObject);
+		}
 
-			switch (value)
-			{
-				case (nameof(TransformTask)):
-					return jObject.ToObject<TransformTask>();
-				case (nameof(SubstitutionTask)):
-					return jObject.ToObject<SubstitutionTask>();
-				default:
-					throw new InvalidOperationException("Don't know the task :" + value);
-			}
+		private static object SubTypeToObject(string value, JObject jObject)
+		{
+			var allSubTaskTypes = 
+				AppDomain.CurrentDomain.GetAssemblies()
+				.SelectMany(s => s.GetTypes())
+				.Where(t => typeof (ISubTask).IsAssignableFrom(t));
+
+			var subTaskType = allSubTaskTypes.Where(t => t.Name == value);
+
+			return jObject.ToObject(subTaskType.Single());
 		}
 
 		public override bool CanConvert(Type objectType)

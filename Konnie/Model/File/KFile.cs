@@ -14,19 +14,24 @@ namespace Konnie.Model.File
 			return this;
 		}
 	}
+
 	public class KVariableSets : Dictionary<string, VariableSet>
 	{
 	}
 
-	public class KTasks : Dictionary<string, SubTaskCollection>
+	public class KTasks : Dictionary<string, SubTasksToRun>
 	{
 	}
 
-	public class KSubTasks : Dictionary<string, ISubTask>
+	public class KSubTasks : List<ISubTask>
 	{
 	}
 
 	public class VariableSet : Dictionary<string, string>
+	{
+	}
+
+	public class SubTasksToRun : List<string>
 	{
 	}
 }

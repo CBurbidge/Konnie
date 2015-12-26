@@ -51,12 +51,15 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="Model\File\KFile.cs" />
     <Compile Include="Model\IFilesHistory.cs" />
+    <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFile.cs" />
+    <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTask.cs" />
+    <Compile Include="Model\Tasks\SubTasks\StartServiceTask.cs" />
+    <Compile Include="Model\Tasks\SubTasks\StopServiceTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\SubstitutionTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\TransformTask.cs" />
     <Compile Include="SubTaskJsonConverter.cs" />
-    <Compile Include="Model\KonnieFileParser.cs" />
+    <Compile Include="Model\KFileConverter.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
-    <Compile Include="Model\Tasks\SubTaskCollection.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
