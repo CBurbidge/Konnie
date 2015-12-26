@@ -1,6 +1,4 @@
 ﻿using System;
-using System.CodeDom;
-using System.ComponentModel;
 using Konnie.Model.Tasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -11,7 +9,7 @@ namespace Konnie
 	{
 		public override void WriteJson(JsonWriter writer, object value, JsonSerializer serializer)
 		{
-				
+			throw new NotImplementedException();
 		}
 
 		public override object ReadJson(JsonReader reader, Type objectType, object existingValue, JsonSerializer serializer)

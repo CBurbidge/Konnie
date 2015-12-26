@@ -75,13 +75,13 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Konnie\Konnie.csproj">
-      <Project>{c9205f3f-99af-480d-9db3-0a4096dc3a79}</Project>
-      <Name>Konnie</Name>
-    </ProjectReference>
+    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
-    <None Include="packages.config" />
+    <ProjectReference Include="..\Konnie\Konnie.csproj">
+      <Project>{fc256c12-228b-4252-b696-ceff34187855}</Project>
+      <Name>Konnie</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">
