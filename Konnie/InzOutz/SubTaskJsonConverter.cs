@@ -1,12 +1,10 @@
 ﻿using System;
 using System.Linq;
-using System.Reflection;
 using Konnie.Model.Tasks;
-using Konnie.Model.Tasks.SubTasks;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 
-namespace Konnie
+namespace Konnie.InzOutz
 {
 	public class SubTaskJsonConverter : JsonConverter
 	{

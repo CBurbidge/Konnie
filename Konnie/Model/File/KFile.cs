@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using Konnie.Model.Tasks;
-
-namespace Konnie.Model.File
+﻿namespace Konnie.Model.File
 {
 	public class KFile
 	{
@@ -13,29 +10,5 @@ namespace Konnie.Model.File
 		{
 			return this;
 		}
-	}
-
-	public class KTasks : List<KTask>
-	{
-	}
-
-	public class KSubTasks : List<ISubTask>
-	{
-	}
-
-	public class KVariableSets : List<VariableSet>
-	{
-	}
-
-	public class KTask
-	{
-		public string Name { get; set; }
-		public List<string> SubTasksToRun { get; set; }
-	}
-
-	public class VariableSet
-	{
-		public string Name { get; set; }
-		public Dictionary<string, string> Variables { get; set; }
 	}
 }

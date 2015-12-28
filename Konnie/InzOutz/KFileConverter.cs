@@ -2,13 +2,13 @@
 using Konnie.Model.File;
 using Newtonsoft.Json;
 
-namespace Konnie.Model
+namespace Konnie.InzOutz
 {
 	public class KFileConverter
 	{
 		public KFile DeserializeFromFile(string filePath)
 		{
-			var text = System.IO.File.ReadAllText(filePath);
+			var text = File.ReadAllText(filePath);
 			return DeserializeObject(text);
 		}
 

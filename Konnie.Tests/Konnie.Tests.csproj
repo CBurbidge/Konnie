@@ -70,7 +70,10 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
-    <Compile Include="KFileConverterTests.cs" />
+    <Compile Include="KFileTestData.cs" />
+    <Compile Include="Model\File\KFileTests.cs" />
+    <Compile Include="InzOutz\KFileConverterTests.cs" />
+    <Compile Include="KFileEqualityAsserter.cs" />
     <Compile Include="KonnieProgramTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
