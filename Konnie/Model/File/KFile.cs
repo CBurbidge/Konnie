@@ -23,37 +23,31 @@ namespace Konnie.Model.File
 
 		public KFile Merge(KFile otherKFile)
 		{
-			var newTaskNames = Tasks.Select(t => t.Name);
-			var newOtherTaskNames = otherKFile.Tasks.Select(t => t.Name);
-			if (newOtherTaskNames.Concat(newTaskNames).Distinct().Count() != newTaskNames.Count() + newOtherTaskNames.Count())
-			{
-				throw new KFileDuplication();
-			}
+			EnsureNoDuplicates(
+				() => Tasks.Select(t => t.Name).ToArray(),
+				() => otherKFile.Tasks.Select(t => t.Name).ToArray(),
+				nameof(Tasks));
 
 			var newKTasks = new KTasks();
 			newKTasks.AddRange(Tasks);
 			newKTasks.AddRange(otherKFile.Tasks);
 			Tasks = newKTasks;
-
-			var newSubTaskNames = SubTasks.Select(t => t.Name);
-			var newOtherSubTaskNames = otherKFile.SubTasks.Select(t => t.Name);
-			if (newOtherSubTaskNames.Concat(newSubTaskNames).Distinct().Count() != newSubTaskNames.Count() + newOtherSubTaskNames.Count())
-			{
-				throw new KFileDuplication();
-			}
+			
+			EnsureNoDuplicates(
+				() => SubTasks.Select(t => t.Name).ToArray(), 
+				() => otherKFile.SubTasks.Select(t => t.Name).ToArray(), 
+				nameof(SubTasks));
 
 			var newKSubTasks = new KSubTasks();
 			newKSubTasks.AddRange(SubTasks);
 			newKSubTasks.AddRange(otherKFile.SubTasks);
 			SubTasks = newKSubTasks;
 
-			var newVariableSetNames = VariableSets.Select(t => t.Name);
-			var newOtherVariableSetNames = otherKFile.VariableSets.Select(t => t.Name);
-			if (newOtherVariableSetNames.Concat(newVariableSetNames).Distinct().Count() != newVariableSetNames.Count() + newOtherVariableSetNames.Count())
-			{
-				throw new KFileDuplication();
-			}
-
+			EnsureNoDuplicates(
+				() => VariableSets.Select(t => t.Name).ToArray(),
+				() => otherKFile.VariableSets.Select(t => t.Name).ToArray(),
+				nameof(VariableSets));
+			
 			var newKVariableSets = new KVariableSets();
 			newKVariableSets.AddRange(VariableSets);
 			newKVariableSets.AddRange(otherKFile.VariableSets);
@@ -61,6 +55,18 @@ namespace Konnie.Model.File
 
 			return this;
 		}
+
+		private static void EnsureNoDuplicates(Func<string[]> getNames, Func<string[]> getOtherNames, string type)
+		{
+			var names = getNames();
+			var otherNames = getOtherNames();
+			var allNames = names.Concat(otherNames);
+			if (allNames.Distinct().Count() != names.Count() + otherNames.Count())
+			{
+				throw new KFileDuplication(type, allNames.ToArray());
+			}
+		}
+
 		public bool IsValid(string taskName)
 		{
 			var subTaskNames = SubTasks.Select(t => t.Name);
@@ -78,7 +84,7 @@ namespace Konnie.Model.File
 				.Where(st => taskToRun.SubTasksToRun.Contains(st.Name))
 				.Where(st => (st as ISubTaskThatUsesVariableSets) != null);
 
-			if (subTasksWithVariableSets.Count() == 0)
+			if (subTasksWithVariableSets.Any() == false)
 			{
 				return true;
 			}
@@ -107,5 +113,13 @@ namespace Konnie.Model.File
 
 	public class KFileDuplication : Exception
 	{
+		private readonly string _type;
+		private readonly IEnumerable<string> _allNames;
+
+		public KFileDuplication(string type, IEnumerable<string> allNames)
+		{
+			_type = type;
+			_allNames = allNames;
+		}
 	}
 }

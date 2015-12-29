@@ -63,6 +63,7 @@
     <Compile Include="Model\Tasks\SubTasks\StartServiceTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\StopServiceTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\SubstitutionTask.cs" />
+    <Compile Include="Model\Tasks\SubTasks\CopyFileTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\TransformTask.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
