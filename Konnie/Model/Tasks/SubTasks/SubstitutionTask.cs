@@ -2,7 +2,7 @@ using System.Collections.Generic;
 
 namespace Konnie.Model.Tasks.SubTasks
 {
-	public class SubstitutionTask : ISubTask, IUsesVariableSets
+	public class SubstitutionTask : ISubTaskThatUsesVariableSets
 	{
 		public string Name { get; set; }
 		public string Type => nameof(SubstitutionTask);

@@ -39,16 +39,6 @@ namespace Konnie.Tests
 			}
 		};
 
-		public KTask ValidTaskTwo = new KTask
-		{
-			Name = ValidTaskTwoName,
-			SubTasksToRun = new List<string>
-			{
-				SubTaskTestData.ValidAssertLackOfXPathTaskName,
-				SubTaskTestData.ValidStopServiceTaskName
-			}
-		};
-
 		public KTask ValidTaskThree = new KTask
 		{
 			Name = ValidTaskThreeName,
@@ -56,6 +46,16 @@ namespace Konnie.Tests
 			{
 				SubTaskTestData.ValidStopServiceTaskName,
 				SubTaskTestData.ValidStartServiceTaskName
+			}
+		};
+
+		public KTask ValidTaskTwo = new KTask
+		{
+			Name = ValidTaskTwoName,
+			SubTasksToRun = new List<string>
+			{
+				SubTaskTestData.ValidAssertLackOfXPathTaskName,
+				SubTaskTestData.ValidStopServiceTaskName
 			}
 		};
 
@@ -151,6 +151,7 @@ namespace Konnie.Tests
 				};
 			}
 		}
+
 		public KFile MergeWholeRight
 		{
 			get
@@ -176,6 +177,7 @@ namespace Konnie.Tests
 				};
 			}
 		}
+
 		public KFile MergeWholeLeftThenRight
 		{
 			get
@@ -194,7 +196,7 @@ namespace Konnie.Tests
 					{
 						subTaskTestData.ValidStartServiceTask,
 						subTaskTestData.ValidAssertLackOfXPathTask,
-                        subTaskTestData.ValidTransformTask,
+						subTaskTestData.ValidTransformTask,
 						subTaskTestData.ValidStopServiceTask
 					},
 					VariableSets = new KVariableSets
@@ -222,21 +224,21 @@ namespace Konnie.Tests
 				}
 			};
 
-			public KVariableSet ValidVariableTwoSet = new KVariableSet
-			{
-				Name = ValidVariableSetTwoName,
-				Variables = new Dictionary<string, string>
-				{
-					{"variableName2", "variableVal2"}
-				}
-			};
-
 			public KVariableSet ValidVariableThreeSet = new KVariableSet
 			{
 				Name = ValidVariableSetThreeName,
 				Variables = new Dictionary<string, string>
 				{
 					{"variableName3", "variableVal3"}
+				}
+			};
+
+			public KVariableSet ValidVariableTwoSet = new KVariableSet
+			{
+				Name = ValidVariableSetTwoName,
+				Variables = new Dictionary<string, string>
+				{
+					{"variableName2", "variableVal2"}
 				}
 			};
 		}
@@ -283,7 +285,11 @@ namespace Konnie.Tests
 
 			public SubstitutionTask ValidSubstitutionTask = new SubstitutionTask
 			{
-				Name = ValidSubstitutionTaskName
+				Name = ValidSubstitutionTaskName,
+				SubstitutionVariableSets = new List<string>
+				{
+					VariableSetsTestData.ValidVariableSetName
+				}
 			};
 
 			public TransformTask ValidTransformTask = new TransformTask

@@ -132,7 +132,7 @@ namespace Konnie.Tests.Model.File
 			{
 				var kFile = new KFileTestData().ValidKFile;
 
-				var result = kFile.IsValid();
+				var result = kFile.IsValid(KFileTestData.ValidTaskName);
 
 				Assert.That(result, Is.True);
 			}
@@ -142,7 +142,7 @@ namespace Konnie.Tests.Model.File
 			{
 				var kFile = new KFileTestData().KFileWithTaskWithNonExistantSubTask;
 
-				var result = kFile.IsValid();
+				var result = kFile.IsValid(KFileTestData.InvalidTaskName);
 
 				Assert.That(result, Is.False);
 			}
@@ -152,14 +152,11 @@ namespace Konnie.Tests.Model.File
 			{
 				var kFile = new KFileTestData().KFileWithSubstitutionTaskWithNonExistantVariableSet;
 
-				var result = kFile.IsValid();
+				var result = kFile.IsValid(KFileTestData.InvalidTaskName);
 
 				Assert.That(result, Is.False);
 			}
 		}
 	}
 
-	public class KFileDuplication : Exception
-	{
-	}
 }
