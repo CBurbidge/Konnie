@@ -1,21 +1,21 @@
 using System.Collections.Generic;
-using Konnie.Model.File;
 
 namespace Konnie.Model.Tasks.SubTasks
 {
-	public class SubstitutionTask : ISubTask
+	public class SubstitutionTask : ISubTask, IUsesVariableSets
 	{
 		public string Name { get; set; }
 		public string Type => nameof(SubstitutionTask);
-		public List<string> SubstitutionVariableSets { get; set; } 
-		public bool CanRun(KVariableSets variableSets, IFilesHistory history)
+
+		public bool NeedToRun(IFilesHistory history)
 		{
 			return true;
 		}
 
 		public void Run()
 		{
-			
 		}
+
+		public List<string> SubstitutionVariableSets { get; set; }
 	}
 }

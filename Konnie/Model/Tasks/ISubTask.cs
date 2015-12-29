@@ -6,7 +6,7 @@ namespace Konnie.Model.Tasks
 	{
 		string Type { get; }
 		string Name { get; set; }
-		bool CanRun(KVariableSets variableSets, IFilesHistory history);
+		bool NeedToRun(IFilesHistory history);
 		void Run();
 	}
 }

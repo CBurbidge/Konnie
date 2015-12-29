@@ -58,6 +58,7 @@
     <Compile Include="Model\File\KVariableSets.cs" />
     <Compile Include="Model\File\KVariableSet.cs" />
     <Compile Include="Model\IFilesHistory.cs" />
+    <Compile Include="Model\Tasks\IUsesVariableSets.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFile.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\StartServiceTask.cs" />

@@ -7,7 +7,7 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Name { get; set; }
 		public string Type => nameof(AssertLackOfXPathTask);
 		
-		public bool CanRun(KVariableSets variableSets, IFilesHistory history)
+		public bool NeedToRun(IFilesHistory history)
 		{
 			return true;
 		}

@@ -8,7 +8,7 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Type => nameof(StopServiceTask);
 		public string ServiceName { get; set; }
 
-		public bool CanRun(KVariableSets variableSets, IFilesHistory history)
+		public bool NeedToRun(IFilesHistory history)
 		{
 			return true;
 		}
