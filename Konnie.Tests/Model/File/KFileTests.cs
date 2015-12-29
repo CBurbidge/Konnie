@@ -24,6 +24,18 @@ namespace Konnie.Tests.Model.File
 			}
 
 			[Test]
+			public void PartialFilesMergeSuccessfully()
+			{
+				var kFileTestData = new KFileTestData();
+				var left = kFileTestData.MergePartialLeft;
+				var right = kFileTestData.MergePartialRight;
+
+				var merged = left.Merge(right);
+
+				KFileEqualityAsserter.AssertAreEqual(merged, kFileTestData.MergePartialLeftThenRight);
+			}
+
+			[Test]
 			public void FilesFailMergeIfHaveSubTasksWithSameName()
 			{
 				var taskName = "Thing";

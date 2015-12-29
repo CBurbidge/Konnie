@@ -208,6 +208,64 @@ namespace Konnie.Tests
 				};
 			}
 		}
+		public KFile MergePartialLeft
+		{
+			get
+			{
+				return new KFile
+				{
+					Tasks = new KTasks
+					{
+						ValidTaskOne,
+						ValidTaskTwo
+					},
+					VariableSets = new KVariableSets
+					{
+					}
+				};
+			}
+		}
+
+		public KFile MergePartialRight
+		{
+			get
+			{
+				var subTaskTestData = new SubTaskTestData();
+				return new KFile
+				{
+					SubTasks = new KSubTasks
+					{
+						subTaskTestData.ValidTransformTask,
+						subTaskTestData.ValidStopServiceTask
+					}
+				};
+			}
+		}
+
+		public KFile MergePartialLeftThenRight
+		{
+			get
+			{
+				var subTaskTestData = new SubTaskTestData();
+				return new KFile
+				{
+					Tasks = new KTasks
+					{
+						ValidTaskOne,
+						ValidTaskTwo
+					},
+					SubTasks = new KSubTasks
+					{
+						subTaskTestData.ValidTransformTask,
+						subTaskTestData.ValidStopServiceTask
+					},
+					VariableSets = new KVariableSets
+					{
+						
+					}
+				};
+			}
+		}
 
 		public class VariableSetsTestData
 		{

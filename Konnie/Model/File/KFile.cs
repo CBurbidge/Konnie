@@ -74,9 +74,8 @@ namespace Konnie.Model.File
 				}
 			}
 
-			var subTasksToRun = SubTasks
-				.Where(st => taskToRun.SubTasksToRun.Contains(st.Name));
-			var subTasksWithVariableSets = subTasksToRun
+			var subTasksWithVariableSets = SubTasks
+				.Where(st => taskToRun.SubTasksToRun.Contains(st.Name))
 				.Where(st => (st as ISubTaskThatUsesVariableSets) != null);
 
 			if (subTasksWithVariableSets.Count() == 0)
@@ -85,15 +84,15 @@ namespace Konnie.Model.File
 			}
 
 			var variableSetNames = VariableSets.Select(t => t.Name);
-			foreach (var subTasksWithVariableSet in subTasksWithVariableSets)
+
+			foreach (var subTasksWithVariableSet in subTasksWithVariableSets.Cast<ISubTaskThatUsesVariableSets>())
 			{
-				var withVarSet = (ISubTaskThatUsesVariableSets)subTasksWithVariableSet;
-				if (withVarSet.SubstitutionVariableSets == null)
+				if (subTasksWithVariableSet.SubstitutionVariableSets == null)
 				{
 					return false;
 				}
 
-				foreach (var subTaskThatUsesVariableSet in withVarSet.SubstitutionVariableSets)
+				foreach (var subTaskThatUsesVariableSet in subTasksWithVariableSet.SubstitutionVariableSets)
 				{
 					if (variableSetNames.Contains(subTaskThatUsesVariableSet) == false)
 					{
