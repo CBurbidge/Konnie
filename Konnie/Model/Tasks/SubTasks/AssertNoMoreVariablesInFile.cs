@@ -1,3 +1,5 @@
+using Konnie.Model.File;
+
 namespace Konnie.Model.Tasks.SubTasks
 {
 	public class AssertNoMoreVariablesInFile : ISubTask
@@ -5,7 +7,7 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Name { get; set; }
 		public string Type => nameof(AssertNoMoreVariablesInFile);
 		
-		public bool CanRun(IFilesHistory history)
+		public bool CanRun(KVariableSets variableSets, IFilesHistory history)
 		{
 			return true;
 		}

@@ -1,3 +1,5 @@
+using Konnie.Model.File;
+
 namespace Konnie.Model.Tasks.SubTasks
 {
 	public class StartServiceTask : ISubTask
@@ -6,7 +8,7 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Type => nameof(StartServiceTask);
 		public string ServiceName { get; set; }
 
-		public bool CanRun(IFilesHistory history)
+		public bool CanRun(KVariableSets variableSets, IFilesHistory history)
 		{
 			return true;
 		}
