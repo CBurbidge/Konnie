@@ -5,6 +5,7 @@ using System.IO.Abstractions;
 using System.Linq;
 using System.Threading.Tasks;
 using Fclp;
+using Konnie.Runner;
 
 namespace Konnie
 {
@@ -23,7 +24,7 @@ namespace Konnie
 		{
 			_logLine("Started Konnie...");
 
-			var argParser = new FluentCommandLineParser<CommandArgs>();
+			var argParser = new FluentCommandLineParser<KonnieProgramArgs>();
 			
 			argParser.Setup(arg => arg.Files)
 				.As("files")
@@ -41,7 +42,7 @@ namespace Konnie
 
 		}
 
-		private CommandArgs CheckAndLogCommandArguments(ICommandLineParserResult result, FluentCommandLineParser<CommandArgs> argParser)
+		private KonnieProgramArgs CheckAndLogCommandArguments(ICommandLineParserResult result, FluentCommandLineParser<KonnieProgramArgs> argParser)
 		{
 			if (result.HasErrors)
 			{
@@ -55,9 +56,9 @@ namespace Konnie
 			return commandArgs;
 		}
 
-		private void EnsureFilesExistOnDisk(CommandArgs commandArgs)
+		private void EnsureFilesExistOnDisk(KonnieProgramArgs konnieProgramArgs)
 		{
-			foreach (var file in commandArgs.Files)
+			foreach (var file in konnieProgramArgs.Files)
 			{
 				if (_fs.File.Exists(file) == false)
 				{
@@ -81,11 +82,7 @@ namespace Konnie
 			public const string FileDoesntExistFailure = "File {0} in argument doesn't exist.";
 		}
 
-		public class CommandArgs
-		{
-			public string Task { get; set; }
-			public List<string> Files { get; set; }
-		}
+		
 	}
 
 }

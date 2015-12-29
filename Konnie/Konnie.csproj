@@ -51,12 +51,8 @@
     <Compile Include="Exceptions.cs" />
     <Compile Include="InzOutz\KFileConverter.cs" />
     <Compile Include="InzOutz\SubTaskJsonConverter.cs" />
-    <Compile Include="Model\File\KFile.cs" />
-    <Compile Include="Model\File\KSubTasks.cs" />
-    <Compile Include="Model\File\KTask.cs" />
-    <Compile Include="Model\File\KTasks.cs" />
-    <Compile Include="Model\File\KVariableSets.cs" />
-    <Compile Include="Model\File\KVariableSet.cs" />
+    <Compile Include="Model\File\KFileData.cs" />
+    <Compile Include="Model\File\KFileBehaviour.cs" />
     <Compile Include="Model\IFilesHistory.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFile.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTask.cs" />
@@ -67,6 +63,8 @@
     <Compile Include="Model\Tasks\SubTasks\TransformTask.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runner\IKonnieRunner.cs" />
+    <Compile Include="Runner\KonnieProgramArgs.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

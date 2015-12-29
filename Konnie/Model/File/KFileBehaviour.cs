@@ -1,26 +1,11 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using Konnie.Model.Tasks;
 
 namespace Konnie.Model.File
 {
-	/// <summary>
-	/// KFile is responsible for holding all of the data needed to run tasks
-	/// 
-	/// It can merge itself with another KFile object, in which case it will work 
-	/// like a concatenation of all of its properties ensuring that there are no duplicates.
-	/// 
-	/// It can decide whether it has all of the required objects (sub tasks and variable sets) in a KFile to know 
-	/// whether a file can run by calling the IsValid method. IsValid decides using only the data in the KFile object, 
-	/// it doesn't know about the file history etc.
-	/// </summary>
-	public class KFile
+	public partial class KFile
 	{
-		public KTasks Tasks { get; set; } = new KTasks();
-		public KSubTasks SubTasks { get; set; } = new KSubTasks();
-		public KVariableSets VariableSets { get; set; } = new KVariableSets();
-
 		public KFile Merge(KFile otherKFile)
 		{
 			EnsureNoDuplicates(
@@ -32,10 +17,10 @@ namespace Konnie.Model.File
 			newKTasks.AddRange(Tasks);
 			newKTasks.AddRange(otherKFile.Tasks);
 			Tasks = newKTasks;
-			
+
 			EnsureNoDuplicates(
-				() => SubTasks.Select(t => t.Name).ToArray(), 
-				() => otherKFile.SubTasks.Select(t => t.Name).ToArray(), 
+				() => SubTasks.Select(t => t.Name).ToArray(),
+				() => otherKFile.SubTasks.Select(t => t.Name).ToArray(),
 				nameof(SubTasks));
 
 			var newKSubTasks = new KSubTasks();
@@ -47,7 +32,7 @@ namespace Konnie.Model.File
 				() => VariableSets.Select(t => t.Name).ToArray(),
 				() => otherKFile.VariableSets.Select(t => t.Name).ToArray(),
 				nameof(VariableSets));
-			
+
 			var newKVariableSets = new KVariableSets();
 			newKVariableSets.AddRange(VariableSets);
 			newKVariableSets.AddRange(otherKFile.VariableSets);
@@ -107,19 +92,6 @@ namespace Konnie.Model.File
 				}
 			}
 			return true;
-		}
-	}
-
-
-	public class KFileDuplication : Exception
-	{
-		private readonly string _type;
-		private readonly IEnumerable<string> _allNames;
-
-		public KFileDuplication(string type, IEnumerable<string> allNames)
-		{
-			_type = type;
-			_allNames = allNames;
 		}
 	}
 }

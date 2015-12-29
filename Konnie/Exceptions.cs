@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 
 namespace Konnie
 {
@@ -19,5 +20,17 @@ namespace Konnie
 
 	public class ArgsParsingFailed : Exception
 	{
+	}
+
+	public class KFileDuplication : Exception
+	{
+		private readonly IEnumerable<string> _allNames;
+		private readonly string _type;
+
+		public KFileDuplication(string type, string[] allNames)
+		{
+			_type = type;
+			_allNames = allNames;
+		}
 	}
 }
