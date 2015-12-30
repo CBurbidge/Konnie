@@ -63,8 +63,10 @@
     <Compile Include="Model\Tasks\SubTasks\TransformTask.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Runner\IKonnieRunner.cs" />
+    <Compile Include="Runner\FileSystemHandler.cs" />
     <Compile Include="Runner\KonnieProgramArgs.cs" />
+    <Compile Include="Runner\KonnieRunnerFactory.cs" />
+    <Compile Include="Runner\TaskRunner.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
