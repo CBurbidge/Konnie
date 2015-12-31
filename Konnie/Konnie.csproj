@@ -49,6 +49,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Exceptions.cs" />
+    <Compile Include="InzOutz\HistoryFileConverter.cs" />
     <Compile Include="InzOutz\KFileConverter.cs" />
     <Compile Include="InzOutz\SubTaskJsonConverter.cs" />
     <Compile Include="Model\File\KFileData.cs" />

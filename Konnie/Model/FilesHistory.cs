@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO.Abstractions;
+using Konnie.InzOutz;
 using Newtonsoft.Json;
 
 namespace Konnie.Model
@@ -23,17 +24,21 @@ namespace Konnie.Model
 	public class FilesHistory : IFilesHistory
 	{
 		private readonly IFileSystem _fs;
+		private readonly IHistoryFileConverter _historyFileConverter;
 		private readonly string _historyJsonFilePath;
 		private readonly bool _runWithoutHistory;
-		private HistoryFile _historyFile = new HistoryFile();
+		private HistoryFile _historyFileInitial = new HistoryFile();
+		private HistoryFile _historyFileUpdated = new HistoryFile();
 		private string _taskBeingPerformed;
 
-		public FilesHistory(string historyJsonFilePath, string taskBeingPerformed, IFileSystem fs = null)
+		public FilesHistory(string historyJsonFilePath, string taskBeingPerformed, IFileSystem fs = null,
+			IHistoryFileConverter historyFileConverter = null)
 		{
 			_fs = fs ?? new FileSystem();
 			_historyJsonFilePath = historyJsonFilePath;
 			_runWithoutHistory = string.IsNullOrEmpty(_historyJsonFilePath);
 			_taskBeingPerformed = taskBeingPerformed;
+			_historyFileConverter = historyFileConverter ?? new HistoryFileConverter(_fs);
 
 			if (string.IsNullOrEmpty(taskBeingPerformed))
 			{
@@ -44,9 +49,15 @@ namespace Konnie.Model
 			{
 				return;
 			}
-			
-			var jsonText = _fs.File.ReadAllText(historyJsonFilePath);
-			_historyFile = JsonConvert.DeserializeObject<HistoryFile>(jsonText);
+
+			try
+			{
+				_historyFileInitial = _historyFileConverter.LoadHistoryFile(historyJsonFilePath);
+				_historyFileUpdated = _historyFileConverter.LoadHistoryFile(historyJsonFilePath);
+			}
+			catch (JsonException)
+			{
+			}
 		}
 
 		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
@@ -76,11 +87,11 @@ namespace Konnie.Model
 		}
 	}
 
-	internal class HistoryFile : Dictionary<string, FileModifiedDateByAbsoluteFilePath>
+	public class HistoryFile : Dictionary<string, FileModifiedDateByAbsoluteFilePath>
 	{
 	}
 
-	internal class FileModifiedDateByAbsoluteFilePath : Dictionary<string, DateTime>
+	public class FileModifiedDateByAbsoluteFilePath : Dictionary<string, DateTime>
 	{
 	}
 }
