@@ -75,7 +75,10 @@
     <Compile Include="InzOutz\KFileConverterTests.cs" />
     <Compile Include="KFileEqualityAsserter.cs" />
     <Compile Include="KonnieProgramTests.cs" />
+    <Compile Include="Model\FilesHistoryTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Runner\FileSystemHandlerTests.cs" />
+    <Compile Include="Runner\TaskRunnerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

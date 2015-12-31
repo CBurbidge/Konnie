@@ -53,7 +53,7 @@
     <Compile Include="InzOutz\SubTaskJsonConverter.cs" />
     <Compile Include="Model\File\KFileData.cs" />
     <Compile Include="Model\File\KFileBehaviour.cs" />
-    <Compile Include="Model\IFilesHistory.cs" />
+    <Compile Include="Model\FilesHistory.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFile.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\StartServiceTask.cs" />
