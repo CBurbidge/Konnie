@@ -65,7 +65,7 @@ namespace Konnie.Tests.Model
 			[Test]
 			public void NoPreviousTaskHistoryReturnsFileIsDifferent()
 			{
-				string historyJsonFilePath = "thing";
+				var historyJsonFilePath = "thing";
 				var mockFileSystem = new Mock<IFileSystem>();
 				mockFileSystem
 					.Setup(fs => fs.File.Exists(historyJsonFilePath))
@@ -82,15 +82,16 @@ namespace Konnie.Tests.Model
 							}
 						}
 					});
-				var filesHistory = new FilesHistory(historyJsonFilePath, "TaskTwo", mockFileSystem.Object, mockHistoryFileConverter.Object);
+				var filesHistory = new FilesHistory(historyJsonFilePath, "TaskTwo", mockFileSystem.Object,
+					mockHistoryFileConverter.Object);
 
 				Assert.That(filesHistory.FileIsDifferent("SomeOtherFilePath", DateTime.Now), Is.True);
 			}
 
 			[Test]
-			public void HistoryWithPreviousTaskReturnsFalse()
+			public void HistoryWithTaskWithPreviousFileReturnsTrue()
 			{
-				string historyJsonFilePath = "thing";
+				var historyJsonFilePath = "thing";
 				var mockFileSystem = new Mock<IFileSystem>();
 				mockFileSystem
 					.Setup(fs => fs.File.Exists(historyJsonFilePath))
@@ -110,15 +111,16 @@ namespace Konnie.Tests.Model
 							}
 						}
 					});
-				var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object, mockHistoryFileConverter.Object);
+				var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+					mockHistoryFileConverter.Object);
 
-				Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.False);
+				Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.True);
 			}
 
 			[Test]
-			public void HistoryWithPreviousTaskReturnsFalseUntilUpdatesAreCommited()
+			public void HistoryWithPreviousTaskWithNoRecordOfFileReturnsTrue()
 			{
-				string historyJsonFilePath = "thing";
+				var historyJsonFilePath = "thing";
 				var mockFileSystem = new Mock<IFileSystem>();
 				mockFileSystem
 					.Setup(fs => fs.File.Exists(historyJsonFilePath))
@@ -126,7 +128,6 @@ namespace Konnie.Tests.Model
 				var mockHistoryFileConverter = new Mock<IHistoryFileConverter>();
 				var taskName = "TaskOne";
 				var filepath = "FilePath";
-				var lastModified = DateTime.Now;
 				mockHistoryFileConverter
 					.Setup(h => h.LoadHistoryFile(historyJsonFilePath))
 					.Returns(new HistoryFile
@@ -134,19 +135,14 @@ namespace Konnie.Tests.Model
 						{
 							taskName, new FileModifiedDateByAbsoluteFilePath
 							{
-								{filepath, lastModified}
+								{"SomeOtherPath", DateTime.Now}
 							}
 						}
 					});
-				var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object, mockHistoryFileConverter.Object);
+				var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+					mockHistoryFileConverter.Object);
 
-				Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.False);
-				filesHistory.UpdateHistory(filepath, lastModified.AddDays(1));
-
-				Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.False);
-				filesHistory.CommitChanges();
-
-				Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.True);
+				Assert.That(filesHistory.FileIsDifferent(filepath, DateTime.Now), Is.True);
 			}
 		}
 
@@ -167,6 +163,39 @@ namespace Konnie.Tests.Model
 			filesHistory.UpdateHistory("SomeFilePath", DateTime.Now);
 		}
 
-		
+		[Test]
+		public void HistoryWithPreviousTaskReturnsFalseUntilUpdatesAreCommited()
+		{
+			var historyJsonFilePath = "thing";
+			var mockFileSystem = new Mock<IFileSystem>();
+			mockFileSystem
+				.Setup(fs => fs.File.Exists(historyJsonFilePath))
+				.Returns(true);
+			var mockHistoryFileConverter = new Mock<IHistoryFileConverter>();
+			var taskName = "TaskOne";
+			var filepath = "FilePath";
+			var lastModified = DateTime.Now;
+			mockHistoryFileConverter
+				.Setup(h => h.LoadHistoryFile(historyJsonFilePath))
+				.Returns(new HistoryFile
+				{
+					{
+						taskName, new FileModifiedDateByAbsoluteFilePath
+						{
+							{filepath, lastModified}
+						}
+					}
+				});
+			var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				mockHistoryFileConverter.Object);
+
+			Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.True);
+			filesHistory.UpdateHistory(filepath, lastModified.AddDays(1));
+
+			Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.True);
+			filesHistory.CommitChanges();
+
+			Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.False);
+		}
 	}
 }

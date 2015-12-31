@@ -67,7 +67,19 @@ namespace Konnie.Model
 				return true;
 			}
 
-			return true;
+			if (_historyFileInitial.ContainsKey(_taskBeingPerformed) == false)
+			{
+				return true;
+			}
+
+			var taskHistory = _historyFileInitial[_taskBeingPerformed];
+
+			if (taskHistory.ContainsKey(absoluteFilePath) == false)
+			{
+				return true;
+			}
+
+			return taskHistory[absoluteFilePath] != lastModified;
 		}
 
 		public void UpdateHistory(string absoluteFilePath, DateTime lastModified)
