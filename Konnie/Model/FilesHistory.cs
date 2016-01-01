@@ -60,6 +60,10 @@ namespace Konnie.Model
 			}
 		}
 
+		/// <summary>
+		/// This will return false if the file history is specified and the file exists and the file exists in the task history
+		/// and if the last modified date is the same as the one specified. For everything else it will return true.
+		/// </summary>
 		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
 		{
 			if (_runWithoutHistory)

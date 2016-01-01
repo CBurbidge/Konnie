@@ -144,6 +144,41 @@ namespace Konnie.Tests.Model
 
 				Assert.That(filesHistory.FileIsDifferent(filepath, DateTime.Now), Is.True);
 			}
+
+			[Test]
+			public void HistoryIsTaskSpecificAndDoesntConfuseFilesInOtherTaskHistory()
+			{
+				var historyJsonFilePath = "thing";
+				var mockFileSystem = new Mock<IFileSystem>();
+				mockFileSystem
+					.Setup(fs => fs.File.Exists(historyJsonFilePath))
+					.Returns(true);
+				var mockHistoryFileConverter = new Mock<IHistoryFileConverter>();
+				var taskName = "TaskOne";
+				var filepath = "FilePath";
+				var lastModified = DateTime.Now;
+				mockHistoryFileConverter
+					.Setup(h => h.LoadHistoryFile(historyJsonFilePath))
+					.Returns(new HistoryFile
+					{
+						{
+							taskName, new FileModifiedDateByAbsoluteFilePath
+							{
+								{"OtherFilePath", lastModified}
+							}
+						},
+						{
+							"OtherTaskName", new FileModifiedDateByAbsoluteFilePath
+							{
+								{filepath, lastModified}
+							}
+						}
+					});
+				var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+					mockHistoryFileConverter.Object);
+
+				Assert.That(filesHistory.FileIsDifferent(filepath, lastModified), Is.True);
+			}
 		}
 
 		[Test]

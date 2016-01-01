@@ -7,7 +7,7 @@
     <ProjectGuid>{C9205F3F-99AF-480D-9DB3-0A4096DC3A79}</ProjectGuid>
     <OutputType>Exe</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Konnie</RootNamespace>
+    <RootNamespace>Konnie.Application</RootNamespace>
     <AssemblyName>Konnie</AssemblyName>
     <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
