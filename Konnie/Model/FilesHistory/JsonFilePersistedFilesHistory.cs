@@ -1,6 +1,7 @@
 using System;
 using System.IO.Abstractions;
 using Konnie.InzOutz;
+using Konnie.Runner.Logging;
 using Newtonsoft.Json;
 
 namespace Konnie.Model.FilesHistory
@@ -12,33 +13,40 @@ namespace Konnie.Model.FilesHistory
 		private readonly string _historyJsonFilePath;
 		private HistoryFile _historyFile = new HistoryFile();
 		private readonly string _taskBeingPerformed;
+		private readonly ILogger _logger;
 
-		public JsonFilePersistedFilesHistory(string historyJsonFilePath, string taskBeingPerformed, IFileSystem fs = null,
-			IHistoryFileConverter historyFileConverter = null)
+		public JsonFilePersistedFilesHistory(string historyJsonFilePath, string taskBeingPerformed, ILogger logger = null, IFileSystem fs = null, IHistoryFileConverter historyFileConverter = null)
 		{
 			_fs = fs ?? new FileSystem();
 			_historyJsonFilePath = historyJsonFilePath;
 			_taskBeingPerformed = taskBeingPerformed;
-			_historyFileConverter = historyFileConverter ?? new HistoryFileConverter(_fs);
+			_historyFileConverter = historyFileConverter ?? new HistoryFileConverter(_logger, _fs);
+			_logger = logger ?? new ConsoleLogger();
 		}
 
 		public void LoadFileHistory()
 		{
+			_logger.Terse("Loading the file history");
 			if (_fs.File.Exists(_historyJsonFilePath) == false)
 			{
+				_logger.Verbose($"File doesn't exist at path '{_historyJsonFilePath}', not going to try to load history.");
 				return;
 			}
 
 			try
 			{
+				_logger.Verbose($"Trying to load JSON file located at '{_historyJsonFilePath}'");
 				_historyFile = _historyFileConverter.LoadHistoryFile(_historyJsonFilePath);
 			}
-			catch (JsonException)
+			catch (JsonException e)
 			{
+				_logger.Terse("Loading and serialising of file failed. Ignore this error and start with a new history to overwrite file when commiting.");
+				_logger.Terse($"Error message was '{e.Message}'");
 			}
 
 			if (_historyFile.ContainsKey(_taskBeingPerformed) == false)
 			{
+				_logger.Verbose($"History doesn't contain the task '{_taskBeingPerformed}'.");
 				_historyFile[_taskBeingPerformed] = new FileModifiedDateByAbsoluteFilePath();
 			}
 		}
@@ -49,8 +57,10 @@ namespace Konnie.Model.FilesHistory
 		/// </summary>
 		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
 		{
+			_logger.Verbose($"Is modify date of file '{absoluteFilePath}' different to {lastModified}");
 			if (_historyFile.ContainsKey(_taskBeingPerformed) == false)
 			{
+				_logger.Verbose($"History doesn't contain the task '{_taskBeingPerformed}'. Reporting that file is different.");
 				return true;
 			}
 
@@ -58,26 +68,34 @@ namespace Konnie.Model.FilesHistory
 
 			if (taskHistory.ContainsKey(absoluteFilePath) == false)
 			{
+				_logger.Verbose($"Task history doesn't contain the file path '{absoluteFilePath}'. Reporting that file is different.");
 				return true;
 			}
 
-			return taskHistory[absoluteFilePath] != lastModified;
+			var historyLastModified = taskHistory[absoluteFilePath];
+			_logger.Verbose($"File was last modified at {historyLastModified}");
+
+			return historyLastModified != lastModified;
 		}
 
 		public void UpdateHistory(string absoluteFilePath, DateTime lastModified)
 		{
+			_logger.Verbose($"UpdateHistory called with file '{absoluteFilePath}' and time {lastModified}");
 			var taskHistory = _historyFile[_taskBeingPerformed];
 
 			if (taskHistory.ContainsKey(absoluteFilePath) == false)
 			{
+				_logger.Verbose("Task history doesn't contain the file.");
 				taskHistory[absoluteFilePath] = DateTime.MinValue;
 			}
 
+			_logger.Verbose("Updating the time in history.");
 			taskHistory[absoluteFilePath] = lastModified;
 		}
 
 		public void CommitChanges()
 		{
+			_logger.Terse($"CommitChanges called, saving to {_historyJsonFilePath}");
 			_historyFileConverter.SaveHistoryFile(_historyFile, _historyJsonFilePath);
 		}
 	}

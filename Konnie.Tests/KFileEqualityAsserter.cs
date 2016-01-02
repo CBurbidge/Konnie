@@ -56,6 +56,11 @@ namespace Konnie.Tests
 					CheckAssertNoMoreVariablesInFile((AssertNoMoreVariablesInFile) orig, (AssertNoMoreVariablesInFile) res);
 					continue;
 				}
+				if (orig is CopyFileTask)
+				{
+					CheckCopyFileTask((CopyFileTask) orig, (CopyFileTask) res);
+					continue;
+				}
 				if (orig is StartServiceTask)
 				{
 					CheckStartServiceTask((StartServiceTask) orig, (StartServiceTask) res);
@@ -79,34 +84,46 @@ namespace Konnie.Tests
 			}
 		}
 
+		private static void CheckCopyFileTask(CopyFileTask original, CopyFileTask result)
+		{
+			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
+		}
+
 		private static void CheckTransformTask(TransformTask original, TransformTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 
 		private static void CheckSubstitutionTask(SubstitutionTask original, SubstitutionTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 
 		private static void CheckStopServiceTask(StopServiceTask original, StopServiceTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 
 		private static void CheckStartServiceTask(StartServiceTask original, StartServiceTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 
 		private static void CheckAssertNoMoreVariablesInFile(AssertNoMoreVariablesInFile original, AssertNoMoreVariablesInFile result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 
 		private static void CheckAssertLackOfXPathTask(AssertLackOfXPathTask original, AssertLackOfXPathTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
+			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 	}
 }

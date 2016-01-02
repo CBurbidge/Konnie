@@ -33,7 +33,7 @@ namespace Konnie.Tests.Model.FilesHistory
 							}
 						}
 					});
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, "TaskTwo", mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, "TaskTwo", null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 
@@ -69,7 +69,7 @@ namespace Konnie.Tests.Model.FilesHistory
 							}
 						}
 					});
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 
@@ -98,7 +98,7 @@ namespace Konnie.Tests.Model.FilesHistory
 							}
 						}
 					});
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 
@@ -128,7 +128,7 @@ namespace Konnie.Tests.Model.FilesHistory
 							}
 						}
 					});
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 
@@ -154,7 +154,7 @@ namespace Konnie.Tests.Model.FilesHistory
 				mockHistoryFileConverter
 					.Setup(h => h.LoadHistoryFile(historyFilePath))
 					.Throws<JsonReaderException>();
-				var jsonFilePersistedHistory = new JsonFilePersistedFilesHistory(historyFilePath, "SomeTask", mockFileSystem.Object,
+				var jsonFilePersistedHistory = new JsonFilePersistedFilesHistory(historyFilePath, "SomeTask", null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 
 				jsonFilePersistedHistory.LoadFileHistory();
@@ -166,7 +166,7 @@ namespace Konnie.Tests.Model.FilesHistory
 				var mockFileSystem = new Mock<IFileSystem>();
 				var historyFilePath = "filePath";
 				mockFileSystem.Setup(fs => fs.File.Exists(historyFilePath)).Returns(false);
-				var jsonFilePersistedHistory = new JsonFilePersistedFilesHistory(historyFilePath, "SomeTask", mockFileSystem.Object);
+				var jsonFilePersistedHistory = new JsonFilePersistedFilesHistory(historyFilePath, "SomeTask", null, mockFileSystem.Object);
 
 				jsonFilePersistedHistory.LoadFileHistory();
 			}
@@ -197,7 +197,7 @@ namespace Konnie.Tests.Model.FilesHistory
 							}
 						}
 					});
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 
@@ -227,7 +227,7 @@ namespace Konnie.Tests.Model.FilesHistory
 							taskName, new FileModifiedDateByAbsoluteFilePath()
 						}
 					});
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 
@@ -262,7 +262,7 @@ namespace Konnie.Tests.Model.FilesHistory
 				mockHistoryFileConverter
 					.Setup(h => h.LoadHistoryFile(historyJsonFilePath))
 					.Returns(historyFile);
-				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+				var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, null, mockFileSystem.Object,
 					mockHistoryFileConverter.Object);
 				filesHistory.LoadFileHistory();
 

@@ -72,6 +72,9 @@
     <Compile Include="Runner\FileSystemHandler.cs" />
     <Compile Include="Runner\KonnieProgramArgs.cs" />
     <Compile Include="Runner\KonnieRunnerFactory.cs" />
+    <Compile Include="Runner\Logging\ConsoleLogger.cs" />
+    <Compile Include="Runner\Logging\ILogger.cs" />
+    <Compile Include="Runner\Logging\LogType.cs" />
     <Compile Include="Runner\TaskRunner.cs" />
   </ItemGroup>
   <ItemGroup>

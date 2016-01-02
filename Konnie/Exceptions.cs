@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using Konnie.Model.File;
 
 namespace Konnie
 {
@@ -14,7 +15,15 @@ namespace Konnie
 
 		public override string Message => $"{_filepathKonnie}";
 	}
+	public class KFileIsInvalid : Exception
+	{
+		private readonly List<string> _kFile;
 
+		public KFileIsInvalid(List<string> kFile)
+		{
+			_kFile = kFile;
+		}
+	}
 	public class ArgsParsingFailed : Exception
 	{
 	}

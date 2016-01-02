@@ -65,6 +65,11 @@ namespace Konnie.Model.File
 				}
 			}
 
+			return CheckAllSubTasksHaveTheRequiredVariableSets(taskToRun);
+		}
+
+		private bool CheckAllSubTasksHaveTheRequiredVariableSets(KTask taskToRun)
+		{
 			var subTasksWithVariableSets = SubTasks
 				.Where(st => taskToRun.SubTasksToRun.Contains(st.Name))
 				.Where(st => (st as ISubTaskThatUsesVariableSets) != null);
