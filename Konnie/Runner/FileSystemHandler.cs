@@ -1,7 +1,6 @@
-using System.IO;
+using System;
 using System.IO.Abstractions;
 using System.Xml.Linq;
-using Konnie.Model;
 using Konnie.Model.FilesHistory;
 
 namespace Konnie.Runner
@@ -23,22 +22,22 @@ namespace Konnie.Runner
 		public IFilesHistory FilesHistory { get; }
 		public string ReadAllText(string filePath)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public string WriteAllText(string text, string filePath)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public XDocument LoadXDocument(string filePath)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 
 		public void SaveXDocument(XDocument doc, string filePath)
 		{
-			throw new System.NotImplementedException();
+			throw new NotImplementedException();
 		}
 	}
 

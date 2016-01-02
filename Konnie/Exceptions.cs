@@ -12,10 +12,7 @@ namespace Konnie
 			_filepathKonnie = filepathKonnie;
 		}
 
-		public override string Message
-		{
-			get { return $"{_filepathKonnie}"; }
-		}
+		public override string Message => $"{_filepathKonnie}";
 	}
 
 	public class ArgsParsingFailed : Exception

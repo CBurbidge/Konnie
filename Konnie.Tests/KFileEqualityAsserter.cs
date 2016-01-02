@@ -51,6 +51,11 @@ namespace Konnie.Tests
 					CheckAssertLackOfXPathTask((AssertLackOfXPathTask) orig, (AssertLackOfXPathTask) res);
 					continue;
 				}
+				if (orig is AssertNoMoreVariablesInFile)
+				{
+					CheckAssertNoMoreVariablesInFile((AssertNoMoreVariablesInFile) orig, (AssertNoMoreVariablesInFile) res);
+					continue;
+				}
 				if (orig is StartServiceTask)
 				{
 					CheckStartServiceTask((StartServiceTask) orig, (StartServiceTask) res);

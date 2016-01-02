@@ -1,7 +1,7 @@
 ﻿using System;
 using System.Threading;
 
-namespace Konnie
+namespace Konnie.Application
 {
 	internal class Program
 	{
@@ -9,7 +9,7 @@ namespace Konnie
 		{
 			//Console.SetError(new StringWriter(new StringBuilder("Thing")));
 			//throw new KonnieFileDoesntExist("FilePath.konnie");
-			var konnieProgram = new KonnieProgram(line => Console.WriteLine(line));
+			var konnieProgram = new KonnieProgram(Console.WriteLine);
 			konnieProgram.Run(args);
 
 			Thread.Sleep(2000);

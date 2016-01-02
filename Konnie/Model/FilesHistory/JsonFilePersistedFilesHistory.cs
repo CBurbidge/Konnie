@@ -10,9 +10,8 @@ namespace Konnie.Model.FilesHistory
 		private readonly IFileSystem _fs;
 		private readonly IHistoryFileConverter _historyFileConverter;
 		private readonly string _historyJsonFilePath;
-		private HistoryFile _historyFileInitial = new HistoryFile();
-		private HistoryFile _historyFileUpdated = new HistoryFile();
-		private string _taskBeingPerformed;
+		private HistoryFile _historyFile = new HistoryFile();
+		private readonly string _taskBeingPerformed;
 
 		public JsonFilePersistedFilesHistory(string historyJsonFilePath, string taskBeingPerformed, IFileSystem fs = null,
 			IHistoryFileConverter historyFileConverter = null)
@@ -21,30 +20,27 @@ namespace Konnie.Model.FilesHistory
 			_historyJsonFilePath = historyJsonFilePath;
 			_taskBeingPerformed = taskBeingPerformed;
 			_historyFileConverter = historyFileConverter ?? new HistoryFileConverter(_fs);
+		}
 
-			if (string.IsNullOrEmpty(taskBeingPerformed))
-			{
-				throw new InvalidProgramException("Need to specify a task.");
-			}
-
-			if (_fs.File.Exists(historyJsonFilePath) == false)
+		public void LoadFileHistory()
+		{
+			if (_fs.File.Exists(_historyJsonFilePath) == false)
 			{
 				return;
 			}
 
 			try
 			{
-				_historyFileInitial = _historyFileConverter.LoadHistoryFile(historyJsonFilePath);
-				_historyFileUpdated = _historyFileConverter.LoadHistoryFile(historyJsonFilePath);
+				_historyFile = _historyFileConverter.LoadHistoryFile(_historyJsonFilePath);
 			}
 			catch (JsonException)
 			{
 			}
-		}
 
-		public void Initiate()
-		{
-			
+			if (_historyFile.ContainsKey(_taskBeingPerformed) == false)
+			{
+				_historyFile[_taskBeingPerformed] = new FileModifiedDateByAbsoluteFilePath();
+			}
 		}
 
 		/// <summary>
@@ -53,12 +49,12 @@ namespace Konnie.Model.FilesHistory
 		/// </summary>
 		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
 		{
-			if (_historyFileInitial.ContainsKey(_taskBeingPerformed) == false)
+			if (_historyFile.ContainsKey(_taskBeingPerformed) == false)
 			{
 				return true;
 			}
 
-			var taskHistory = _historyFileInitial[_taskBeingPerformed];
+			var taskHistory = _historyFile[_taskBeingPerformed];
 
 			if (taskHistory.ContainsKey(absoluteFilePath) == false)
 			{
@@ -70,12 +66,19 @@ namespace Konnie.Model.FilesHistory
 
 		public void UpdateHistory(string absoluteFilePath, DateTime lastModified)
 		{
-			
+			var taskHistory = _historyFile[_taskBeingPerformed];
+
+			if (taskHistory.ContainsKey(absoluteFilePath) == false)
+			{
+				taskHistory[absoluteFilePath] = DateTime.MinValue;
+			}
+
+			taskHistory[absoluteFilePath] = lastModified;
 		}
 
 		public void CommitChanges()
 		{
-			// save file to wherever.
+			_historyFileConverter.SaveHistoryFile(_historyFile, _historyJsonFilePath);
 		}
 	}
 }

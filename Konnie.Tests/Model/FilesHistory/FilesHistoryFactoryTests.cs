@@ -2,7 +2,7 @@ using System;
 using Konnie.Model.FilesHistory;
 using NUnit.Framework;
 
-namespace Konnie.Tests.Model
+namespace Konnie.Tests.Model.FilesHistory
 {
 	[TestFixture]
 	public class FilesHistoryFactoryTests

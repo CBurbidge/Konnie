@@ -2,7 +2,7 @@ using System;
 using Konnie.Model.FilesHistory;
 using NUnit.Framework;
 
-namespace Konnie.Tests.Model
+namespace Konnie.Tests.Model.FilesHistory
 {
 	[TestFixture]
 	public class UnpersistedHistoryTests
@@ -33,7 +33,7 @@ namespace Konnie.Tests.Model
 		{
 			var filesHistory = new UnpersistedHistory();
 
-			filesHistory.Initiate();
+			filesHistory.LoadFileHistory();
 		}
 	}
 }

@@ -219,9 +219,7 @@ namespace Konnie.Tests
 						ValidTaskOne,
 						ValidTaskTwo
 					},
-					VariableSets = new KVariableSets
-					{
-					}
+					VariableSets = new KVariableSets()
 				};
 			}
 		}
@@ -259,10 +257,7 @@ namespace Konnie.Tests
 						subTaskTestData.ValidTransformTask,
 						subTaskTestData.ValidStopServiceTask
 					},
-					VariableSets = new KVariableSets
-					{
-						
-					}
+					VariableSets = new KVariableSets()
 				};
 			}
 		}

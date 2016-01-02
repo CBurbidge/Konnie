@@ -1,13 +1,9 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Dynamic;
 using System.IO.Abstractions;
-using System.Linq;
-using System.Threading.Tasks;
 using Fclp;
 using Konnie.Runner;
 
-namespace Konnie
+namespace Konnie.Application
 {
 	public class KonnieProgram
 	{

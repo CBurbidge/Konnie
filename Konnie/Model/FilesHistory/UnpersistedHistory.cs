@@ -4,7 +4,7 @@ namespace Konnie.Model.FilesHistory
 {
 	public class UnpersistedHistory : IFilesHistory
 	{
-		public void Initiate()
+		public void LoadFileHistory()
 		{
 			
 		}

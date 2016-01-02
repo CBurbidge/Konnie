@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Konnie.Model.Tasks;
 
 namespace Konnie.Model.File
