@@ -4,13 +4,12 @@ using Konnie.Runner.Logging;
 
 namespace Konnie.Model.Tasks.SubTasks
 {
-	public class StopServiceTask : ISubTask
+	public class AssertNoMoreVariablesInFileTask : ISubTask
 	{
 		public string Name { get; set; }
 		public ILogger Logger { get; set; }
-		public string Type => nameof(StopServiceTask);
-		public string ServiceName { get; set; }
-
+		public string Type => nameof(AssertNoMoreVariablesInFileTask);
+		
 		public bool NeedToRun(IFilesHistory history)
 		{
 			return true;

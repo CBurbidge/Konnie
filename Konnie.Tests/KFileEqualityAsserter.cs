@@ -51,9 +51,9 @@ namespace Konnie.Tests
 					CheckAssertLackOfXPathTask((AssertLackOfXPathTask) orig, (AssertLackOfXPathTask) res);
 					continue;
 				}
-				if (orig is AssertNoMoreVariablesInFile)
+				if (orig is AssertNoMoreVariablesInFileTask)
 				{
-					CheckAssertNoMoreVariablesInFile((AssertNoMoreVariablesInFile) orig, (AssertNoMoreVariablesInFile) res);
+					CheckAssertNoMoreVariablesInFile((AssertNoMoreVariablesInFileTask) orig, (AssertNoMoreVariablesInFileTask) res);
 					continue;
 				}
 				if (orig is CopyFileTask)
@@ -114,7 +114,7 @@ namespace Konnie.Tests
 			Assert.That(original.Type, Is.EqualTo(result.Type));
 		}
 
-		private static void CheckAssertNoMoreVariablesInFile(AssertNoMoreVariablesInFile original, AssertNoMoreVariablesInFile result)
+		private static void CheckAssertNoMoreVariablesInFile(AssertNoMoreVariablesInFileTask original, AssertNoMoreVariablesInFileTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
 			Assert.That(original.Type, Is.EqualTo(result.Type));

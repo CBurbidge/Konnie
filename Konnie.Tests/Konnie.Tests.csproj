@@ -80,12 +80,17 @@
     <Compile Include="KonnieProgramTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\FileSystemHandlerTests.cs" />
+    <Compile Include="Runner\KonnieProgramArgsTests.cs" />
     <Compile Include="Runner\TaskRunnerTests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Konnie.Application\Konnie.Application.csproj">
+      <Project>{c9205f3f-99af-480d-9db3-0a4096dc3a79}</Project>
+      <Name>Konnie.Application</Name>
+    </ProjectReference>
     <ProjectReference Include="..\Konnie\Konnie.csproj">
       <Project>{fc256c12-228b-4252-b696-ceff34187855}</Project>
       <Name>Konnie</Name>

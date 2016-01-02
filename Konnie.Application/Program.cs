@@ -7,12 +7,8 @@ namespace Konnie.Application
 	{
 		private static void Main(string[] args)
 		{
-			//Console.SetError(new StringWriter(new StringBuilder("Thing")));
-			//throw new KonnieFileDoesntExist("FilePath.konnie");
-			var konnieProgram = new KonnieProgram(Console.WriteLine);
+			var konnieProgram = new KonnieProgram();
 			konnieProgram.Run(args);
-
-			Thread.Sleep(2000);
 		}
 	}
 }

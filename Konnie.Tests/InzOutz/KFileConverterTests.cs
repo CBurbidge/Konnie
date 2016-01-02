@@ -1,7 +1,9 @@
 using System.Collections.Generic;
+using System.Linq;
 using Konnie.InzOutz;
 using Konnie.Model.File;
 using Konnie.Model.Tasks.SubTasks;
+using Konnie.Runner.Logging;
 using NUnit.Framework;
 
 namespace Konnie.Tests.InzOutz
@@ -57,7 +59,7 @@ namespace Konnie.Tests.InzOutz
 			{
 				Name = "subTaskFive"
 			};
-			var assertNoMoreVariablesInFile = new AssertNoMoreVariablesInFile
+			var assertNoMoreVariablesInFile = new AssertNoMoreVariablesInFileTask
 			{
 				Name = "subTaskSix"
 			};
@@ -104,12 +106,16 @@ namespace Konnie.Tests.InzOutz
 				}
 			};
 
-			var parser = new KFileConverter();
+			var consoleLogger = new ConsoleLogger();
+			consoleLogger.Verbose("Testing 1 2 3.");
+			var parser = new KFileConverter(consoleLogger, null);
 			var text = parser.Serialize(original);
 
 			var result = parser.DeserializeFromString(text);
 
 			KFileEqualityAsserter.AssertAreEqual(original, result);
+			Assert.That(result.SubTasks.First().Logger, Is.EqualTo(consoleLogger));
+			Assert.That(result.Logger, Is.EqualTo(consoleLogger));
 		}
 	}
 }

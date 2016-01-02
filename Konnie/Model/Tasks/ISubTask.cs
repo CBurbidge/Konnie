@@ -1,5 +1,8 @@
 using System.Collections.Generic;
 using Konnie.Model.FilesHistory;
+using Konnie.Runner;
+using Konnie.Runner.Logging;
+using Newtonsoft.Json;
 
 namespace Konnie.Model.Tasks
 {
@@ -7,8 +10,11 @@ namespace Konnie.Model.Tasks
 	{
 		string Type { get; }
 		string Name { get; set; }
+
+		[JsonIgnore]
+		ILogger Logger { get; set; }
 		bool NeedToRun(IFilesHistory history);
-		void Run();
+		void Run(FileSystemHandler fileSystemHandler);
 	}
 	public interface IUsesVariableSets
 	{

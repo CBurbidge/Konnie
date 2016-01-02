@@ -1,14 +1,31 @@
-﻿using System.IO;
+﻿using System;
+using System.IO;
+using System.IO.Abstractions;
 using Konnie.Model.File;
+using Konnie.Runner.Logging;
 using Newtonsoft.Json;
 
 namespace Konnie.InzOutz
 {
 	public class KFileConverter
 	{
+		private readonly ILogger _logger;
+		private readonly IFileSystem _fs;
+
+		public KFileConverter(ILogger logger, IFileSystem fs)
+		{
+			if (logger == null)
+			{
+				throw new ArgumentException("Logger needs to be non-null", nameof(logger));
+			}
+
+			_logger = logger;
+			_fs = fs ?? new FileSystem();
+		}
+
 		public KFile DeserializeFromFile(string filePath)
 		{
-			var text = File.ReadAllText(filePath);
+			var text = _fs.File.ReadAllText(filePath);
 			return DeserializeObject(text);
 		}
 
@@ -21,9 +38,11 @@ namespace Konnie.InzOutz
 			return JsonConvert.SerializeObject(kFile, Formatting.Indented);
 		}
 
-		private static KFile DeserializeObject(string text)
+		private KFile DeserializeObject(string text)
 		{
-			return JsonConvert.DeserializeObject<KFile>(text, new SubTaskJsonConverter());
+			var deserializeObject = JsonConvert.DeserializeObject<KFile>(text, new SubTaskJsonConverter(_logger));
+			deserializeObject.Logger = _logger;
+			return deserializeObject;
 		}
 	}
 }

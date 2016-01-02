@@ -7,6 +7,7 @@ namespace Konnie.Tests.Model.FilesHistory
 	[TestFixture]
 	public class FilesHistoryFactoryTests
 	{
+		[Test]
 		public void ReturnsUnpersistedIfFileNameIsNullOrEmpty()
 		{
 			var filesHistoryFactory = new FilesHistoryFactory();
@@ -14,17 +15,12 @@ namespace Konnie.Tests.Model.FilesHistory
 			Assert.That(filesHistoryFactory.Create(null, "SomeTask"), Is.TypeOf<UnpersistedHistory>());
 		}
 
+		[Test]
 		public void ReturnsJsonFilePersistedIfFileNameIsNotNullOrEmpty()
 		{
 			var filesHistoryFactory = new FilesHistoryFactory();
 
-			Assert.That(filesHistoryFactory.Create("Some file path", "SomeTask"), Is.TypeOf<UnpersistedHistory>());
-		}
-
-		[Test]
-		public void ThrowsIfTaskNameIsNotGiven()
-		{
-			Assert.Throws<InvalidProgramException>(() => new JsonFilePersistedFilesHistory(null, null));
+			Assert.That(filesHistoryFactory.Create("Some file path", "SomeTask"), Is.TypeOf<JsonFilePersistedFilesHistory>());
 		}
 	}
 }

@@ -4,28 +4,34 @@ using Konnie.Model.File;
 
 namespace Konnie
 {
-	public class KonnieFileDoesntExist : Exception
+	public class KonnieFileDoesntExistOrCantBeAccessed : Exception
 	{
 		private readonly string _filepathKonnie;
 
-		public KonnieFileDoesntExist(string filepathKonnie)
+		public KonnieFileDoesntExistOrCantBeAccessed(string filePath, string filepathKonnie)
 		{
 			_filepathKonnie = filepathKonnie;
 		}
 
 		public override string Message => $"{_filepathKonnie}";
 	}
-	public class KFileIsInvalid : Exception
+	public class CombinedKFileIsInvalid : Exception
 	{
 		private readonly List<string> _kFile;
 
-		public KFileIsInvalid(List<string> kFile)
+		public CombinedKFileIsInvalid(List<string> kFile)
 		{
 			_kFile = kFile;
 		}
 	}
 	public class ArgsParsingFailed : Exception
 	{
+		private readonly string _errorText;
+
+		public ArgsParsingFailed(string errorText)
+		{
+			_errorText = errorText;
+		}
 	}
 
 	public class KFileDuplication : Exception

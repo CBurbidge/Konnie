@@ -32,10 +32,16 @@ namespace Konnie.Runner.Logging
 		{
 			if (logType == LogType.Terse)
 			{
-				return string.Join(Environment.NewLine, _logLines.Where(lt => lt.Type == LogType.Terse));
+				return string.Join(
+					Environment.NewLine, 
+					_logLines
+						.Where(lt => lt.Type == LogType.Terse)
+						.Select(lt => lt.Line));
 			}
 
-			return string.Join(Environment.NewLine, _logLines);
+			return string.Join(
+				Environment.NewLine, 
+				_logLines.Select(lt => lt.Line));
 		}
 	}
 }

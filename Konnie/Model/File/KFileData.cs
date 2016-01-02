@@ -1,5 +1,7 @@
 ﻿using System.Collections.Generic;
 using Konnie.Model.Tasks;
+using Konnie.Runner.Logging;
+using Newtonsoft.Json;
 
 namespace Konnie.Model.File
 {
@@ -16,6 +18,9 @@ namespace Konnie.Model.File
 		public KTasks Tasks { get; set; } = new KTasks();
 		public KSubTasks SubTasks { get; set; } = new KSubTasks();
 		public KVariableSets VariableSets { get; set; } = new KVariableSets();
+
+		[JsonIgnore]
+		public ILogger Logger { get; set; } = new ConsoleLogger();
 	}
 
 	public class KTasks : List<KTask>

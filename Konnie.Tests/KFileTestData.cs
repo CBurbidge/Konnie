@@ -74,7 +74,7 @@ namespace Konnie.Tests
 					SubTasks = new KSubTasks
 					{
 						subTaskTestData.ValidAssertLackOfXPathTask,
-						subTaskTestData.ValidAssertNoMoreVariablesInFile,
+						subTaskTestData.ValidAssertNoMoreVariablesInFileTask,
 						subTaskTestData.ValidStartServiceTask,
 						subTaskTestData.ValidStopServiceTask,
 						subTaskTestData.ValidSubstitutionTask,
@@ -321,7 +321,7 @@ namespace Konnie.Tests
 				Name = ValidAssertLackOfXPathTaskName
 			};
 
-			public AssertNoMoreVariablesInFile ValidAssertNoMoreVariablesInFile = new AssertNoMoreVariablesInFile
+			public AssertNoMoreVariablesInFileTask ValidAssertNoMoreVariablesInFileTask = new AssertNoMoreVariablesInFileTask
 			{
 				Name = ValidAssertNoMoreVariablesInFileName
 			};

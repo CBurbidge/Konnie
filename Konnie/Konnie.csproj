@@ -30,6 +30,10 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
+    <Reference Include="FluentCommandLineParser, Version=1.4.3.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\FluentCommandLineParser.1.4.3\lib\net35\FluentCommandLineParser.dll</HintPath>
+      <Private>True</Private>
+    </Reference>
     <Reference Include="Newtonsoft.Json, Version=8.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
       <HintPath>..\packages\Newtonsoft.Json.8.0.1-beta3\lib\net45\Newtonsoft.Json.dll</HintPath>
       <Private>True</Private>
@@ -52,6 +56,7 @@
     <Compile Include="InzOutz\HistoryFileConverter.cs" />
     <Compile Include="InzOutz\KFileConverter.cs" />
     <Compile Include="InzOutz\SubTaskJsonConverter.cs" />
+    <Compile Include="KonnieProgram.cs" />
     <Compile Include="Model\FilesHistory\FileModifiedDateByAbsoluteFilePath.cs" />
     <Compile Include="Model\FilesHistory\FilesHistoryFactory.cs" />
     <Compile Include="Model\FilesHistory\JsonFilePersistedFilesHistory.cs" />
@@ -60,7 +65,7 @@
     <Compile Include="Model\FilesHistory\UnpersistedHistory.cs" />
     <Compile Include="Model\File\KFileData.cs" />
     <Compile Include="Model\File\KFileBehaviour.cs" />
-    <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFile.cs" />
+    <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFileTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\StartServiceTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\StopServiceTask.cs" />
@@ -70,6 +75,7 @@
     <Compile Include="Model\Tasks\ISubTask.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\FileSystemHandler.cs" />
+    <Compile Include="Runner\KFileCombiner.cs" />
     <Compile Include="Runner\KonnieProgramArgs.cs" />
     <Compile Include="Runner\KonnieRunnerFactory.cs" />
     <Compile Include="Runner\Logging\ConsoleLogger.cs" />

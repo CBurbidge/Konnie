@@ -8,6 +8,7 @@ namespace Konnie.Model.File
 	{
 		public KFile Merge(KFile otherKFile)
 		{
+			Logger.Verbose("Merging Tasks");
 			EnsureNoDuplicates(
 				() => Tasks.Select(t => t.Name).ToArray(),
 				() => otherKFile.Tasks.Select(t => t.Name).ToArray(),
@@ -18,6 +19,7 @@ namespace Konnie.Model.File
 			newKTasks.AddRange(otherKFile.Tasks);
 			Tasks = newKTasks;
 
+			Logger.Verbose("Merging SubTasks");
 			EnsureNoDuplicates(
 				() => SubTasks.Select(t => t.Name).ToArray(),
 				() => otherKFile.SubTasks.Select(t => t.Name).ToArray(),
@@ -28,6 +30,7 @@ namespace Konnie.Model.File
 			newKSubTasks.AddRange(otherKFile.SubTasks);
 			SubTasks = newKSubTasks;
 
+			Logger.Verbose("Merging VariableSets");
 			EnsureNoDuplicates(
 				() => VariableSets.Select(t => t.Name).ToArray(),
 				() => otherKFile.VariableSets.Select(t => t.Name).ToArray(),
@@ -37,6 +40,8 @@ namespace Konnie.Model.File
 			newKVariableSets.AddRange(VariableSets);
 			newKVariableSets.AddRange(otherKFile.VariableSets);
 			VariableSets = newKVariableSets;
+
+			Logger = otherKFile.Logger;
 
 			return this;
 		}
@@ -54,6 +59,7 @@ namespace Konnie.Model.File
 
 		public bool IsValid(string taskName)
 		{
+			Logger.Verbose($"Checking validity of '{taskName}'");
 			var subTaskNames = SubTasks.Select(t => t.Name);
 			var taskToRun = Tasks.Single(t => t.Name == taskName);
 
@@ -61,6 +67,7 @@ namespace Konnie.Model.File
 			{
 				if (subTaskNames.Contains(subTask) == false)
 				{
+					Logger.Terse($"SubTasks doesn't contain {subTask}");
 					return false;
 				}
 			}
@@ -76,6 +83,7 @@ namespace Konnie.Model.File
 
 			if (subTasksWithVariableSets.Any() == false)
 			{
+				Logger.Verbose("No subtasks that require variable sets.");
 				return true;
 			}
 
@@ -85,6 +93,7 @@ namespace Konnie.Model.File
 			{
 				if (subTasksWithVariableSet.SubstitutionVariableSets == null)
 				{
+					Logger.Terse($"SubTask's VariableSets is null, this shouldn't really happen.");
 					return false;
 				}
 
@@ -92,10 +101,13 @@ namespace Konnie.Model.File
 				{
 					if (variableSetNames.Contains(subTaskThatUsesVariableSet) == false)
 					{
+						Logger.Terse($"SubTask '{subTasksWithVariableSet.Name}'s VariableSet '{subTaskThatUsesVariableSet}' doesn't exist.");
 						return false;
 					}
 				}
 			}
+
+			Logger.Verbose("All VariableSets required exist.");
 			return true;
 		}
 	}

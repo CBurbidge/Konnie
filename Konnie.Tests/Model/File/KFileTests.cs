@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using Konnie.Model.File;
 using Konnie.Model.Tasks.SubTasks;
+using Konnie.Runner.Logging;
 using NUnit.Framework;
 
 namespace Konnie.Tests.Model.File
@@ -20,6 +21,19 @@ namespace Konnie.Tests.Model.File
 				var merged = left.Merge(right);
 
 				KFileEqualityAsserter.AssertAreEqual(merged, kFileTestData.MergeWholeLeftThenRight);
+			}
+
+			[Test]
+			public void UsesTheLoggerFromTheRightHandFile()
+			{
+				var leftLogger = new ConsoleLogger();
+				var rightLogger = new ConsoleLogger();
+				var left = new KFile {Logger = leftLogger};
+				var right = new KFile {Logger = rightLogger};
+
+				var merged = left.Merge(right);
+
+				Assert.That(merged.Logger, Is.EqualTo(rightLogger));
 			}
 
 			[Test]
