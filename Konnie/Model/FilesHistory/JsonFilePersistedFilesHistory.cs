@@ -5,22 +5,20 @@ using Newtonsoft.Json;
 
 namespace Konnie.Model.FilesHistory
 {
-	public class FilesHistory : IFilesHistory
+	public class JsonFilePersistedFilesHistory : IFilesHistory
 	{
 		private readonly IFileSystem _fs;
 		private readonly IHistoryFileConverter _historyFileConverter;
 		private readonly string _historyJsonFilePath;
-		private readonly bool _runWithoutHistory;
 		private HistoryFile _historyFileInitial = new HistoryFile();
 		private HistoryFile _historyFileUpdated = new HistoryFile();
 		private string _taskBeingPerformed;
 
-		public FilesHistory(string historyJsonFilePath, string taskBeingPerformed, IFileSystem fs = null,
+		public JsonFilePersistedFilesHistory(string historyJsonFilePath, string taskBeingPerformed, IFileSystem fs = null,
 			IHistoryFileConverter historyFileConverter = null)
 		{
 			_fs = fs ?? new FileSystem();
 			_historyJsonFilePath = historyJsonFilePath;
-			_runWithoutHistory = string.IsNullOrEmpty(_historyJsonFilePath);
 			_taskBeingPerformed = taskBeingPerformed;
 			_historyFileConverter = historyFileConverter ?? new HistoryFileConverter(_fs);
 
@@ -29,7 +27,7 @@ namespace Konnie.Model.FilesHistory
 				throw new InvalidProgramException("Need to specify a task.");
 			}
 
-			if (_runWithoutHistory || _fs.File.Exists(historyJsonFilePath) == false)
+			if (_fs.File.Exists(historyJsonFilePath) == false)
 			{
 				return;
 			}
@@ -55,11 +53,6 @@ namespace Konnie.Model.FilesHistory
 		/// </summary>
 		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
 		{
-			if (_runWithoutHistory)
-			{
-				return true;
-			}
-
 			if (_historyFileInitial.ContainsKey(_taskBeingPerformed) == false)
 			{
 				return true;
@@ -77,17 +70,11 @@ namespace Konnie.Model.FilesHistory
 
 		public void UpdateHistory(string absoluteFilePath, DateTime lastModified)
 		{
-			if (_runWithoutHistory)
-			{
-			}
+			
 		}
 
 		public void CommitChanges()
 		{
-			if (_runWithoutHistory)
-			{
-			}
-
 			// save file to wherever.
 		}
 	}

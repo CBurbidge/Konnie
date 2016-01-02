@@ -53,9 +53,11 @@
     <Compile Include="InzOutz\KFileConverter.cs" />
     <Compile Include="InzOutz\SubTaskJsonConverter.cs" />
     <Compile Include="Model\FilesHistory\FileModifiedDateByAbsoluteFilePath.cs" />
-    <Compile Include="Model\FilesHistory\FilesHistory.cs" />
+    <Compile Include="Model\FilesHistory\FilesHistoryFactory.cs" />
+    <Compile Include="Model\FilesHistory\JsonFilePersistedFilesHistory.cs" />
     <Compile Include="Model\FilesHistory\HistoryFile.cs" />
     <Compile Include="Model\FilesHistory\IFilesHistory.cs" />
+    <Compile Include="Model\FilesHistory\UnpersistedHistory.cs" />
     <Compile Include="Model\File\KFileData.cs" />
     <Compile Include="Model\File\KFileBehaviour.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFile.cs" />

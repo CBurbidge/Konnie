@@ -9,58 +9,6 @@ using NUnit.Framework;
 namespace Konnie.Tests.Model
 {
 	[TestFixture]
-	public class UnpersistedHistoryTests
-	{
-		public void FilesAreDifferentReturnTrue()
-		{
-			var filesHistory = new UnpersistedHistory();
-
-			Assert.That(filesHistory.FileIsDifferent("Some file", DateTime.Now), Is.True);
-		}
-
-		public void UpdateDoesntThrow()
-		{
-			var filesHistory = new UnpersistedHistory();
-
-			filesHistory.UpdateHistory("Some file", DateTime.Now);
-		}
-
-		public void CommitChangesDoesntThrow()
-		{
-			var filesHistory = new UnpersistedHistory();
-
-			filesHistory.CommitChanges();
-		}
-
-		[Test]
-		public void InitialiseDoesntThrow()
-		{
-			var filesHistory = new UnpersistedHistory();
-
-			filesHistory.Initiate();
-		}
-		
-	}
-
-	[TestFixture]
-	public class FilesHistoryFactoryTests
-	{
-		public void ReturnsUnpersistedIfFileNameIsNullOrEmpty()
-		{
-		}
-
-		public void ReturnsJsonFilePersistedIfFileNameIsNotNullOrEmpty()
-		{
-		}
-
-		[Test]
-		public void ThrowsIfTaskNameIsNotGiven()
-		{
-			Assert.Throws<InvalidProgramException>(() => new FilesHistory(null, null));
-		}
-	}
-
-	[TestFixture]
 	public class JsonFilePersistedFilesHistoryTests
 	{
 		[Test]
@@ -70,7 +18,7 @@ namespace Konnie.Tests.Model
 			var historyFilePath = "filePath";
 			mockFileSystem.Setup(fs => fs.File.Exists(historyFilePath)).Returns(false);
 
-			var thing = new FilesHistory(historyFilePath, "SomeTask", mockFileSystem.Object);
+			var thing = new JsonFilePersistedFilesHistory(historyFilePath, "SomeTask", mockFileSystem.Object);
 		}
 
 		[Test]
@@ -102,7 +50,7 @@ namespace Konnie.Tests.Model
 						}
 					}
 				});
-			var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+			var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
 				mockHistoryFileConverter.Object);
 
 			Assert.That(filesHistory.FileIsDifferent(filepath, lastModified), Is.True);
@@ -131,7 +79,7 @@ namespace Konnie.Tests.Model
 						}
 					}
 				});
-			var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+			var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
 				mockHistoryFileConverter.Object);
 
 			Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.True);
@@ -165,7 +113,7 @@ namespace Konnie.Tests.Model
 						}
 					}
 				});
-			var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+			var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
 				mockHistoryFileConverter.Object);
 
 			Assert.That(filesHistory.FileIsDifferent(filepath, DateTime.Now), Is.True);
@@ -194,7 +142,7 @@ namespace Konnie.Tests.Model
 						}
 					}
 				});
-			var filesHistory = new FilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
+			var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, taskName, mockFileSystem.Object,
 				mockHistoryFileConverter.Object);
 
 			Assert.That(filesHistory.FileIsDifferent(filepath, lastModified.AddDays(1)), Is.True);
@@ -213,7 +161,7 @@ namespace Konnie.Tests.Model
 				.Setup(h => h.LoadHistoryFile(historyFilePath))
 				.Throws<JsonReaderException>();
 
-			var thing = new FilesHistory(historyFilePath, "SomeTask", mockFileSystem.Object, mockHistoryFileConverter.Object);
+			var thing = new JsonFilePersistedFilesHistory(historyFilePath, "SomeTask", mockFileSystem.Object, mockHistoryFileConverter.Object);
 		}
 
 		[Test]
@@ -236,15 +184,10 @@ namespace Konnie.Tests.Model
 						}
 					}
 				});
-			var filesHistory = new FilesHistory(historyJsonFilePath, "TaskTwo", mockFileSystem.Object,
+			var filesHistory = new JsonFilePersistedFilesHistory(historyJsonFilePath, "TaskTwo", mockFileSystem.Object,
 				mockHistoryFileConverter.Object);
 
 			Assert.That(filesHistory.FileIsDifferent("SomeOtherFilePath", DateTime.Now), Is.True);
 		}
-	}
-
-	[TestFixture]
-	public class FilesHistoryTests
-	{
 	}
 }
