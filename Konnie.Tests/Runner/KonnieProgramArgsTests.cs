@@ -61,5 +61,26 @@ namespace Konnie.Tests.Runner
 			Assert.Throws<KonnieFileDoesntExistOrCantBeAccessed>(() => args.Validate(mockFileSystem.Object, getFileStreamFromPath));
 		}
 		
+		[Test]
+		public void DoesntThrowIfEverythingIsFine()
+		{
+			var fileName = "SomeFile";
+			var fileNameTwo = "SomeFileTwo";
+			var args = new KonnieProgramArgs
+			{
+				Task = "SomeTask",
+				Files = new List<string>
+				{
+					fileName,
+					fileNameTwo
+				}
+			};
+			var mockFileSystem = new Mock<IFileSystem>();
+			mockFileSystem.Setup(fs => fs.File.Exists(fileName)).Returns(true);
+			mockFileSystem.Setup(fs => fs.File.Exists(fileNameTwo)).Returns(true);
+			Func<string, Stream> getFileStreamFromPath = path => null;
+
+			args.Validate(mockFileSystem.Object, getFileStreamFromPath);
+		}
 	}
 }

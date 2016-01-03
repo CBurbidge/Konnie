@@ -22,7 +22,7 @@ namespace Konnie.Runner
 
 			foreach (var filePath in Files)
 			{
-				if (fs.File.Exists(filePath))
+				if (fs.File.Exists(filePath) == false)
 				{
 					throw new KonnieFileDoesntExistOrCantBeAccessed(filePath, "Doesn't exist");
 				}
