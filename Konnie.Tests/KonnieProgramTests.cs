@@ -1,6 +1,4 @@
-﻿using System.IO.Abstractions;
-using Moq;
-using NUnit.Framework;
+﻿using NUnit.Framework;
 
 namespace Konnie.Tests
 {
@@ -12,9 +10,16 @@ namespace Konnie.Tests
 		{
 			var fileone = "fileOne";
 			var taskArg = "thing";
+			var projDir = "SomePlace";
 			var konnieProgram = new KonnieProgram();
 
-			Assert.Throws<ProjectDirectoryDoesntExist>(() => konnieProgram.Run(new[] { "--files", fileone, "--task", taskArg }));
+			Assert.Throws<ProjectDirectoryDoesntExist>(() => konnieProgram.Run(
+				new[]
+				{
+					"--files", fileone,
+					"--task", taskArg,
+					"--proj-dir", projDir,
+				}));
 		}
 
 		[Test]

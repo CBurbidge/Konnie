@@ -11,12 +11,17 @@ namespace Konnie
 		{
 			var argParser = new FluentCommandLineParser<KonnieProgramArgs>();
 			
+			argParser.Setup(arg => arg.ProjectDir)
+				.As("proj-dir")
+				.Required();
 			argParser.Setup(arg => arg.Files)
 				.As("files")
 				.Required();
 			argParser.Setup(arg => arg.Task)
 				.As("task")
 				.Required();
+			argParser.Setup(arg => arg.HistoryFile)
+				.As("history");
 
 			var result = argParser.Parse(args);
 
