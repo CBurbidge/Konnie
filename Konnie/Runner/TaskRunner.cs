@@ -21,12 +21,13 @@ namespace Konnie.Runner
 
 			try
 			{
-				var fileConverter = new HistoryFileConverter(logger, fs);
-				var filesHistory = new FilesHistoryFactory(logger, fs, fileConverter)
-					.Create(args.HistoryFile, args.Task);
-				var fileSystemHandler = new FileSystemHandler(filesHistory);
-
+				var historyFileConverter = new HistoryFileConverter(logger, fs);
+				var filesHistoryFactory = new FilesHistoryFactory(logger, fs, historyFileConverter);
 				var kFileCombiner = new KFileCombiner(logger, fs);
+
+				var filesHistory = filesHistoryFactory.Create(args.HistoryFile, args.Task);
+				var fileSystemHandler = new FileSystemHandler(args.ProjectDir, filesHistory, logger);
+
 				var kFile = kFileCombiner.Combine(args.Files);
 				
 				if (kFile.IsValid(args.Task) == false)
@@ -38,7 +39,16 @@ namespace Konnie.Runner
 				var subTasksToRun = kFile.SubTasks.Where(st => taskToRun.SubTasksToRun.Contains(st.Name));
 				var anySubTasksNeedToRun = subTasksToRun.Any(st => st.NeedToRun(filesHistory));
 
-				if (anySubTasksNeedToRun)
+				var anyOfTheKonnieFilesAreDifferent = args.Files.Any(f =>
+				{
+					var lastModified = fs.File.GetLastWriteTime(f);
+					logger.Verbose($"LastWriteTime of file '{f}' is {lastModified}");
+					return filesHistory.FileIsDifferent(f, lastModified);
+				});
+
+				var runKonnie = anySubTasksNeedToRun || anyOfTheKonnieFilesAreDifferent;
+				
+				if (runKonnie)
 				{
 					foreach (var subTask in subTasksToRun)
 					{
@@ -47,6 +57,8 @@ namespace Konnie.Runner
 
 					logger.Verbose("Commiting changes to file history.");
 					filesHistory.CommitChanges();
+
+					logger.Terse("All done.");
 				}
 				else
 				{

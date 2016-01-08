@@ -8,7 +8,7 @@ namespace Konnie.Model.Tasks.SubTasks
 	{
 		public string Name { get; set; }
 		public ILogger Logger { get; set; }
-		public string Type => nameof(TransformTask);
+		public string Type => nameof(CopyFileTask);
 
 		public bool NeedToRun(IFilesHistory history)
 		{

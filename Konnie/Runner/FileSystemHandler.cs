@@ -2,6 +2,7 @@ using System;
 using System.IO.Abstractions;
 using System.Xml.Linq;
 using Konnie.Model.FilesHistory;
+using Konnie.Runner.Logging;
 
 namespace Konnie.Runner
 {
@@ -12,10 +13,14 @@ namespace Konnie.Runner
 	/// </summary>
 	public class FileSystemHandler : IFileSystemHandler
 	{
+		private readonly string _projectDirectory;
+		private readonly ILogger _logger;
 		private readonly IFileSystem _fs;
 
-		public FileSystemHandler(IFilesHistory filesHistory, IFileSystem fs = null)
+		public FileSystemHandler(string projectDirectory, IFilesHistory filesHistory, ILogger logger, IFileSystem fs = null)
 		{
+			_projectDirectory = projectDirectory;
+			_logger = logger;
 			_fs = fs ?? new FileSystem();
 			FilesHistory = filesHistory;
 		}

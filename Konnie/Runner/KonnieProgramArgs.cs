@@ -38,7 +38,7 @@ namespace Konnie.Runner
 					using (var fileStream = getFileStream(filePath))
 					{ }
 				}
-				catch (IOException e)
+				catch (IOException)
 				{
 					throw new KonnieFileDoesntExistOrCantBeAccessed(filePath, "Can't access");
 				}
