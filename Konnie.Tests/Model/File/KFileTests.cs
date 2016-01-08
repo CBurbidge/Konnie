@@ -163,6 +163,16 @@ namespace Konnie.Tests.Model.File
 			}
 
 			[Test]
+			public void KFileWithoutTaskNameReturnsFalse()
+			{
+				var kFile = new KFileTestData().ValidKFile;
+
+				var result = kFile.IsValid("SomeTaskNotInKFile");
+
+				Assert.That(result, Is.False);
+			}
+
+			[Test]
 			public void KFileWithTaskWithMissingSubTaskReturnFalse()
 			{
 				var kFile = new KFileTestData().KFileWithTaskWithNonExistantSubTask;

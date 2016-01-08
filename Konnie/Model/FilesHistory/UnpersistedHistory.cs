@@ -9,12 +9,12 @@ namespace Konnie.Model.FilesHistory
 			
 		}
 
-		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
+		public bool FileIsDifferent(string filePath, DateTime lastModified)
 		{
 			return true;
 		}
 
-		public void UpdateHistory(string absoluteFilePath, DateTime lastModified)
+		public void UpdateHistory(string filePath, DateTime lastModified)
 		{
 			
 		}

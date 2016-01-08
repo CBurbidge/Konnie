@@ -55,9 +55,9 @@ namespace Konnie.Model.FilesHistory
 		/// This will return false if the file history is specified and the file exists and the file exists in the task history
 		/// and if the last modified date is the same as the one specified. For everything else it will return true.
 		/// </summary>
-		public bool FileIsDifferent(string absoluteFilePath, DateTime lastModified)
+		public bool FileIsDifferent(string filePath, DateTime lastModified)
 		{
-			_logger.Verbose($"Is modify date of file '{absoluteFilePath}' different to {lastModified}");
+			_logger.Verbose($"Is modify date of file '{filePath}' different to {lastModified}");
 			if (_historyFile.ContainsKey(_taskBeingPerformed) == false)
 			{
 				_logger.Verbose($"History doesn't contain the task '{_taskBeingPerformed}'. Reporting that file is different.");
@@ -66,31 +66,31 @@ namespace Konnie.Model.FilesHistory
 
 			var taskHistory = _historyFile[_taskBeingPerformed];
 
-			if (taskHistory.ContainsKey(absoluteFilePath) == false)
+			if (taskHistory.ContainsKey(filePath) == false)
 			{
-				_logger.Verbose($"Task history doesn't contain the file path '{absoluteFilePath}'. Reporting that file is different.");
+				_logger.Verbose($"Task history doesn't contain the file path '{filePath}'. Reporting that file is different.");
 				return true;
 			}
 
-			var historyLastModified = taskHistory[absoluteFilePath];
+			var historyLastModified = taskHistory[filePath];
 			_logger.Verbose($"File was last modified at {historyLastModified}");
 
 			return historyLastModified != lastModified;
 		}
 
-		public void UpdateHistory(string absoluteFilePath, DateTime lastModified)
+		public void UpdateHistory(string filePath, DateTime lastModified)
 		{
-			_logger.Verbose($"UpdateHistory called with file '{absoluteFilePath}' and time {lastModified}");
+			_logger.Verbose($"UpdateHistory called with file '{filePath}' and time {lastModified}");
 			var taskHistory = _historyFile[_taskBeingPerformed];
 
-			if (taskHistory.ContainsKey(absoluteFilePath) == false)
+			if (taskHistory.ContainsKey(filePath) == false)
 			{
 				_logger.Verbose("Task history doesn't contain the file.");
-				taskHistory[absoluteFilePath] = DateTime.MinValue;
+				taskHistory[filePath] = DateTime.MinValue;
 			}
 
 			_logger.Verbose("Updating the time in history.");
-			taskHistory[absoluteFilePath] = lastModified;
+			taskHistory[filePath] = lastModified;
 		}
 
 		public void CommitChanges()

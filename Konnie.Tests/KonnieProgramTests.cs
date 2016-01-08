@@ -14,7 +14,7 @@ namespace Konnie.Tests
 			var taskArg = "thing";
 			var konnieProgram = new KonnieProgram();
 
-			Assert.Throws<KonnieFileDoesntExistOrCantBeAccessed>(() => konnieProgram.Run(new[] { "--files", fileone, "--task", taskArg }));
+			Assert.Throws<ProjectDirectoryDoesntExist>(() => konnieProgram.Run(new[] { "--files", fileone, "--task", taskArg }));
 		}
 
 		[Test]

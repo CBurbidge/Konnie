@@ -7,13 +7,19 @@ namespace Konnie.Runner
 {
 	public class KonnieProgramArgs 
 	{
+		public string ProjectDir { get; set; }
 		public string Task { get; set; }
 		public List<string> Files { get; set; }
-		public string HistoryFilePath { get; set; }
+		public string HistoryFile { get; set; }
 
 		public void Validate(IFileSystem fs, Func<string, Stream> getFileStreamFromPath = null)
 		{
 			var getFileStream = getFileStreamFromPath ?? (path => new FileStream(path, FileMode.Open, FileAccess.ReadWrite));
+
+			if (fs.Directory.Exists(ProjectDir) == false)
+			{
+				throw new ProjectDirectoryDoesntExist(ProjectDir);
+			}
 
 			if (Files.Count == 0)
 			{

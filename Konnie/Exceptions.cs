@@ -34,6 +34,16 @@ namespace Konnie
 		}
 	}
 
+	public class ProjectDirectoryDoesntExist : Exception
+	{
+		private readonly string _projectDir;
+
+		public ProjectDirectoryDoesntExist(string projectDir)
+		{
+			_projectDir = projectDir;
+		}
+	}
+
 	public class KFileDuplication : Exception
 	{
 		private readonly IEnumerable<string> _allNames;

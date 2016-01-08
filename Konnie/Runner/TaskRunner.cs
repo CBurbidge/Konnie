@@ -23,7 +23,7 @@ namespace Konnie.Runner
 			{
 				var fileConverter = new HistoryFileConverter(logger, fs);
 				var filesHistory = new FilesHistoryFactory(logger, fs, fileConverter)
-					.Create(args.HistoryFilePath, args.Task);
+					.Create(args.HistoryFile, args.Task);
 				var fileSystemHandler = new FileSystemHandler(filesHistory);
 
 				var kFileCombiner = new KFileCombiner(logger, fs);

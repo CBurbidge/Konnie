@@ -17,6 +17,8 @@ Some tasks that can be performed are:
 - be really loud, whatever she is doing.
 - transform before substituting values.
 - be simple rather than fast.
+- Not create files, only overwrite them
+
 
 ### Konnie responds to ###
 

@@ -6,8 +6,9 @@ using Konnie.Model.FilesHistory;
 namespace Konnie.Runner
 {
 	/// <summary>
-	/// FileSystemHandler is a wrapper around an IFileSystem object.
-	/// This makes sure that any changes to files are kept in sync.
+	/// FileSystemHandler handles everything to do with the file system.
+	/// Konnie is called with the location of the project, all files are relative to this location.
+	/// The file system handler also ensures that the history is updated.
 	/// </summary>
 	public class FileSystemHandler : IFileSystemHandler
 	{

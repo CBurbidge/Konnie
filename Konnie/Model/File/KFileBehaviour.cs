@@ -60,9 +60,15 @@ namespace Konnie.Model.File
 		public bool IsValid(string taskName)
 		{
 			Logger.Verbose($"Checking validity of '{taskName}'");
-			var subTaskNames = SubTasks.Select(t => t.Name);
-			var taskToRun = Tasks.Single(t => t.Name == taskName);
 
+			if (Tasks.Select(t => t.Name).Contains(taskName) == false)
+			{
+				Logger.Terse($"Doesn't contain task {taskName}");
+				return false;
+			}
+
+			var taskToRun = Tasks.Single(t => t.Name == taskName);
+			var subTaskNames = SubTasks.Select(t => t.Name);
 			foreach (var subTask in taskToRun.SubTasksToRun)
 			{
 				if (subTaskNames.Contains(subTask) == false)
