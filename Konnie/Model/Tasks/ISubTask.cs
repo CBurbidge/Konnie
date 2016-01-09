@@ -14,13 +14,11 @@ namespace Konnie.Model.Tasks
 		[JsonIgnore]
 		ILogger Logger { get; set; }
 		bool NeedToRun(IFilesHistory history);
-		void Run(FileSystemHandler fileSystemHandler);
+		void Run(IFileSystemHandler fileSystemHandler);
 	}
-	public interface IUsesVariableSets
+
+	public interface ISubTaskThatUsesVariableSets : ISubTask
 	{
 		List<string> SubstitutionVariableSets { get; set; }
-	}
-	public interface ISubTaskThatUsesVariableSets : ISubTask, IUsesVariableSets
-	{
 	}
 }

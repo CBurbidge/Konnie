@@ -15,7 +15,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			return true;
 		}
 
-		public void Run(FileSystemHandler fileSystemHandler)
+		public void Run(IFileSystemHandler fileSystemHandler)
 		{
 			
 		}

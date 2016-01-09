@@ -17,7 +17,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			return false;
 		}
 
-		public void Run(FileSystemHandler fileSystemHandler)
+		public void Run(IFileSystemHandler fileSystemHandler)
 		{
 			Logger.Terse($"Starting service {ServiceName}");
 			var service = new ServiceController(ServiceName);

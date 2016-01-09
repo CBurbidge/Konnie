@@ -6,11 +6,6 @@ using Konnie.Runner.Logging;
 
 namespace Konnie.Runner
 {
-	/// <summary>
-	/// FileSystemHandler handles everything to do with the file system.
-	/// Konnie is called with the location of the project, all files are relative to this location.
-	/// The file system handler also ensures that the history is updated.
-	/// </summary>
 	public class FileSystemHandler : IFileSystemHandler
 	{
 		private readonly string _projectDirectory;
@@ -26,6 +21,16 @@ namespace Konnie.Runner
 		}
 
 		public IFilesHistory FilesHistory { get; }
+		public void Copy(string source, string destination)
+		{
+			_fs.File.Copy(source, destination);
+		}
+
+		public bool Exists(string filePath)
+		{
+			return _fs.File.Exists(filePath);
+		}
+
 		public string ReadAllText(string filePath)
 		{
 			throw new NotImplementedException();
@@ -47,8 +52,15 @@ namespace Konnie.Runner
 		}
 	}
 
+	/// <summary>
+	/// IFileSystemHandler handles everything to do with the file system that the Run method needs.
+	/// It is a facade around the IO methods that Konnie needs and it also ensures that the history is updated on writes.
+	/// Konnie is called with the location of the project, all files are relative to this location. 
+	/// </summary>
 	public interface IFileSystemHandler
 	{
+		void Copy(string source, string destination);
+		bool Exists(string filePath);
 		IFilesHistory FilesHistory { get; }
 		string ReadAllText(string filePath);
 		string WriteAllText(string text, string filePath);

@@ -1,9 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
-using Konnie.Model.File;
-
+//
+// The thought behind putting all of the exceptions in one file is that so it is easy to see what can go wrong in one place.
+// Not sure if it is that much clearer.
+//
 namespace Konnie
 {
+	
 	public class KonnieFileDoesntExistOrCantBeAccessed : Exception
 	{
 		private readonly string _filepathKonnie;
@@ -15,6 +18,16 @@ namespace Konnie
 
 		public override string Message => $"{_filepathKonnie}";
 	}
+	public class FileDoesntExist : Exception
+	{
+		private readonly string _source;
+
+		public FileDoesntExist(string source)
+		{
+			_source = source;
+		}
+	}
+
 	public class CombinedKFileIsInvalid : Exception
 	{
 		private readonly List<string> _kFile;
