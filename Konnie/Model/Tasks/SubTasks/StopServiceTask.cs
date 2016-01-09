@@ -1,4 +1,5 @@
 using System.ServiceProcess;
+using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
@@ -17,7 +18,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			return false;
 		}
 
-		public void Run(IFileSystemHandler fileSystemHandler)
+		public void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets)
 		{
 			Logger.Terse($"Stopping service {ServiceName}");
 			var service = new ServiceController(ServiceName);

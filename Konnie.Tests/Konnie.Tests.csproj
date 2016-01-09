@@ -78,6 +78,7 @@
     <Compile Include="InzOutz\KFileConverterTests.cs" />
     <Compile Include="KFileEqualityAsserter.cs" />
     <Compile Include="KonnieProgramTests.cs" />
+    <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTaskTests.cs" />
     <Compile Include="Model\Tasks\SubTasks\CopyFileTaskTests.cs" />
     <Compile Include="Model\Tasks\SubTasks\StartServiceTaskTests.cs" />
     <Compile Include="Model\Tasks\SubTasks\StopServiceTaskTests.cs" />

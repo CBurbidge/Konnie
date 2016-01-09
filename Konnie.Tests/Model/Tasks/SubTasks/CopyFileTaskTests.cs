@@ -25,7 +25,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			mockFileSystemHandler.Setup(f => f.Exists(SourcePath)).Returns(true);
 			mockFileSystemHandler.Setup(f => f.Exists(DestinationPath)).Returns(false);
 
-			Assert.Throws<FileDoesntExist>(() => task.Run(mockFileSystemHandler.Object));
+			Assert.Throws<FileDoesntExist>(() => task.Run(mockFileSystemHandler.Object, null));
 		}
 
 		[Test]
@@ -42,7 +42,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			mockFileSystemHandler.Setup(f => f.Exists(SourcePath)).Returns(false);
 			mockFileSystemHandler.Setup(f => f.Exists(DestinationPath)).Returns(true);
 
-			Assert.Throws<FileDoesntExist>(() => task.Run(mockFileSystemHandler.Object));
+			Assert.Throws<FileDoesntExist>(() => task.Run(mockFileSystemHandler.Object, null));
 		}
 
 		[Test]
@@ -59,7 +59,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			mockFileSystemHandler.Setup(f => f.Exists(SourcePath)).Returns(true);
 			mockFileSystemHandler.Setup(f => f.Exists(DestinationPath)).Returns(true);
 
-			task.Run(mockFileSystemHandler.Object);
+			task.Run(mockFileSystemHandler.Object, null);
 
 			mockFileSystemHandler.Verify(f => f.Copy(SourcePath, DestinationPath), Times.Once);
 		}

@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
@@ -14,7 +15,7 @@ namespace Konnie.Model.Tasks
 		[JsonIgnore]
 		ILogger Logger { get; set; }
 		bool NeedToRun(IFilesHistory history);
-		void Run(IFileSystemHandler fileSystemHandler);
+		void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets);
 	}
 
 	public interface ISubTaskThatUsesVariableSets : ISubTask

@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO.Abstractions;
 using System.Linq;
-using System.Net;
 using Konnie.InzOutz;
-using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner.Logging;
 
@@ -50,9 +48,12 @@ namespace Konnie.Runner
 				
 				if (runKonnie)
 				{
+					logger.Terse("Running Konnie.");
+
 					foreach (var subTask in subTasksToRun)
 					{
-						subTask.Run(fileSystemHandler);
+						logger.Verbose($"Running sub task {subTask.Name}");
+						subTask.Run(fileSystemHandler, kFile.VariableSets);
 					}
 
 					logger.Verbose("Commiting changes to file history.");
