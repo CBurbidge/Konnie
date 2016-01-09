@@ -78,6 +78,8 @@
     <Compile Include="InzOutz\KFileConverterTests.cs" />
     <Compile Include="KFileEqualityAsserter.cs" />
     <Compile Include="KonnieProgramTests.cs" />
+    <Compile Include="Model\Tasks\SubTasks\StartServiceTaskTests.cs" />
+    <Compile Include="Model\Tasks\SubTasks\StopServiceTaskTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\FileSystemHandlerTests.cs" />
     <Compile Include="Runner\KonnieProgramArgsTests.cs" />

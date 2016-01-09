@@ -1,3 +1,4 @@
+using System.ServiceProcess;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
@@ -13,12 +14,14 @@ namespace Konnie.Model.Tasks.SubTasks
 
 		public bool NeedToRun(IFilesHistory history)
 		{
-			return true;
+			return false;
 		}
 
 		public void Run(FileSystemHandler fileSystemHandler)
 		{
-			
+			Logger.Terse($"Starting service {ServiceName}");
+			var service = new ServiceController(ServiceName);
+			service.Start();
 		}
 	}
 }
