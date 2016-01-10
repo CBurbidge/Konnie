@@ -1,7 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.IO;
-using System.Xml.Linq;
+﻿using System.Collections.Generic;
 using System.Xml.XPath;
 using Konnie.Model.Tasks.SubTasks;
 using Konnie.Runner;
@@ -91,5 +88,4 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			task.Run(mockFileSystemHandler.Object, null);
 		}
 	}
-
 }

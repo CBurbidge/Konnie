@@ -30,6 +30,12 @@ namespace Konnie
 
 	public class ElementExistsAtXPath : Exception
 	{
+		private readonly string _xPath;
+
+		public ElementExistsAtXPath(string xPath)
+		{
+			_xPath = xPath;
+		}
 	}
 
 	public class CombinedKFileIsInvalid : Exception

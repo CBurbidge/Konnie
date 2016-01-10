@@ -28,14 +28,22 @@ namespace Konnie.Model.Tasks.SubTasks
 				throw new FileDoesntExist(FilePath);
 			}
 
-
-		}
-		private static XPathNavigator GetXPathNavResult(string text, string xPath)
-		{
-			var xPathDocument = new XPathDocument(new StringReader(text));
+			var xmlFileReader = new StringReader(fileSystemHandler.ReadAllText(FilePath));
+			var xPathDocument = new XPathDocument(xmlFileReader);
 			var xPathNavigator = xPathDocument.CreateNavigator();
-			return xPathNavigator.SelectSingleNode(xPath);
-		}
 
+			foreach (var xPath in XPaths)
+			{
+				Logger.Verbose($"Testing XPath '{xPath}'");
+				var node = xPathNavigator.SelectSingleNode(xPath);
+				if (node != null)
+				{
+					Logger.Terse($"XPath '{xPath}' finds an element. Cannot continue.");
+					throw new ElementExistsAtXPath(xPath);
+				}
+			}
+
+			Logger.Verbose("All XPaths are fine.");
+		}
 	}
 }
