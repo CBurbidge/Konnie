@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.IO;
+using System.Xml.XPath;
 using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner;
@@ -28,5 +30,12 @@ namespace Konnie.Model.Tasks.SubTasks
 
 
 		}
+		private static XPathNavigator GetXPathNavResult(string text, string xPath)
+		{
+			var xPathDocument = new XPathDocument(new StringReader(text));
+			var xPathNavigator = xPathDocument.CreateNavigator();
+			return xPathNavigator.SelectSingleNode(xPath);
+		}
+
 	}
 }

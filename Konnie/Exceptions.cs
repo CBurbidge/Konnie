@@ -28,6 +28,10 @@ namespace Konnie
 		}
 	}
 
+	public class ElementExistsAtXPath : Exception
+	{
+	}
+
 	public class CombinedKFileIsInvalid : Exception
 	{
 		private readonly List<string> _kFile;
