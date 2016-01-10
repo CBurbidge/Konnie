@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner;
@@ -15,6 +16,10 @@ namespace Konnie.Model.Tasks.SubTasks
 		{
 			return true;
 		}
+
+		public string InputFile { get; set; }
+		public string OutputFile { get; set; }
+		public List<string> TransformFiles { get; set; }
 
 		public void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets)
 		{
