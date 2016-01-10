@@ -38,6 +38,9 @@ namespace Konnie
 		}
 	}
 
+	public class VariablesStillExistInFile : Exception
+	{
+	}
 	public class CombinedKFileIsInvalid : Exception
 	{
 		private readonly List<string> _kFile;

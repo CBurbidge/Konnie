@@ -88,6 +88,8 @@ namespace Konnie.Tests
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
 			Assert.That(original.Type, Is.EqualTo(result.Type));
+			Assert.That(original.Destination, Is.EqualTo(result.Destination));
+			Assert.That(original.Source, Is.EqualTo(result.Source));
 		}
 
 		private static void CheckTransformTask(TransformTask original, TransformTask result)
@@ -106,12 +108,14 @@ namespace Konnie.Tests
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
 			Assert.That(original.Type, Is.EqualTo(result.Type));
+			Assert.That(original.ServiceName, Is.EqualTo(result.ServiceName));
 		}
 
 		private static void CheckStartServiceTask(StartServiceTask original, StartServiceTask result)
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
 			Assert.That(original.Type, Is.EqualTo(result.Type));
+			Assert.That(original.ServiceName, Is.EqualTo(result.ServiceName));
 		}
 
 		private static void CheckAssertNoMoreVariablesInFile(AssertNoMoreVariablesInFileTask original, AssertNoMoreVariablesInFileTask result)
@@ -124,6 +128,8 @@ namespace Konnie.Tests
 		{
 			Assert.That(original.Name, Is.EqualTo(result.Name));
 			Assert.That(original.Type, Is.EqualTo(result.Type));
+			Assert.That(original.FilePath, Is.EqualTo(result.FilePath));
+			Assert.That(original.XPaths, Is.EqualTo(result.XPaths));
 		}
 	}
 }
