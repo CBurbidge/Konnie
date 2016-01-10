@@ -57,20 +57,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			}
 
 			Logger.Verbose($"Writing to file '{OutputFile}'.");
-			using (var stringWriter = new StringWriter())
-			{
-				var xmlWriterSettings = new XmlWriterSettings
-				{
-					Indent = true
-				};
-				using (var xmlTextWriter = XmlWriter.Create(stringWriter, xmlWriterSettings))
-				{
-					input.WriteTo(xmlTextWriter);
-					xmlTextWriter.Flush();
-					var xmlString = stringWriter.GetStringBuilder().ToString();
-					fileSystemHandler.WriteAllText(xmlString, OutputFile);
-				}
-			}
+			fileSystemHandler.SaveXDocument(input, OutputFile);
 
 			Logger.Verbose("Applied all of the transforms");
 		}

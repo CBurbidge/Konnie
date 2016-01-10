@@ -1,5 +1,7 @@
 using System;
+using System.IO;
 using System.IO.Abstractions;
+using System.Xml;
 using System.Xml.Linq;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner.Logging;
@@ -41,13 +43,23 @@ namespace Konnie.Runner
 			throw new NotImplementedException();
 		}
 
-		public XDocument LoadXDocument(string filePath)
+		public void SaveXDocument(XmlDocument doc, string filePath)
 		{
-			throw new NotImplementedException();
-		}
-
-		public void SaveXDocument(XDocument doc, string filePath)
-		{
+			// might be better way of doing this.
+			using (var stringWriter = new StringWriter())
+			{
+				var xmlWriterSettings = new XmlWriterSettings
+				{
+					Indent = true
+				};
+				using (var xmlTextWriter = XmlWriter.Create(stringWriter, xmlWriterSettings))
+				{
+					doc.WriteTo(xmlTextWriter);
+					xmlTextWriter.Flush();
+					var xmlString = stringWriter.GetStringBuilder().ToString();
+					_fs.File.WriteAllText(xmlString, filePath);
+				}
+			}
 			throw new NotImplementedException();
 		}
 	}
@@ -64,7 +76,6 @@ namespace Konnie.Runner
 		IFilesHistory FilesHistory { get; }
 		string ReadAllText(string filePath);
 		string WriteAllText(string text, string filePath);
-		XDocument LoadXDocument(string filePath);
-		void SaveXDocument(XDocument doc, string filePath);
+		void SaveXDocument(XmlDocument doc, string filePath);
 	}
 }

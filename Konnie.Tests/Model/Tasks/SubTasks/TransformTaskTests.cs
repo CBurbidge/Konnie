@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Xml;
 using Konnie.Model.Tasks.SubTasks;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
@@ -122,7 +123,6 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 				TransformFiles = new List<string> { TransformFilePathOne }
 			};
 
-			// This is super specific on whitespace etc.
 			var expectedOutputFile = @"<?xml version=""1.0"" encoding=""utf - 8""?>
 <configuration>
   <appSettings>
@@ -130,6 +130,9 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
     <add key=""SettingThree"" value=""SomeOtherValue"" />
   </appSettings>
 </configuration>";
+			var expectedXmlDoc = new XmlDocument();
+			expectedXmlDoc.Load(new StringReader(expectedOutputFile));
+
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
 			mockFileSystemHandler.Setup(f => f.Exists(InputFilePath)).Returns(true);
 			mockFileSystemHandler.Setup(f => f.ReadAllText(InputFilePath))
@@ -138,10 +141,14 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			mockFileSystemHandler.Setup(f => f.Exists(TransformFilePathOne)).Returns(true);
 			mockFileSystemHandler.Setup(f => f.ReadAllText(TransformFilePathOne))
 				.Returns(transformFile);
+			mockFileSystemHandler.Setup(f => f.SaveXDocument(It.IsAny<XmlDocument>(), OutputFilePath))
+				.Callback<XmlDocument, string>((doc, outputPath) =>
+				{
+					// Make sure the xml content is the same without getting the fragility of whitespace etc.
+					Assert.That(doc.OuterXml, Is.EqualTo(expectedXmlDoc.OuterXml));
+				});
 
 			task.Run(mockFileSystemHandler.Object, null);
-
-			mockFileSystemHandler.Verify(f => f.WriteAllText(expectedOutputFile, OutputFilePath));
 		}
 		public Stream GenerateStreamFromString(string s)
 		{
