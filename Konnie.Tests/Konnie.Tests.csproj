@@ -95,6 +95,9 @@
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
+    <None Include="WithFileSystem\AssertLackOfXPathFails.konnie" />
+    <None Include="WithFileSystem\CopyFileAndAssertNoMoreVariablesInFileFails.konnie" />
+    <None Include="WithFileSystem\TransformsAndSubstitutionsWork.konnie" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Konnie.Application\Konnie.Application.csproj">

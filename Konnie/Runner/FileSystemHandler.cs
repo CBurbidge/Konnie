@@ -28,7 +28,7 @@ namespace Konnie.Runner
 		}
 		public void Copy(string source, string destination)
 		{
-			_fs.File.Copy(GetAbsPath(source), GetAbsPath(destination));
+			_fs.File.Copy(GetAbsPath(source), GetAbsPath(destination), true);
 
 			UpdateHistory(destination);
 		}

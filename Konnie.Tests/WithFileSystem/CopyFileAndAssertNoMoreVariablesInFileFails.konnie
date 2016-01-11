@@ -1,0 +1,25 @@
+{
+  "Tasks": [
+    {
+      "Name": "CopyAndAssertVariables",
+      "SubTasksToRun": [
+        "CopyTaskName",
+        "AssertNoMoreVariablesTaskName"
+      ]
+    }
+  ],
+  "SubTasks": [
+    {
+      "Name": "CopyTaskName",
+      "Type": "CopyFileTask",
+      "Source": "Config.xml",
+      "Destination": "ConfigCopied.xml"
+    },
+    {
+      "Name": "AssertNoMoreVariablesTaskName",
+      "Type": "AssertNoMoreVariablesInFileTask",
+      "FilePath": "ConfigCopied.xml"
+    }
+  ],
+  "VariableSets": []
+}

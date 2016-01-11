@@ -14,14 +14,133 @@ namespace Konnie.Tests.WithFileSystem
 	[TestFixture]
 	public class KonnieWithFileSystemTests
 	{
+		private readonly string _baseFolderPath = Path.Combine(Environment.CurrentDirectory, nameof(WithFileSystem));
+
+		private void AssertEqualityIgnoringWhitespace(string result, string expected)
+		{
+			Assert.That(result
+				.Replace(" ", "")
+				.Replace("\n", "")
+				.Replace("\r", "")
+				.Replace("\t", "")
+				, Is.EqualTo(
+					expected
+						.Replace(" ", "")
+						.Replace("\n", "")
+						.Replace("\r", "")
+						.Replace("\t", "")));
+		}
+
+		[Test]
+		public void CopyFileAndAssertNoMoreVariablesInFileFails()
+		{
+			var taskName = "CopyAndAssertVariables";
+			var copyTaskName = "CopyTaskName";
+			var assertNoMoreVariablesTaskName = "AssertNoMoreVariablesTaskName";
+			var destinationConfig = "ConfigCopied.xml";
+			var destinationConfigFilePath = Path.Combine(_baseFolderPath, destinationConfig);
+			File.WriteAllText(destinationConfigFilePath, "");
+			var kFile = new KFile
+			{
+				Tasks = new KTasks
+				{
+					new KTask
+					{
+						Name = taskName,
+						SubTasksToRun = new List<string>
+						{
+							copyTaskName,
+							assertNoMoreVariablesTaskName
+						}
+					}
+				},
+				SubTasks = new KSubTasks
+				{
+					new CopyFileTask
+					{
+						Name = copyTaskName,
+						Source = "Config.xml",
+						Destination = destinationConfig
+					},
+					new AssertNoMoreVariablesInFileTask
+					{
+						Name = assertNoMoreVariablesTaskName,
+						FilePath = destinationConfig
+					}
+				}
+			};
+			var converter = new KFileConverter(new ConsoleLogger(), new FileSystem());
+			var kFileName = nameof(CopyFileAndAssertNoMoreVariablesInFileFails) + ".konnie";
+			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
+			if (File.Exists(kFilePath) == false)
+			{
+				File.WriteAllText(kFilePath, converter.Serialize(kFile));
+			}
+			var args = new KonnieProgramArgs
+			{
+				Files = new List<string> {kFilePath},
+				ProjectDir = _baseFolderPath,
+				Task = taskName
+			};
+			var runner = new TaskRunner();
+
+			Assert.Throws<VariablesStillExistInFile>(() => runner.Run(args));
+		}
+
+		[Test]
+		public void AssertLackOfXPathFails()
+		{
+			var taskName = "AssertLackOfXPathFails";
+			var assertLackOfXPathTask = "AssertLackOfXPathTaskName";
+			var kFile = new KFile
+			{
+				Tasks = new KTasks
+				{
+					new KTask
+					{
+						Name = taskName,
+						SubTasksToRun = new List<string>
+						{
+							assertLackOfXPathTask
+						}
+					}
+				},
+				SubTasks = new KSubTasks
+				{
+					new AssertLackOfXPathTask
+					{
+						Name = assertLackOfXPathTask,
+						FilePath = "Config.xml",
+						XPaths = new List<string>
+						{
+							"//appSettings/add[@key = 'SettingOne']"
+						}
+					}
+				}
+			};
+			var converter = new KFileConverter(new ConsoleLogger(), new FileSystem());
+			var kFileName = nameof(AssertLackOfXPathFails) + ".konnie";
+			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
+			if (File.Exists(kFilePath) == false)
+			{
+				File.WriteAllText(kFilePath, converter.Serialize(kFile));
+			}
+			var args = new KonnieProgramArgs
+			{
+				Files = new List<string> {kFilePath},
+				ProjectDir = _baseFolderPath,
+				Task = taskName
+			};
+			var runner = new TaskRunner();
+
+			Assert.Throws<ElementExistsAtXPath>(() => runner.Run(args));
+		}
+
 		[Test]
 		public void TransformsAndSubstitutionsWork()
 		{
-			var currentDirectory = Environment.CurrentDirectory;
-			var baseFolderPath = Path.Combine(currentDirectory, nameof(WithFileSystem));
-
 			var transformOutputFile = "ConfigTransformed.xml";
-			var transformOutputFilePath = Path.Combine(baseFolderPath, transformOutputFile);
+			var transformOutputFilePath = Path.Combine(_baseFolderPath, transformOutputFile);
 			File.WriteAllText(transformOutputFilePath, ""); // This file needs to exist for konnie to run.
 			var variableSetName = "VariableSetOne";
 			var transformTaskName = "TransformWithReleaseFile";
@@ -70,45 +189,33 @@ namespace Konnie.Tests.WithFileSystem
 						Name = variableSetName,
 						Variables = new Dictionary<string, string>
 						{
-							{"VariableOne", "VariableOneValue" },
-							{"VariableTwo", "VariableTwoValue" },
-							{"VariableThree", "VariableThreeValue" },
+							{"VariableOne", "VariableOneValue"},
+							{"VariableTwo", "VariableTwoValue"},
+							{"VariableThree", "VariableThreeValue"}
 						}
 					}
 				}
 			};
 			var converter = new KFileConverter(new ConsoleLogger(), new FileSystem());
 			var kFileName = nameof(TransformsAndSubstitutionsWork) + ".konnie";
-			var kFilePath = Path.Combine(baseFolderPath, kFileName);
-			File.WriteAllText(kFilePath, converter.Serialize(kFile));
+			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
+			if (File.Exists(kFilePath) == false)
+			{
+				File.WriteAllText(kFilePath, converter.Serialize(kFile));
+			}
 
 			var args = new KonnieProgramArgs
 			{
-				Files = new List<string> { kFilePath},
-				ProjectDir = baseFolderPath,
+				Files = new List<string> {kFilePath},
+				ProjectDir = _baseFolderPath,
 				Task = taskName
 			};
 			var runner = new TaskRunner();
 			runner.Run(args);
 
 			var result = File.ReadAllText(transformOutputFilePath);
-			var expected = File.ReadAllText(Path.Combine(baseFolderPath, "ConfigExpected.xml"));
+			var expected = File.ReadAllText(Path.Combine(_baseFolderPath, "ConfigExpected.xml"));
 			AssertEqualityIgnoringWhitespace(result, expected);
-		}
-
-		private void AssertEqualityIgnoringWhitespace(string result, string expected)
-		{
-			Assert.That(result
-							.Replace(" ", "") 
-							.Replace("\n", "") 
-							.Replace("\r", "") 
-							.Replace("\t", "")
-							, Is.EqualTo(
-						expected
-							.Replace(" ", "")
-							.Replace("\n", "")
-							.Replace("\r", "")
-							.Replace("\t", "")));
 		}
 	}
 }

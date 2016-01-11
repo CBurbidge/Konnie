@@ -1,0 +1,21 @@
+{
+  "Tasks": [
+    {
+      "Name": "AssertLackOfXPathFails",
+      "SubTasksToRun": [
+        "AssertLackOfXPathTaskName"
+      ]
+    }
+  ],
+  "SubTasks": [
+    {
+      "Name": "AssertLackOfXPathTaskName",
+      "Type": "AssertLackOfXPathTask",
+      "FilePath": "Config.xml",
+      "XPaths": [
+        "//appSettings/add[@key = 'SettingOne']"
+      ]
+    }
+  ],
+  "VariableSets": []
+}
