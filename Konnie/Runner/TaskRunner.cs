@@ -40,7 +40,7 @@ namespace Konnie.Runner
 
 				var taskToRun = kFile.Tasks.Single(t => t.Name == args.Task);
 				var subTasksToRun = kFile.SubTasks.Where(st => taskToRun.SubTasksToRun.Contains(st.Name));
-				var anySubTasksNeedToRun = subTasksToRun.Any(st => st.NeedToRun(filesHistory));
+				var anySubTasksNeedToRun = subTasksToRun.Any(st => st.NeedToRun(fileSystemHandler));
 
 				var anyOfTheKonnieFilesAreDifferent = args.Files.Any(f =>
 				{

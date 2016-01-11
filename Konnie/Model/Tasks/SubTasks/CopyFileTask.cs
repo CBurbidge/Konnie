@@ -13,9 +13,10 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Source { get; set; }
 		public string Destination { get; set; }
 
-		public bool NeedToRun(IFilesHistory history)
+		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
-			return true;
+			var lastModified = fileSystemHandler.GetLastWriteTime(Source);
+			return fileSystemHandler.FilesHistory.FileIsDifferent(Source, lastModified);
 		}
 
 		public void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets)

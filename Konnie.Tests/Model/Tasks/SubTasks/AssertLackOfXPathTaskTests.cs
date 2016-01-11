@@ -1,5 +1,6 @@
 ﻿using System.Collections.Generic;
 using System.Xml.XPath;
+using Konnie.Model.FilesHistory;
 using Konnie.Model.Tasks.SubTasks;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
@@ -86,6 +87,21 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			mockFileSystemHandler.Setup(f => f.ReadAllText(FilePath)).Returns(ConfigXml);
 
 			task.Run(mockFileSystemHandler.Object, null);
+		}
+
+		[Test]
+		public void NeedsToRunReturnsFalse()
+		{
+			var task = new AssertLackOfXPathTask
+			{
+				Logger = new Logger(),
+				Name = "",
+				FilePath = FilePath,
+				XPaths = new List<string> { "SomeXPath" }
+			};
+			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
+
+			Assert.That(task.NeedToRun(mockFileSystemHandler.Object), Is.False);
 		}
 	}
 }

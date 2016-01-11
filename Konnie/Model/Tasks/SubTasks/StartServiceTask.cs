@@ -13,7 +13,7 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Type => nameof(StartServiceTask);
 		public string ServiceName { get; set; }
 
-		public bool NeedToRun(IFilesHistory history)
+		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
 			return false;
 		}

@@ -1,3 +1,4 @@
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
@@ -26,6 +27,14 @@ namespace Konnie.Runner
 		{
 			return _fs.Path.Combine(_projectDirectory, filePath);
 		}
+
+		public DateTime GetLastWriteTime(string filePath)
+		{
+			return _fs.File.GetLastWriteTime(GetAbsPath(filePath));
+		}
+
+		public IFilesHistory FilesHistory => _filesHistory;
+
 		public void Copy(string source, string destination)
 		{
 			_fs.File.Copy(GetAbsPath(source), GetAbsPath(destination), true);
@@ -90,6 +99,7 @@ namespace Konnie.Runner
 	/// </summary>
 	public interface IFileSystemHandler
 	{
+		IFilesHistory FilesHistory { get; }
 		void Copy(string source, string destination);
 		bool Exists(string filePath);
 		IEnumerable<string> ReadAllLines(string filePath);
@@ -97,5 +107,6 @@ namespace Konnie.Runner
 		void WriteAllText(string text, string filePath);
 		void SaveXDocument(XmlDocument doc, string filePath);
 		string GetAbsPath(string filePath);
+		DateTime GetLastWriteTime(string filePath);
 	}
 }

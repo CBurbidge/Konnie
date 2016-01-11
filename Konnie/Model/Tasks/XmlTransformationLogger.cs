@@ -1,7 +1,7 @@
 using System;
 using Microsoft.Web.XmlTransform;
 
-namespace Konnie.Model.Tasks.SubTasks
+namespace Konnie.Model.Tasks
 {
 	public class XmlTransformationLogger : IXmlTransformationLogger
 	{

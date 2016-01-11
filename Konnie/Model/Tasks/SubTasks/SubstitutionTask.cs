@@ -17,7 +17,7 @@ namespace Konnie.Model.Tasks.SubTasks
 		public ILogger Logger { get; set; }
 		public string Type => nameof(SubstitutionTask);
 
-		public bool NeedToRun(IFilesHistory history)
+		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
 			return true;
 		}

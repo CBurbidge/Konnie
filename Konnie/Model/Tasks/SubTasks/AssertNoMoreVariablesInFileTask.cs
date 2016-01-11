@@ -12,9 +12,9 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Type => nameof(AssertNoMoreVariablesInFileTask);
 		public string FilePath { get; set; }
 		
-		public bool NeedToRun(IFilesHistory history)
+		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
-			return true;
+			return false;
 		}
 
 		public void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets)

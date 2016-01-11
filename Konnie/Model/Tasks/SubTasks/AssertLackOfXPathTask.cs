@@ -15,9 +15,9 @@ namespace Konnie.Model.Tasks.SubTasks
 		public string Type => nameof(AssertLackOfXPathTask);
 		public string FilePath { get; set; } 
 		public List<string> XPaths { get; set; } 
-		public bool NeedToRun(IFilesHistory history)
+		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
-			return true;
+			return false;
 		}
 
 		public void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets)

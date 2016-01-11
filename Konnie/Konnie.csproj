@@ -78,8 +78,8 @@
     <Compile Include="Model\Tasks\SubTasks\CopyFileTask.cs" />
     <Compile Include="Model\Tasks\SubTasks\TransformTask.cs" />
     <Compile Include="Model\Tasks\ISubTask.cs" />
-    <Compile Include="Model\Tasks\SubTasks\XmlTransformationLogger.cs" />
     <Compile Include="Model\Tasks\Variable.cs" />
+    <Compile Include="Model\Tasks\XmlTransformationLogger.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Runner\FileSystemHandler.cs" />
     <Compile Include="Runner\KFileCombiner.cs" />
