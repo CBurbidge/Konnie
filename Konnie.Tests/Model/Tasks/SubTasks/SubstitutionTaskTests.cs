@@ -163,6 +163,31 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		}
 
 		[Test]
+		public void SubstitutionWorksWithWhitespaceOnEnds()
+		{
+			var task = new SubstitutionTask
+			{
+				Name = "SomeName",
+				Logger = new ConsoleLogger(),
+				FilePath = FilePath,
+				SubstitutionVariableSets = new List<string> {VariableSetOneName}
+			};
+			var configFile = string.Format(
+				ConfigFileTemplate,
+				$"#{{ {VOneName}  }}",
+				$"#{{   {VTwoName}}}",
+				"SomeValue");
+			var expectedFileContent = string.Format(
+				ConfigFileTemplate,
+				$"{VOneValue}",
+				$"{VTwoValue}",
+				"SomeValue");
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, expectedFileContent);
+
+			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
+		}
+
+		[Test]
 		public void ThrowsIfFileDoesntExist()
 		{
 			var task = new SubstitutionTask

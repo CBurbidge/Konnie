@@ -34,7 +34,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			{
 				foreach (var kvp in variableSet.Variables)
 				{
-					subsVals[kvp.Key.ToLower()] = kvp.Value;
+					subsVals[kvp.Key.ToLower().Trim()] = kvp.Value;
 				}
 			}
 
@@ -49,7 +49,7 @@ namespace Konnie.Model.Tasks.SubTasks
 					{
 						var variableName = match.Groups["name"].Value;
 
-						var lower = variableName.ToLower();
+						var lower = variableName.ToLower().Trim();
 						if (subsVals.ContainsKey(lower))
 						{
 							var value = subsVals[lower];
