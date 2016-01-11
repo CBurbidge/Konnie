@@ -72,6 +72,7 @@
     </Otherwise>
   </Choose>
   <ItemGroup>
+    <Compile Include="WithFileSystem\KonnieWithFileSystemTests.cs" />
     <Compile Include="KFileTestData.cs" />
     <Compile Include="Model\FilesHistory\FilesHistoryFactoryTests.cs" />
     <Compile Include="Model\FilesHistory\JsonFilePersistedFilesHistoryTests.cs" />
@@ -104,6 +105,17 @@
       <Project>{fc256c12-228b-4252-b696-ceff34187855}</Project>
       <Name>Konnie</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="WithFileSystem\ConfigExpected.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WithFileSystem\Config.Release.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="WithFileSystem\Config.xml">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
   </ItemGroup>
   <Choose>
     <When Condition="'$(VisualStudioVersion)' == '10.0' And '$(IsCodedUITest)' == 'True'">

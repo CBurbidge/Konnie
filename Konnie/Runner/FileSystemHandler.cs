@@ -22,31 +22,35 @@ namespace Konnie.Runner
 			_filesHistory = filesHistory;
 		}
 
+		public string GetAbsPath(string filePath)
+		{
+			return _fs.Path.Combine(_projectDirectory, filePath);
+		}
 		public void Copy(string source, string destination)
 		{
-			_fs.File.Copy(source, destination);
+			_fs.File.Copy(GetAbsPath(source), GetAbsPath(destination));
 
 			UpdateHistory(destination);
 		}
 
 		public bool Exists(string filePath)
 		{
-			return _fs.File.Exists(filePath);
+			return _fs.File.Exists(GetAbsPath(filePath));
 		}
 
 		public IEnumerable<string> ReadAllLines(string filePath)
 		{
-			return _fs.File.ReadAllLines(filePath);
+			return _fs.File.ReadAllLines(GetAbsPath(filePath));
 		}
 
 		public string ReadAllText(string filePath)
 		{
-			return _fs.File.ReadAllText(filePath);
+			return _fs.File.ReadAllText(GetAbsPath(filePath));
 		}
 
 		public void WriteAllText(string text, string filePath)
 		{
-			_fs.File.WriteAllText(filePath, text);
+			_fs.File.WriteAllText(GetAbsPath(filePath), text);
 
 			UpdateHistory(filePath);
 		}
@@ -65,13 +69,13 @@ namespace Konnie.Runner
 					doc.WriteTo(xmlTextWriter);
 					xmlTextWriter.Flush();
 					var xmlString = stringWriter.GetStringBuilder().ToString();
-					_fs.File.WriteAllText(xmlString, filePath);
+					_fs.File.WriteAllText(GetAbsPath(filePath), xmlString);
 				}
 			}
 
 			UpdateHistory(filePath);
 		}
-
+		
 		private void UpdateHistory(string filePath)
 		{
 			var timeModified = _fs.File.GetLastWriteTime(filePath);
@@ -92,5 +96,6 @@ namespace Konnie.Runner
 		string ReadAllText(string filePath);
 		void WriteAllText(string text, string filePath);
 		void SaveXDocument(XmlDocument doc, string filePath);
+		string GetAbsPath(string filePath);
 	}
 }

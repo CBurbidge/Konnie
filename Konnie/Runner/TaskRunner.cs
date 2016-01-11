@@ -88,6 +88,8 @@ namespace Konnie.Runner
 				{
 					throw new Exception(verboseLog + Environment.NewLine + fileWriteEx.Message);
 				}
+
+				throw e;
 			}
 		}
 	}

@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+
+<configuration xmlns:xdt = "http://schemas.microsoft.com/XML-Document-Transform" >
+<appSettings>
+	<add key="SettingTwo" xdt:Transform="RemoveAll" xdt:Locator="Match(key)" />
+	<add key="SettingThree" xdt:Transform="Replace" xdt:Locator="Match(key)" value="#{VariableThree}" />
+</appSettings>
+</configuration>

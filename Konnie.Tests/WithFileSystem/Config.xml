@@ -1,0 +1,8 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<configuration >
+	<appSettings >
+		<add key = "SettingOne" value = "#{VariableOne}" />
+		<add key = "SettingTwo" value = "SettingValueTwo" />
+		<add key = "SettingThree" value = "SettingValueThree" />
+	</appSettings >
+</configuration >
