@@ -19,7 +19,7 @@ namespace Konnie.Model.Tasks.SubTasks
 
 		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
-			return true;
+			return false;
 		}
 
 		public void Run(IFileSystemHandler fileSystemHandler, KVariableSets variableSets)

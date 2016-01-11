@@ -1,6 +1,7 @@
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using System.Xml;
 using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
@@ -25,7 +26,11 @@ namespace Konnie.Model.Tasks.SubTasks
 
 		public bool NeedToRun(IFileSystemHandler fileSystemHandler)
 		{
-			return true;
+			return TransformFiles.Concat(new[] {InputFile}).Any(f =>
+			{
+				var lastModified = fileSystemHandler.GetLastWriteTime(f);
+				return fileSystemHandler.FilesHistory.FileIsDifferent(f, lastModified);
+			});
 		}
 
 		public string InputFile { get; set; }

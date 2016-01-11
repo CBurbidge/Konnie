@@ -161,5 +161,41 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 
 			task.Run(mockFileSystemHandler.Object, null);
 		}
+
+		[Test]
+		public void NeedToRunReturnsFalseIfAllFilesAreSame()
+		{
+			var task = new TransformTask
+			{
+				Logger = new Logger(),
+				Name = "",
+				InputFile = InputFilePath,
+				OutputFile = OutputFilePath,
+				TransformFiles = new List<string>()
+			};
+			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
+			mockFileSystemHandler.Setup(f => f.FilesHistory.FileIsDifferent(It.IsAny<string>(), It.IsAny<DateTime>()))
+				.Returns(false);
+
+			Assert.That(task.NeedToRun(mockFileSystemHandler.Object), Is.False);
+		}
+
+		[Test]
+		public void NeedToRunReturnsTrueIfInputOrTransformFilesAreDifferent()
+		{
+			var task = new TransformTask
+			{
+				Logger = new Logger(),
+				Name = "",
+				InputFile = InputFilePath,
+				OutputFile = OutputFilePath,
+				TransformFiles = new List<string>()
+			};
+			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
+			mockFileSystemHandler.Setup(f => f.FilesHistory.FileIsDifferent(It.IsAny<string>(), It.IsAny<DateTime>()))
+				.Returns(true);
+
+			Assert.That(task.NeedToRun(mockFileSystemHandler.Object), Is.True);
+		}
 	}
 }

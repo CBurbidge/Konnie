@@ -218,5 +218,20 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 
 			Assert.Throws<InvalidProgramException>(() => task.Run(mockFileSystemHandler.Object, null));
 		}
+
+		[Test]
+		public void NeedToRunReturnsFalse()
+		{
+			var task = new SubstitutionTask
+			{
+				Name = "SomeName",
+				Logger = new Logger(),
+				FilePath = FilePath,
+				SubstitutionVariableSets = new List<string> {"VarSet"}
+			};
+			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
+
+			Assert.That(task.NeedToRun(mockFileSystemHandler.Object), Is.False);
+		}
 	}
 }
