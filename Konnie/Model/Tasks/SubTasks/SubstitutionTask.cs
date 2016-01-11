@@ -1,6 +1,8 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Text;
+using System.Text.RegularExpressions;
 using Konnie.Model.File;
 using Konnie.Model.FilesHistory;
 using Konnie.Runner;
@@ -26,11 +28,41 @@ namespace Konnie.Model.Tasks.SubTasks
 			CheckVariableSets();
 			CheckFileExists(fileSystemHandler);
 
-			var sb = new StringBuilder();
+			var subsVals = new Dictionary<string, string>();
+			var releventVariableSets = variableSets.Where(v => SubstitutionVariableSets.Contains(v.Name));
+			foreach (var variableSet in releventVariableSets)
+			{
+				foreach (var kvp in variableSet.Variables)
+				{
+					subsVals[kvp.Key.ToLower()] = kvp.Value;
+				}
+			}
+
+			var transformedLines = new List<string>();
 			foreach (var line in fileSystemHandler.ReadAllLines(FilePath))
 			{
-				
+				var lineToAdd = line;
+
+				if (Variable.VariableRegex.IsMatch(line))
+				{
+					foreach (Match match in Variable.VariableRegex.Matches(line))
+					{
+						var variableName = match.Groups["name"].Value;
+
+						var lower = variableName.ToLower();
+						if (subsVals.ContainsKey(lower))
+						{
+							var value = subsVals[lower];
+							lineToAdd = line.Replace($"#{{{variableName}}}", value);
+						}
+					}
+				}
+
+				transformedLines.Add(lineToAdd);
 			}
+
+			var fileContents = string.Join(Environment.NewLine, transformedLines);
+			fileSystemHandler.WriteAllText(fileContents, FilePath);
 		}
 
 		private void CheckVariableSets()
