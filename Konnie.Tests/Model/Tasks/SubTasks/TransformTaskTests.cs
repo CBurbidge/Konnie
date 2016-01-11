@@ -33,7 +33,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new TransformTask
 			{
-				Logger = new ConsoleLogger(),
+				Logger = new Logger(),
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
@@ -52,7 +52,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new TransformTask
 			{
-				Logger = new ConsoleLogger(),
+				Logger = new Logger(),
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
@@ -71,7 +71,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new TransformTask
 			{
-				Logger = new ConsoleLogger(),
+				Logger = new Logger(),
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
@@ -90,7 +90,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new TransformTask
 			{
-				Logger = new ConsoleLogger(),
+				Logger = new Logger(),
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
@@ -127,7 +127,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			Func<string, Stream> getTransformFile = f => GenerateStreamFromString(transformFile);
 			var task = new TransformTask(getTransformFile)
 			{
-				Logger = new ConsoleLogger(),
+				Logger = new Logger(),
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,

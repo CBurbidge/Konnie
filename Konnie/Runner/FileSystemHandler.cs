@@ -25,6 +25,8 @@ namespace Konnie.Runner
 		public void Copy(string source, string destination)
 		{
 			_fs.File.Copy(source, destination);
+
+			UpdateHistory(destination);
 		}
 
 		public bool Exists(string filePath)
@@ -46,8 +48,7 @@ namespace Konnie.Runner
 		{
 			_fs.File.WriteAllText(filePath, text);
 
-			var timeModified = _fs.File.GetLastWriteTime(filePath);
-			_filesHistory.UpdateHistory(filePath, timeModified);
+			UpdateHistory(filePath);
 		}
 
 		public void SaveXDocument(XmlDocument doc, string filePath)
@@ -68,6 +69,11 @@ namespace Konnie.Runner
 				}
 			}
 
+			UpdateHistory(filePath);
+		}
+
+		private void UpdateHistory(string filePath)
+		{
 			var timeModified = _fs.File.GetLastWriteTime(filePath);
 			_filesHistory.UpdateHistory(filePath, timeModified);
 		}

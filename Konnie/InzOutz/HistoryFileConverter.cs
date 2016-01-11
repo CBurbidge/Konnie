@@ -12,7 +12,7 @@ namespace Konnie.InzOutz
 
 		public HistoryFileConverter(ILogger logger, IFileSystem fs = null)
 		{
-			_logger = logger ?? new ConsoleLogger();
+			_logger = logger ?? new Logger();
 			_fs = fs ?? new FileSystem();
 		}
 

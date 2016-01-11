@@ -8,13 +8,16 @@ using Konnie.Runner.Logging;
 namespace Konnie.Runner
 {
 	/// <summary>
-	/// This is the concrete class to run stuff.
-	/// This should have minimum logic in it, just build up dependencies and run the files.
+	///     This is the concrete class to run stuff.
+	///     This should have minimum logic in it, just build up dependencies and run the files.
 	/// </summary>
 	public class TaskRunner : IKonnieRunner
 	{
-		public void Run(KonnieProgramArgs args, ILogger logger, IFileSystem fs)
+		public void Run(KonnieProgramArgs args, ILogger loggerInj = null, IFileSystem fsInj = null)
 		{
+			var fs = fsInj ?? new FileSystem();
+			var logger = loggerInj ?? new Logger();
+
 			args.Validate(fs);
 
 			try
@@ -27,7 +30,7 @@ namespace Konnie.Runner
 				var fileSystemHandler = new FileSystemHandler(args.ProjectDir, filesHistory, logger);
 
 				var kFile = kFileCombiner.Combine(args.Files);
-				
+
 				if (kFile.IsValid(args.Task) == false)
 				{
 					throw new CombinedKFileIsInvalid(args.Files);
@@ -45,7 +48,7 @@ namespace Konnie.Runner
 				});
 
 				var runKonnie = anySubTasksNeedToRun || anyOfTheKonnieFilesAreDifferent;
-				
+
 				if (runKonnie)
 				{
 					logger.Terse("Running Konnie.");
@@ -75,8 +78,6 @@ namespace Konnie.Runner
 			}
 		}
 	}
-
-	
 
 	public interface IKonnieRunner
 	{

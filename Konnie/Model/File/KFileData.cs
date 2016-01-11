@@ -20,7 +20,7 @@ namespace Konnie.Model.File
 		public KVariableSets VariableSets { get; set; } = new KVariableSets();
 
 		[JsonIgnore]
-		public ILogger Logger { get; set; } = new ConsoleLogger();
+		public ILogger Logger { get; set; } = new Logger();
 	}
 
 	public class KTasks : List<KTask>

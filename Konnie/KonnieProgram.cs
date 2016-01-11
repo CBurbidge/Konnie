@@ -33,7 +33,7 @@ namespace Konnie
 			var commandArgs = argParser.Object;
 			
 			var taskRunner = new TaskRunner();
-			taskRunner.Run(commandArgs, new ConsoleLogger(), new FileSystem());
+			taskRunner.Run(commandArgs);
 		}
 	}
 }

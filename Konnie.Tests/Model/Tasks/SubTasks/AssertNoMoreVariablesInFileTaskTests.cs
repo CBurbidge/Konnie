@@ -25,7 +25,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new AssertNoMoreVariablesInFileTask
 			{
-				Logger = new ConsoleLogger(), Name = "",
+				Logger = new Logger(), Name = "",
 				FilePath = FilePath
 			};
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
@@ -39,7 +39,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new AssertNoMoreVariablesInFileTask
 			{
-				Logger = new ConsoleLogger(), Name = "",
+				Logger = new Logger(), Name = "",
 				FilePath = FilePath
 			};
 			var fileContents = string.Format(ConfigXmlTemplate, "#{SomeVariable}");
@@ -55,7 +55,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new AssertNoMoreVariablesInFileTask
 			{
-				Logger = new ConsoleLogger(), Name = "",
+				Logger = new Logger(), Name = "",
 				FilePath = FilePath
 			};
 			var fileContents = string.Format(ConfigXmlTemplate, "AValueOfSomeSort");

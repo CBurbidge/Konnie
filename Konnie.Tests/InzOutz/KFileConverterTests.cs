@@ -119,7 +119,7 @@ namespace Konnie.Tests.InzOutz
 				}
 			};
 
-			var consoleLogger = new ConsoleLogger();
+			var consoleLogger = new Logger();
 			consoleLogger.Verbose("Testing 1 2 3.");
 			var parser = new KFileConverter(consoleLogger, null);
 			var text = parser.Serialize(original);

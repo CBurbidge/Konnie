@@ -15,7 +15,7 @@ namespace Konnie.Model.FilesHistory
 			var fileSystem = fs ?? new FileSystem();
 			_fs = fileSystem;
 			_fileConverter = fileConverter ?? new HistoryFileConverter(_logger, fileSystem);
-			_logger = logger ?? new ConsoleLogger();
+			_logger = logger ?? new Logger();
 		}
 
 		public IFilesHistory Create(string historyFilePath, string taskName)
