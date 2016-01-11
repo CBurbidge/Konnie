@@ -13,6 +13,8 @@ namespace Konnie.Runner
 	/// </summary>
 	public class TaskRunner : IKonnieRunner
 	{
+		private const string VerboseLogFilePath = "VerboseLog.log";
+
 		public void Run(KonnieProgramArgs args, ILogger loggerInj = null, IFileSystem fsInj = null)
 		{
 			var fs = fsInj ?? new FileSystem();
@@ -74,7 +76,18 @@ namespace Konnie.Runner
 				logger.Terse("Konnie failed to run task. Exception message is:");
 				logger.Terse(e.Message);
 				var verboseLog = logger.GetLog(LogType.Verbose);
-				throw new Exception(verboseLog);
+
+				try
+				{
+					var dateStampedFilePath = VerboseLogFilePath + DateTime.Now.ToString("s").Replace(":", "");
+					var verboseLogFilePath = fs.Path.Combine(args.ProjectDir, dateStampedFilePath);
+					fs.File.WriteAllText(verboseLogFilePath, verboseLog);
+					logger.Terse($"Verbose log written to '{verboseLogFilePath}'");
+				}
+				catch (Exception fileWriteEx)
+				{
+					throw new Exception(verboseLog + Environment.NewLine + fileWriteEx.Message);
+				}
 			}
 		}
 	}
