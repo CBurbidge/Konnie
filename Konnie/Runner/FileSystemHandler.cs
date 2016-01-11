@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.IO;
 using System.IO.Abstractions;
 using System.Xml;
@@ -31,6 +32,11 @@ namespace Konnie.Runner
 		public bool Exists(string filePath)
 		{
 			return _fs.File.Exists(filePath);
+		}
+
+		public IEnumerable<string> ReadAllLines(string filePath)
+		{
+			throw new NotImplementedException();
 		}
 
 		public string ReadAllText(string filePath)
@@ -74,6 +80,7 @@ namespace Konnie.Runner
 		void Copy(string source, string destination);
 		bool Exists(string filePath);
 		IFilesHistory FilesHistory { get; }
+		IEnumerable<string> ReadAllLines(string filePath);
 		string ReadAllText(string filePath);
 		string WriteAllText(string text, string filePath);
 		void SaveXDocument(XmlDocument doc, string filePath);

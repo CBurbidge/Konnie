@@ -13,10 +13,20 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 	[TestFixture]
 	public class TransformTaskTests
 	{
-		private string InputFilePath = "InputFile";
-		private string OutputFilePath = "OutputFile";
-		private string TransformFilePathOne = "TransformFileOne";
+		private readonly string InputFilePath = "InputFile";
+		private readonly string OutputFilePath = "OutputFile";
+		private readonly string TransformFilePathOne = "TransformFileOne";
 		private string TransformFilePathTwo = "TransformFileTwo";
+
+		public Stream GenerateStreamFromString(string s)
+		{
+			var stream = new MemoryStream();
+			var writer = new StreamWriter(stream);
+			writer.Write(s);
+			writer.Flush();
+			stream.Position = 0;
+			return stream;
+		}
 
 		[Test]
 		public void ThrowsIfAnyTransformFilePathDoesntExist()
@@ -27,7 +37,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
-				TransformFiles = new List<string> { TransformFilePathOne }
+				TransformFiles = new List<string> {TransformFilePathOne}
 			};
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
 			mockFileSystemHandler.Setup(f => f.Exists(InputFilePath)).Returns(true);
@@ -44,8 +54,9 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			{
 				Logger = new ConsoleLogger(),
 				Name = "",
-				InputFile = InputFilePath, OutputFile = OutputFilePath,
-				TransformFiles = new List<string> { TransformFilePathOne }
+				InputFile = InputFilePath,
+				OutputFile = OutputFilePath,
+				TransformFiles = new List<string> {TransformFilePathOne}
 			};
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
 			mockFileSystemHandler.Setup(f => f.Exists(OutputFilePath)).Returns(true);
@@ -64,7 +75,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
-				TransformFiles = new List<string> { TransformFilePathOne }
+				TransformFiles = new List<string> {TransformFilePathOne}
 			};
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
 			mockFileSystemHandler.Setup(f => f.Exists(TransformFilePathOne)).Returns(true);
@@ -90,13 +101,12 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			mockFileSystemHandler.Setup(f => f.Exists(OutputFilePath)).Returns(true);
 
 			Assert.Throws<InvalidProgramException>(() => task.Run(mockFileSystemHandler.Object, null));
-
 		}
 
 		[Test]
 		public void TransformsFile()
 		{
-			string inputXmlFile = 
+			var inputXmlFile =
 				@"<?xml version=""1.0"" encoding=""utf - 8""?>
 	<configuration >
 		<appSettings >
@@ -105,7 +115,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			<add key = ""SettingThree"" value = ""SettingValueThree"" />
 		</appSettings >
 	</configuration > ";
-			var transformFile = 
+			var transformFile =
 				@"﻿<?xml version=""1.0"" encoding=""utf-8""?>
 
 	<configuration xmlns:xdt = ""http://schemas.microsoft.com/XML-Document-Transform"" >
@@ -117,10 +127,11 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			Func<string, Stream> getTransformFile = f => GenerateStreamFromString(transformFile);
 			var task = new TransformTask(getTransformFile)
 			{
-				Logger = new ConsoleLogger(), Name = "",
+				Logger = new ConsoleLogger(),
+				Name = "",
 				InputFile = InputFilePath,
 				OutputFile = OutputFilePath,
-				TransformFiles = new List<string> { TransformFilePathOne }
+				TransformFiles = new List<string> {TransformFilePathOne}
 			};
 
 			var expectedOutputFile = @"<?xml version=""1.0"" encoding=""utf - 8""?>
@@ -149,15 +160,6 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 				});
 
 			task.Run(mockFileSystemHandler.Object, null);
-		}
-		public Stream GenerateStreamFromString(string s)
-		{
-			MemoryStream stream = new MemoryStream();
-			StreamWriter writer = new StreamWriter(stream);
-			writer.Write(s);
-			writer.Flush();
-			stream.Position = 0;
-			return stream;
 		}
 	}
 }

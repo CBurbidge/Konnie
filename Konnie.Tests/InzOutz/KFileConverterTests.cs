@@ -41,7 +41,13 @@ namespace Konnie.Tests.InzOutz
 
 			var transformTask = new TransformTask
 			{
-				Name = "subTaskTwo"
+				Name = "subTaskTwo",
+				InputFile = "SomeInputFile.xml",
+				OutputFile = "OutToThisFile.xml",
+				TransformFiles = new List<string>
+				{
+					"TransformMe.xml", "AndMe.xml"
+				}
 			};
 			var startServiceTask = new StartServiceTask
 			{
@@ -57,11 +63,18 @@ namespace Konnie.Tests.InzOutz
 
 			var assertLackOfXPathTask = new AssertLackOfXPathTask
 			{
-				Name = "subTaskFive"
+				Name = "subTaskFive",
+				FilePath = "CheckThisFile.xml",
+				XPaths = new List<string>
+				{
+					"//some/path",
+					"//some/other/path/where[@thing = 'value']"
+				}
 			};
 			var assertNoMoreVariablesInFile = new AssertNoMoreVariablesInFileTask
 			{
-				Name = "subTaskSix"
+				Name = "subTaskSix",
+				FilePath = "NoMoreVariablesFile.xml"
 			};
 
 			var variableSetOne = new KVariableSet
