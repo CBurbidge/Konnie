@@ -23,6 +23,12 @@ namespace Konnie.InzOutz
 			_fs = fs ?? new FileSystem();
 		}
 
+		public KFileConverter()
+		{
+			_logger = new ConsoleLogger(true);
+			_fs = new FileSystem();
+		}
+
 		public KFile DeserializeFromFile(string filePath)
 		{
 			var text = _fs.File.ReadAllText(filePath);

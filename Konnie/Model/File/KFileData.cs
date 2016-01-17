@@ -15,12 +15,17 @@ namespace Konnie.Model.File
 	/// </summary>
 	public partial class KFile
 	{
+		public KFile(ILogger logger = null)
+		{
+			Logger = logger ?? new ConsoleLogger(false);
+		}
+
 		public KTasks Tasks { get; set; } = new KTasks();
 		public KSubTasks SubTasks { get; set; } = new KSubTasks();
 		public KVariableSets VariableSets { get; set; } = new KVariableSets();
 
 		[JsonIgnore]
-		public ILogger Logger { get; set; } = new Logger();
+		public ILogger Logger { get; set; }
 	}
 
 	public class KTasks : List<KTask>

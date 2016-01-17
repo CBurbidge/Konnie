@@ -18,7 +18,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new CopyFileTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				Source = SourcePath,
 				Destination = DestinationPath
@@ -38,7 +38,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var sourceFilePath = "SourceFile";
 			var task = new CopyFileTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				Source = sourceFilePath,
 				Destination = "Destination"
@@ -56,7 +56,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var sourceFilePath = "SourceFile";
 			var task = new CopyFileTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				Source = sourceFilePath,
 				Destination = "Destination"
@@ -73,7 +73,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new CopyFileTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				Source = SourcePath,
 				Destination = DestinationPath
@@ -90,7 +90,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new CopyFileTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				Source = SourcePath,
 				Destination = DestinationPath

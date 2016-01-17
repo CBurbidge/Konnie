@@ -4,21 +4,25 @@ using System.Linq;
 
 namespace Konnie.Runner.Logging
 {
-	public class Logger : ILogger
+	public abstract class Logger : ILogger
 	{
 		private readonly List<LineAndType> _logLines = new List<LineAndType>();
+		private readonly bool _isVerbose;
 		protected Action<string, LogType> ContinualLogger;
 
-		public Logger(Action<string, LogType> continualLogger = null)
+		public Logger(bool isVerbose, Action<string, LogType> continualLogger = null)
 		{
+			_isVerbose = isVerbose;
 			ContinualLogger = continualLogger;
 		}
 
 		public void Verbose(string line)
 		{
 			_logLines.Add(new LineAndType(line, LogType.Verbose));
-
-			ContinualLogger?.Invoke(line, LogType.Verbose);
+			if (_isVerbose)
+			{
+				ContinualLogger?.Invoke(line, LogType.Verbose);
+			}
 		}
 
 		public void Terse(string line)
@@ -59,7 +63,8 @@ namespace Konnie.Runner.Logging
 
 	public class ConsoleLogger : Logger
 	{
-		public ConsoleLogger() : base(
+		public ConsoleLogger(bool isVerbose) : base(
+			isVerbose,
 			(line, logType) =>
 			{
 				Console.ForegroundColor =

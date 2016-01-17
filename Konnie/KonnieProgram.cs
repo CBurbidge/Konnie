@@ -22,6 +22,8 @@ namespace Konnie
 				.Required();
 			argParser.Setup(arg => arg.HistoryFile)
 				.As("history");
+			argParser.Setup(arg => arg.Verbose)
+				.As("verbose");
 
 			var result = argParser.Parse(args);
 

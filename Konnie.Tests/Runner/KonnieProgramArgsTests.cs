@@ -42,6 +42,7 @@ namespace Konnie.Tests.Runner
 				}
 			};
 			var mockFileSystem = new Mock<IFileSystem>();
+			mockFileSystem.Setup(fs => fs.Path.GetFullPath(It.IsAny<string>())).Returns("Thing");
 			mockFileSystem.Setup(fs => fs.File.Exists(fileName)).Returns(false);
 			mockFileSystem.Setup(fs => fs.Directory.Exists(projDir)).Returns(true);
 
@@ -65,6 +66,7 @@ namespace Konnie.Tests.Runner
 			var mockFileSystem = new Mock<IFileSystem>();
 			mockFileSystem.Setup(fs => fs.Directory.Exists(projDir))
 				.Returns(false);
+			mockFileSystem.Setup(fs => fs.Path.GetFullPath(It.IsAny<string>())).Returns("Thing");
 
 			Assert.Throws<ProjectDirectoryDoesntExist>(() => args.Validate(mockFileSystem.Object));
 		}
@@ -87,9 +89,10 @@ namespace Konnie.Tests.Runner
 			mockFileSystem.Setup(fs => fs.Directory.Exists(projDir)).Returns(true);
 			mockFileSystem.Setup(fs => fs.File.Exists(fileName))
 				.Returns(false);
+			mockFileSystem.Setup(fs => fs.Path.GetFullPath(It.IsAny<string>())).Returns("Thing");
 			Func<string, Stream> getFileStreamFromPath = path => {throw new IOException("Can't access file");};
 
-			Assert.Throws<KonnieFileDoesntExistOrCantBeAccessed>(() => args.Validate(mockFileSystem.Object, getFileStreamFromPath));
+			Assert.Throws<KonnieFileDoesntExistOrCantBeAccessed>(() => args.Validate(mockFileSystem.Object, null, getFileStreamFromPath));
 		}
 		
 		[Test]
@@ -114,7 +117,7 @@ namespace Konnie.Tests.Runner
 			mockFileSystem.Setup(fs => fs.File.Exists(fileNameTwo)).Returns(true);
 			Func<string, Stream> getFileStreamFromPath = path => null;
 
-			args.Validate(mockFileSystem.Object, getFileStreamFromPath);
+			args.Validate(mockFileSystem.Object, null, getFileStreamFromPath);
 		}
 	}
 }

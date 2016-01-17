@@ -9,14 +9,16 @@ namespace Konnie
 	
 	public class KonnieFileDoesntExistOrCantBeAccessed : Exception
 	{
+		private readonly string _filePath;
 		private readonly string _filepathKonnie;
 
 		public KonnieFileDoesntExistOrCantBeAccessed(string filePath, string filepathKonnie)
 		{
+			_filePath = filePath;
 			_filepathKonnie = filepathKonnie;
 		}
 
-		public override string Message => $"{_filepathKonnie}";
+		public override string Message => $"File '{_filePath}' {_filepathKonnie}";
 	}
 	public class FileDoesntExist : Exception
 	{

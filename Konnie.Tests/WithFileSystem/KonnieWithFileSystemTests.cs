@@ -69,7 +69,7 @@ namespace Konnie.Tests.WithFileSystem
 					}
 				}
 			};
-			var converter = new KFileConverter(new ConsoleLogger(), new FileSystem());
+			var converter = new KFileConverter(new ConsoleLogger(true), new FileSystem());
 			var kFileName = nameof(CopyFileAndAssertNoMoreVariablesInFileFails) + ".konnie";
 			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
 			if (File.Exists(kFilePath) == false)
@@ -118,7 +118,7 @@ namespace Konnie.Tests.WithFileSystem
 					}
 				}
 			};
-			var converter = new KFileConverter(new ConsoleLogger(), new FileSystem());
+			var converter = new KFileConverter(new ConsoleLogger(true), new FileSystem());
 			var kFileName = nameof(AssertLackOfXPathFails) + ".konnie";
 			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
 			if (File.Exists(kFilePath) == false)
@@ -196,7 +196,7 @@ namespace Konnie.Tests.WithFileSystem
 					}
 				}
 			};
-			var converter = new KFileConverter(new ConsoleLogger(), new FileSystem());
+			var converter = new KFileConverter(new ConsoleLogger(true), new FileSystem());
 			var kFileName = nameof(TransformsAndSubstitutionsWork) + ".konnie";
 			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
 			if (File.Exists(kFilePath) == false)

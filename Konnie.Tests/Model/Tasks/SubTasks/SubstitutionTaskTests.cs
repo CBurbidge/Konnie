@@ -67,7 +67,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {VariableSetOneName, VariableSetTwoName}
 			};
@@ -93,7 +93,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {VariableSetOneName}
 			};
@@ -118,7 +118,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {VariableSetOneName}
 			};
@@ -143,7 +143,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {VariableSetOneName}
 			};
@@ -168,7 +168,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {VariableSetOneName}
 			};
@@ -193,7 +193,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {"VariableSetOne"}
 			};
@@ -209,7 +209,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string>()
 			};
@@ -225,7 +225,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var task = new SubstitutionTask
 			{
 				Name = "SomeName",
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				FilePath = FilePath,
 				SubstitutionVariableSets = new List<string> {"VarSet"}
 			};

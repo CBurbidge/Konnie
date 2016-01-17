@@ -18,7 +18,15 @@ namespace Konnie.Runner
 		public void Run(KonnieProgramArgs args, ILogger loggerInj = null, IFileSystem fsInj = null)
 		{
 			var fs = fsInj ?? new FileSystem();
-			var logger = loggerInj ?? new Logger();
+			var logger = loggerInj ?? new ConsoleLogger(args.Verbose);
+
+			logger.Verbose($"Project directory is '{args.ProjectDir}'");
+			logger.Verbose($"Task is '{args.Task}'");
+			logger.Verbose("Files:");
+			foreach (var file in args.Files)
+			{
+				logger.Verbose($"Konnie file: '{file}'");
+			}
 
 			args.Validate(fs);
 
@@ -57,7 +65,6 @@ namespace Konnie.Runner
 
 					foreach (var subTask in subTasksToRun)
 					{
-						logger.Verbose($"Running sub task {subTask.Name}");
 						subTask.Run(fileSystemHandler, kFile.VariableSets);
 					}
 

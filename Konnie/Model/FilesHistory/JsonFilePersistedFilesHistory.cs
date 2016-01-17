@@ -21,7 +21,7 @@ namespace Konnie.Model.FilesHistory
 			_historyJsonFilePath = historyJsonFilePath;
 			_taskBeingPerformed = taskBeingPerformed;
 			_historyFileConverter = historyFileConverter ?? new HistoryFileConverter(_logger, _fs);
-			_logger = logger ?? new Logger();
+			_logger = logger ?? new ConsoleLogger(true);
 		}
 
 		public void LoadFileHistory()

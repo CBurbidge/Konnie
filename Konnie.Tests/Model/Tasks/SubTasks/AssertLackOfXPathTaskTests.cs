@@ -26,7 +26,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new AssertLackOfXPathTask
 			{
-				Logger = new Logger(), Name = "",
+				Logger = new ConsoleLogger(true), Name = "",
 				FilePath = FilePath
 			};
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
@@ -41,7 +41,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var invalidXPath = "//appSettings/add { @key = 'ThingLocation' } ";
 			var task = new AssertLackOfXPathTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				FilePath = FilePath,
 				XPaths = new List<string> { invalidXPath }
@@ -59,7 +59,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var xPathOfExistingElement = "//appSettings/add[@key = 'ThingLocation']";
 			var task = new AssertLackOfXPathTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				FilePath = FilePath,
 				XPaths = new List<string> {xPathOfExistingElement}
@@ -77,7 +77,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			var xPathOfNonExistingElement = "//appSettings/add[@key = 'SomethingElse']";
 			var task = new AssertLackOfXPathTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				FilePath = FilePath,
 				XPaths = new List<string> { xPathOfNonExistingElement }
@@ -94,7 +94,7 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		{
 			var task = new AssertLackOfXPathTask
 			{
-				Logger = new Logger(),
+				Logger = new ConsoleLogger(true),
 				Name = "",
 				FilePath = FilePath,
 				XPaths = new List<string> { "SomeXPath" }

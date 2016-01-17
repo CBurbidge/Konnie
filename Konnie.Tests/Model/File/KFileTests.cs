@@ -26,8 +26,8 @@ namespace Konnie.Tests.Model.File
 			[Test]
 			public void UsesTheLoggerFromTheRightHandFile()
 			{
-				var leftLogger = new Logger();
-				var rightLogger = new Logger();
+				var leftLogger = new ConsoleLogger(true);
+				var rightLogger = new ConsoleLogger(true);
 				var left = new KFile {Logger = leftLogger};
 				var right = new KFile {Logger = rightLogger};
 
