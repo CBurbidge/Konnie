@@ -1,0 +1,12 @@
+﻿@model Konnie.Model.File.KVariableSet
+
+<p>@Model.Name</p>
+@{
+	foreach (var valueByName in @Model.Variables)
+	{
+		<div class="variable">
+			<span>@valueByName.Key</span>
+			<span>@valueByName.Value</span>
+		</div>
+	}
+}

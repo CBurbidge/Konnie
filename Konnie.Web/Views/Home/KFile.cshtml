@@ -1,0 +1,38 @@
+﻿@model Konnie.Model.File.KFile
+<div class="tasks row">
+	<h3>Tasks</h3>
+	@{
+		foreach (var kTask in Model.Tasks)
+		{
+			<div class="ktask col-md-4">
+				@Html.Partial("KTask", kTask)
+			</div>
+		}
+	}
+</div>
+
+<div class="sub-tasks row">
+	<h3>Sub tasks</h3>
+	@{
+		foreach (var subTask in Model.SubTasks)
+		{
+			<div class="ksubtask col-md-4">
+				@Html.DisplayFor(m => subTask)
+			</div>
+		}
+	}
+</div>
+
+<div class="variable-sets row">
+	<h3>Variable sets</h3>
+	@{
+		foreach (var kVariableSet in Model.VariableSets)
+		{
+			<div class="kvariableset col-md-4">
+				@Html.DisplayFor(m => kVariableSet)
+			</div>
+		}
+	}
+</div>
+
+

@@ -1,0 +1,21 @@
+﻿@model Konnie.Model.File.KTask
+<table>
+	<tr>
+		<td>Name:</td>
+		<td>@Model.Name</td>
+	</tr>
+	<tr>
+		<td>Sub tasks:</td>
+		<td>
+			<ul>
+				@{
+					foreach (var subTaskName in @Model.SubTasksToRun)
+					{
+						<li>@subTaskName</li>
+					}
+				}
+			</ul>
+		</td>
+	</tr>
+</table>
+
