@@ -1,5 +1,4 @@
 ﻿using System;
-using System.IO;
 using System.IO.Abstractions;
 using Konnie.Model.File;
 using Konnie.Runner.Logging;
@@ -9,8 +8,8 @@ namespace Konnie.InzOutz
 {
 	public class KFileConverter
 	{
-		private readonly ILogger _logger;
 		private readonly IFileSystem _fs;
+		private readonly ILogger _logger;
 
 		public KFileConverter(ILogger logger, IFileSystem fs)
 		{
@@ -39,9 +38,14 @@ namespace Konnie.InzOutz
 		{
 			return DeserializeObject(text);
 		}
+
 		public string Serialize(KFile kFile)
 		{
-			return JsonConvert.SerializeObject(kFile, Formatting.Indented);
+			return JsonConvert.SerializeObject(kFile, Formatting.Indented,
+				new JsonSerializerSettings
+				{
+					DefaultValueHandling = DefaultValueHandling.Ignore
+				});
 		}
 
 		private KFile DeserializeObject(string text)

@@ -4,7 +4,6 @@ using System.IO;
 using System.Linq;
 using System.Xml;
 using Konnie.Model.File;
-using Konnie.Model.FilesHistory;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
 using Microsoft.Web.XmlTransform;
@@ -82,7 +81,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			if (fileSystemHandler.Exists(file) == false)
 			{
 				Logger.Terse($"File '{file}' doesn't exist, can't continue");
-				throw new FileDoesntExist(file);
+				throw new FileDoesntExist(fileSystemHandler.GetAbsPath(file));
 			}
 		}
 	}
