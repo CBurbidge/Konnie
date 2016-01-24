@@ -26,13 +26,13 @@ namespace Konnie.Model.Tasks.SubTasks
 			if (fileSystemHandler.Exists(Source) == false)
 			{
 				Logger.Terse($"Source file '{Source}' doesn't exist, can't continue.");
-				throw new FileDoesntExist(Source);
+				throw new FileDoesntExist(fileSystemHandler.GetAbsPath(Source));
 			}
 
 			if (fileSystemHandler.Exists(Destination) == false)
 			{
 				Logger.Terse($"Destination file '{Destination}' doesn't exist, can't continue.");
-				throw new FileDoesntExist(Destination);
+				throw new FileDoesntExist(fileSystemHandler.GetAbsPath(Destination));
 			}
 
 			Logger.Verbose($"Copying file '{Source}' to '{Destination}'.");

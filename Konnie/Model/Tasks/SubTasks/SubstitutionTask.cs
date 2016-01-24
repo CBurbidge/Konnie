@@ -1,10 +1,8 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 using Konnie.Model.File;
-using Konnie.Model.FilesHistory;
 using Konnie.Runner;
 using Konnie.Runner.Logging;
 
@@ -13,6 +11,7 @@ namespace Konnie.Model.Tasks.SubTasks
 	public class SubstitutionTask : ISubTaskThatUsesVariableSets
 	{
 		public string FilePath { get; set; }
+		public string OptionalOutputFile { get; set; }
 		public string Name { get; set; }
 		public ILogger Logger { get; set; }
 		public string Type => nameof(SubstitutionTask);
@@ -28,13 +27,20 @@ namespace Konnie.Model.Tasks.SubTasks
 			CheckVariableSets();
 			CheckFileExists(fileSystemHandler);
 
+			Func<string, string> transformToComparableState = s => s.ToLower().Trim();
+
 			var subsVals = new Dictionary<string, string>();
 			var releventVariableSets = variableSets.Where(v => SubstitutionVariableSets.Contains(v.Name));
 			foreach (var variableSet in releventVariableSets)
 			{
 				foreach (var kvp in variableSet.Variables)
 				{
-					subsVals[kvp.Key.ToLower().Trim()] = kvp.Value;
+					if (string.IsNullOrWhiteSpace(kvp.Value) && variableSet.IgnoreBlankValues)
+					{
+						continue;
+					}
+
+					subsVals[transformToComparableState(kvp.Key)] = kvp.Value;
 				}
 			}
 
@@ -49,10 +55,10 @@ namespace Konnie.Model.Tasks.SubTasks
 					{
 						var variableName = match.Groups["name"].Value;
 
-						var lower = variableName.ToLower().Trim();
-						if (subsVals.ContainsKey(lower))
+						var comparableState =  transformToComparableState(variableName);
+						if (subsVals.ContainsKey(comparableState))
 						{
-							var value = subsVals[lower];
+							var value = subsVals[comparableState];
 							lineToAdd = line.Replace($"#{{{variableName}}}", value);
 						}
 					}
@@ -62,7 +68,12 @@ namespace Konnie.Model.Tasks.SubTasks
 			}
 
 			var fileContents = string.Join(Environment.NewLine, transformedLines);
-			fileSystemHandler.WriteAllText(fileContents, FilePath);
+
+			var filePathToWriteTo = string.IsNullOrWhiteSpace(OptionalOutputFile) 
+				? FilePath 
+				: OptionalOutputFile;
+
+			fileSystemHandler.WriteAllText(fileContents, filePathToWriteTo);
 		}
 
 		private void CheckVariableSets()
@@ -79,7 +90,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			if (fileSystemHandler.Exists(FilePath) == false)
 			{
 				Logger.Terse($"File '{FilePath}' doesn't exist, can't continue");
-				throw new FileDoesntExist(FilePath);
+				throw new FileDoesntExist(fileSystemHandler.GetAbsPath(FilePath));
 			}
 		}
 

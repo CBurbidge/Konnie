@@ -23,19 +23,20 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 	</configuration >";
 		private const string VariableSetOneName = "VariableSetOne";
 		private const string VariableSetTwoName = "VariableSetTwo";
-		private const string VOneName = "VOne";
-		private const string VOneValue = "VOneValue";
-		private const string VOneValueLater = "VOneValueLater";
-		private const string VTwoName = "VTwo";
-		private const string VTwoValue = "VTwoValue";
+		private const string VariableSetNonOverideName = "VariableSetNonOveride";
+		private const string VarOneName = "VOne";
+		private const string VSet1VarOneValue = "VOneValue";
+		private const string VSet2VarOneValue = "VOneValueLater";
+		private const string VarTwoName = "VTwo";
+		private const string VSet1VarTwoValue = "VTwoValue";
 
 		private readonly KVariableSet VariableSetOne = new KVariableSet
 		{
 			Name = VariableSetOneName,
 			Variables = new Dictionary<string, string>
 			{
-				{VOneName, VOneValue},
-				{VTwoName, VTwoValue}
+				{VarOneName, VSet1VarOneValue},
+				{VarTwoName, VSet1VarTwoValue}
 			}
 		};
 
@@ -44,20 +45,36 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			Name = VariableSetTwoName,
 			Variables = new Dictionary<string, string>
 			{
-				{VOneName, VOneValueLater}
+				{VarOneName, VSet2VarOneValue}
 			}
 		};
 
-		private Mock<IFileSystemHandler> GetMockFileSystemHandler(string configFile, string expectedFileContent)
+		private readonly KVariableSet VariableSetNonOveride = new KVariableSet
+		{
+			Name = VariableSetNonOverideName,
+			Variables = new Dictionary<string, string>
+			{
+				{VarOneName, ""}
+			},
+			IgnoreBlankValues = true
+		};
+
+		private string OptionalOutputFile = "OptionalOutputFilePath";
+
+		private Mock<IFileSystemHandler> GetMockFileSystemHandler(string configFile, string expectedFilePath, string expectedFileContent)
 		{
 			var mockFileSystemHandler = new Mock<IFileSystemHandler>();
 			mockFileSystemHandler.Setup(f => f.Exists(FilePath))
 				.Returns(true);
 			mockFileSystemHandler.Setup(f => f.ReadAllLines(FilePath))
 				.Returns(configFile.Split(new[] {'\r', '\n'}, StringSplitOptions.RemoveEmptyEntries));
-			mockFileSystemHandler.Setup(f => f.WriteAllText(It.IsAny<string>(), FilePath))
+			mockFileSystemHandler.Setup(f => f.WriteAllText(It.IsAny<string>(), It.IsAny<string>()))
 				.Callback<string, string>(
-					(fileContents, filePath) => { Assert.That(fileContents, Is.EqualTo(expectedFileContent)); });
+					(fileContents, filePath) =>
+					{
+						Assert.That(fileContents, Is.EqualTo(expectedFileContent));
+						Assert.That(filePath, Is.EqualTo(expectedFilePath));
+					});
 			return mockFileSystemHandler;
 		}
 
@@ -73,17 +90,43 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			};
 			var configFile = string.Format(
 				ConfigFileTemplate,
-				$"#{{{VOneName}}}",
-				$"#{{{VTwoName}}}",
+				$"#{{{VarOneName}}}",
+				$"#{{{VarTwoName}}}",
 				"SomeValue");
 			var expectedFileContent = string.Format(
 				ConfigFileTemplate,
-				$"{VOneValueLater}",
-				$"{VTwoValue}",
+				$"{VSet2VarOneValue}",
+				$"{VSet1VarTwoValue}",
 				"SomeValue");
-			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, expectedFileContent);
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
 
 			var sets = new KVariableSets {VariableSetOne, VariableSetTwo};
+			task.Run(mockFileSystemHandler.Object, sets);
+		}
+
+		[Test]
+		public void VariableDoesntOverideIfVariableSetIgnoresBlankValues()
+		{
+			var task = new SubstitutionTask
+			{
+				Name = "SomeName",
+				Logger = new ConsoleLogger(true),
+				FilePath = FilePath,
+				SubstitutionVariableSets = new List<string> {VariableSetOneName, VariableSetNonOverideName}
+			};
+			var configFile = string.Format(
+				ConfigFileTemplate,
+				$"#{{{VarOneName}}}",
+				$"#{{{VarTwoName}}}",
+				"SomeValue");
+			var expectedFileContent = string.Format(
+				ConfigFileTemplate,
+				$"{VSet1VarOneValue}",
+				$"{VSet1VarTwoValue}",
+				"SomeValue");
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
+
+			var sets = new KVariableSets {VariableSetOne, VariableSetNonOveride};
 			task.Run(mockFileSystemHandler.Object, sets);
 		}
 
@@ -99,15 +142,41 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			};
 			var configFile = string.Format(
 				ConfigFileTemplate,
-				$"#{{{VOneName}}}",
-				$"#{{{VTwoName}}}",
+				$"#{{{VarOneName}}}",
+				$"#{{{VarTwoName}}}",
 				"SomeValue");
 			var expectedFileContent = string.Format(
 				ConfigFileTemplate,
-				$"{VOneValue}",
-				$"{VTwoValue}",
+				$"{VSet1VarOneValue}",
+				$"{VSet1VarTwoValue}",
 				"SomeValue");
-			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, expectedFileContent);
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
+
+			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
+		}
+
+		[Test]
+		public void WritesToOptionalOutputFileIfItIsNotNull()
+		{
+			var task = new SubstitutionTask
+			{
+				Name = "SomeName",
+				Logger = new ConsoleLogger(true),
+				FilePath = FilePath,
+				OptionalOutputFile = OptionalOutputFile,
+                SubstitutionVariableSets = new List<string> {VariableSetOneName}
+			};
+			var configFile = string.Format(
+				ConfigFileTemplate,
+				$"#{{{VarOneName}}}",
+				$"#{{{VarTwoName}}}",
+				"SomeValue");
+			var expectedFileContent = string.Format(
+				ConfigFileTemplate,
+				$"{VSet1VarOneValue}",
+				$"{VSet1VarTwoValue}",
+				"SomeValue");
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, OptionalOutputFile, expectedFileContent);
 
 			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
 		}
@@ -124,15 +193,15 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			};
 			var configFile = string.Format(
 				ConfigFileTemplate,
-				$"#{{{VOneName}}}",
-				$"#{{{VTwoName}}}",
+				$"#{{{VarOneName}}}",
+				$"#{{{VarTwoName}}}",
 				"#{SomeOtherVariable}");
 			var expectedFileContent = string.Format(
 				ConfigFileTemplate,
-				$"{VOneValue}",
-				$"{VTwoValue}",
+				$"{VSet1VarOneValue}",
+				$"{VSet1VarTwoValue}",
 				"#{SomeOtherVariable}");
-			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, expectedFileContent);
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
 
 			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
 		}
@@ -149,15 +218,15 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			};
 			var configFile = string.Format(
 				ConfigFileTemplate,
-				$"#{{{VOneName.ToLower()}}}",
-				$"#{{{VTwoName.ToLower()}}}",
+				$"#{{{VarOneName.ToLower()}}}",
+				$"#{{{VarTwoName.ToLower()}}}",
 				"SomeValue");
 			var expectedFileContent = string.Format(
 				ConfigFileTemplate,
-				$"{VOneValue}",
-				$"{VTwoValue}",
+				$"{VSet1VarOneValue}",
+				$"{VSet1VarTwoValue}",
 				"SomeValue");
-			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, expectedFileContent);
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
 
 			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
 		}
@@ -174,15 +243,15 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 			};
 			var configFile = string.Format(
 				ConfigFileTemplate,
-				$"#{{ {VOneName}  }}",
-				$"#{{   {VTwoName}}}",
+				$"#{{ {VarOneName}  }}",
+				$"#{{   {VarTwoName}}}",
 				"SomeValue");
 			var expectedFileContent = string.Format(
 				ConfigFileTemplate,
-				$"{VOneValue}",
-				$"{VTwoValue}",
+				$"{VSet1VarOneValue}",
+				$"{VSet1VarTwoValue}",
 				"SomeValue");
-			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, expectedFileContent);
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
 
 			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
 		}

@@ -46,6 +46,7 @@ namespace Konnie.Model.File
 	{
 		public string Name { get; set; }
 		public Dictionary<string, string> Variables { get; set; }
+		public bool IgnoreBlankValues { get; set; } = false;
 	}
 	
 	public class KVariableSets : List<KVariableSet>

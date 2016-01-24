@@ -22,7 +22,7 @@ namespace Konnie.Model.Tasks.SubTasks
 			if (fileSystemHandler.Exists(FilePath) == false)
 			{
 				Logger.Terse($"File '{FilePath}' doesn't exist, can't continue");
-				throw new FileDoesntExist(FilePath);
+				throw new FileDoesntExist(fileSystemHandler.GetAbsPath(FilePath));
 			}
 
 			var wholeFile = fileSystemHandler.ReadAllText(FilePath);
