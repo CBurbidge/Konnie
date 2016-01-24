@@ -60,7 +60,7 @@ namespace Konnie.Model.Tasks.SubTasks
 						if (subsVals.ContainsKey(comparableState))
 						{
 							var value = subsVals[comparableState];
-							lineToAdd = line.Replace($"#{{{variableName}}}", value);
+							lineToAdd = lineToAdd.Replace($"#{{{variableName}}}", value);
 						}
 					}
 				}

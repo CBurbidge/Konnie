@@ -156,6 +156,31 @@ namespace Konnie.Tests.Model.Tasks.SubTasks
 		}
 
 		[Test]
+		public void SubstitutionHandlesTwoVariablesOnOneLine()
+		{
+			var task = new SubstitutionTask
+			{
+				Name = "SomeName",
+				Logger = new ConsoleLogger(true),
+				FilePath = FilePath,
+				SubstitutionVariableSets = new List<string> {VariableSetOneName}
+			};
+			var configFile = string.Format(
+				ConfigFileTemplate,
+				$"#{{{VarOneName}}}#{{{VarTwoName}}}",
+				$"#{{{VarTwoName}}}",
+				"SomeValue");
+			var expectedFileContent = string.Format(
+				ConfigFileTemplate,
+				$"{VSet1VarOneValue + VSet1VarTwoValue}",
+				$"{VSet1VarTwoValue}",
+				"SomeValue");
+			var mockFileSystemHandler = GetMockFileSystemHandler(configFile, FilePath, expectedFileContent);
+
+			task.Run(mockFileSystemHandler.Object, new KVariableSets {VariableSetOne});
+		}
+
+		[Test]
 		public void WritesToOptionalOutputFileIfItIsNotNull()
 		{
 			var task = new SubstitutionTask
