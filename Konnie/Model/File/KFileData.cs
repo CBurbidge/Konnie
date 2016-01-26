@@ -26,6 +26,8 @@ namespace Konnie.Model.File
 
 		[JsonIgnore]
 		public ILogger Logger { get; set; }
+
+		public List<string> ExtraFiles { get; set; } = new List<string>();
 	}
 
 	public class KTasks : List<KTask>

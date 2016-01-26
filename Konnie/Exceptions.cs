@@ -6,7 +6,15 @@ using System.Collections.Generic;
 //
 namespace Konnie
 {
-	
+	internal class KFileAlreadyAdded : Exception
+	{
+		private readonly string _kFilePath;
+
+		public KFileAlreadyAdded(string kFilePath)
+		{
+			_kFilePath = kFilePath;
+		}
+	}
 	public class KonnieFileDoesntExistOrCantBeAccessed : Exception
 	{
 		private readonly string _filePath;

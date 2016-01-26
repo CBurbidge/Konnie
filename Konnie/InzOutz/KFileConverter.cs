@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using Konnie.Model.File;
 using Konnie.Runner.Logging;
@@ -31,16 +32,23 @@ namespace Konnie.InzOutz
 		public KFile DeserializeFromFile(string filePath)
 		{
 			var text = _fs.File.ReadAllText(filePath);
-			return DeserializeObject(text);
+			return DeserializeObject(text, new List<string> {filePath}, _fs.Path.GetDirectoryName(filePath));
 		}
 
 		public KFile DeserializeFromString(string text)
 		{
-			return DeserializeObject(text);
+			return DeserializeObject(text, new List<string>(), null);
 		}
 
 		public string Serialize(KFile kFile)
 		{
+			// want to not serialise if none exist. 
+			// Setting to default makes not serialise.
+			if (kFile.ExtraFiles.Count == 0)
+			{
+				kFile.ExtraFiles = null;
+			}
+
 			return JsonConvert.SerializeObject(kFile, Formatting.Indented,
 				new JsonSerializerSettings
 				{
@@ -48,10 +56,29 @@ namespace Konnie.InzOutz
 				});
 		}
 
-		private KFile DeserializeObject(string text)
+		private KFile DeserializeObject(string text, List<string> filesAlreadyMet, string dirPath)
 		{
 			var deserializeObject = JsonConvert.DeserializeObject<KFile>(text, new SubTaskJsonConverter(_logger));
 			deserializeObject.Logger = _logger;
+
+			if (deserializeObject.ExtraFiles.Count > 0)
+			{
+				foreach (var kFilePath in deserializeObject.ExtraFiles)
+				{
+					var path = _fs.Path.Combine(dirPath, kFilePath);
+
+					if (filesAlreadyMet.Contains(path))
+					{
+						throw new KFileAlreadyAdded(kFilePath);
+					}
+
+					filesAlreadyMet.Add(path);
+					var kFile = DeserializeObject(_fs.File.ReadAllText(path), filesAlreadyMet, dirPath);
+
+					deserializeObject.Merge(kFile);
+				}
+			}
+
 			return deserializeObject;
 		}
 	}

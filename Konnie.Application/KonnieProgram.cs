@@ -1,9 +1,7 @@
-﻿using System.IO.Abstractions;
-using Fclp;
+﻿using Fclp;
 using Konnie.Runner;
-using Konnie.Runner.Logging;
 
-namespace Konnie
+namespace Konnie.Application
 {
 	public class KonnieProgram
 	{

@@ -80,7 +80,6 @@
     <Compile Include="Model\File\KFileTests.cs" />
     <Compile Include="InzOutz\KFileConverterTests.cs" />
     <Compile Include="KFileEqualityAsserter.cs" />
-    <Compile Include="KonnieProgramTests.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertLackOfXPathTaskTests.cs" />
     <Compile Include="Model\Tasks\SubTasks\AssertNoMoreVariablesInFileTaskTests.cs" />
     <Compile Include="Model\Tasks\SubTasks\CopyFileTaskTests.cs" />
