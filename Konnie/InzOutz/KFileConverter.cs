@@ -42,18 +42,35 @@ namespace Konnie.InzOutz
 
 		public string Serialize(KFile kFile)
 		{
-			// want to not serialise if none exist. 
-			// Setting to default makes not serialise.
-			if (kFile.ExtraFiles.Count == 0)
-			{
-				kFile.ExtraFiles = null;
-			}
+			SetEmptyCollectionsToZero(kFile);
 
 			return JsonConvert.SerializeObject(kFile, Formatting.Indented,
 				new JsonSerializerSettings
 				{
 					DefaultValueHandling = DefaultValueHandling.Ignore
 				});
+		}
+
+		private static void SetEmptyCollectionsToZero(KFile kFile)
+		{
+			// want to not serialise if none exist. 
+			// Setting to default makes not serialise.
+			if (kFile.ExtraFiles.Count == 0)
+			{
+				kFile.ExtraFiles = null;
+			}
+			if (kFile.VariableSets.Count == 0)
+			{
+				kFile.VariableSets = null;
+			}
+			if (kFile.Tasks.Count == 0)
+			{
+				kFile.Tasks = null;
+			}
+			if (kFile.SubTasks.Count == 0)
+			{
+				kFile.SubTasks = null;
+			}
 		}
 
 		private KFile DeserializeObject(string text, List<string> filesAlreadyMet, string dirPath)

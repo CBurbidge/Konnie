@@ -40,6 +40,7 @@ namespace Konnie.Tests.WithFileSystem
 			var destinationConfig = "ConfigCopied.xml";
 			var destinationConfigFilePath = Path.Combine(_baseFolderPath, destinationConfig);
 			File.WriteAllText(destinationConfigFilePath, "");
+			var kFileCopyTaskName = nameof(CopyFileTask) + ".konnie";
 			var kFile = new KFile
 			{
 				Tasks = new KTasks
@@ -56,25 +57,39 @@ namespace Konnie.Tests.WithFileSystem
 				},
 				SubTasks = new KSubTasks
 				{
-					new CopyFileTask
-					{
-						Name = copyTaskName,
-						Source = "Config.xml",
-						Destination = destinationConfig
-					},
 					new AssertNoMoreVariablesInFileTask
 					{
 						Name = assertNoMoreVariablesTaskName,
 						FilePath = destinationConfig
 					}
+				},
+				ExtraFiles = new List<string> { kFileCopyTaskName}
+			};
+
+			var copyTaskFile = new KFile
+			{
+				SubTasks = new KSubTasks
+				{
+					new CopyFileTask
+					{
+						Name = copyTaskName,
+						Source = "Config.xml",
+						Destination = destinationConfig
+					}
 				}
 			};
+
 			var converter = new KFileConverter(new ConsoleLogger(true), new FileSystem());
 			var kFileName = nameof(CopyFileAndAssertNoMoreVariablesInFileFails) + ".konnie";
 			var kFilePath = Path.Combine(_baseFolderPath, kFileName);
 			if (File.Exists(kFilePath) == false)
 			{
 				File.WriteAllText(kFilePath, converter.Serialize(kFile));
+			}
+			var kFileCopyTaskPath = Path.Combine(_baseFolderPath, kFileCopyTaskName);
+			if (File.Exists(kFileCopyTaskPath) == false)
+			{
+				File.WriteAllText(kFileCopyTaskPath, converter.Serialize(copyTaskFile));
 			}
 			var args = new KonnieProgramArgs
 			{

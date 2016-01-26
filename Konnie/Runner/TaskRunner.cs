@@ -1,8 +1,10 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.IO.Abstractions;
 using System.Linq;
 using Konnie.InzOutz;
 using Konnie.Model.FilesHistory;
+using Konnie.Model.Tasks;
 using Konnie.Runner.Logging;
 
 namespace Konnie.Runner
@@ -47,8 +49,10 @@ namespace Konnie.Runner
 				}
 
 				var taskToRun = kFile.Tasks.Single(t => t.Name == args.Task);
-				var subTasksToRun = kFile.SubTasks.Where(st => taskToRun.SubTasksToRun.Contains(st.Name));
-				var anySubTasksNeedToRun = subTasksToRun.Any(st => st.NeedToRun(fileSystemHandler));
+				var anySubTasksNeedToRun = kFile.SubTasks
+					.Any(
+						st => taskToRun.SubTasksToRun.Contains(st.Name) 
+						&& st.NeedToRun(fileSystemHandler));
 
 				var anyOfTheKonnieFilesAreDifferent = args.Files.Any(f =>
 				{
@@ -63,8 +67,9 @@ namespace Konnie.Runner
 				{
 					logger.Terse("Running Konnie.");
 
-					foreach (var subTask in subTasksToRun)
+					foreach (var subTaskName in taskToRun.SubTasksToRun)
 					{
+						var subTask = kFile.SubTasks.Single(st => st.Name == subTaskName);
 						subTask.Run(fileSystemHandler, kFile.VariableSets);
 					}
 
