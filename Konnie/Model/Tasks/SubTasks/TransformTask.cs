@@ -16,7 +16,7 @@ namespace Konnie.Model.Tasks.SubTasks
 
 		public TransformTask(Func<string, Stream> getFileStream = null)
 		{
-			_getFileStream = getFileStream ?? (fp => new FileStream(fp, FileMode.Open));
+			_getFileStream = getFileStream ?? (fp => new FileStream(fp, FileMode.Open, FileAccess.Read));
 		}
 
 		public string Name { get; set; }

@@ -36,6 +36,8 @@ namespace Konnie
 		{
 			_source = source;
 		}
+
+		public override string Message => $"Cannot find file at path: '{_source}'";
 	}
 
 	public class ElementExistsAtXPath : Exception
