@@ -55,9 +55,11 @@ namespace Konnie.Model.Tasks.SubTasks
 			foreach (var transformFile in TransformFiles)
 			{
 				Logger.Verbose($"Applying transform '{transformFile}'");
-				var stream = _getFileStream(fileSystemHandler.GetAbsPath(transformFile));
-				var transform = new XmlTransformation(stream, logger);
-				transform.Apply(input);
+				using (var stream = _getFileStream(fileSystemHandler.GetAbsPath(transformFile)))
+				{
+					var transform = new XmlTransformation(stream, logger);
+					transform.Apply(input);
+				}
 			}
 
 			Logger.Verbose($"Writing to file '{OutputFile}'.");
